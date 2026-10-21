@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maestro - <?= app.nombre ?></title>
+  <style>
+    :root{
+      --bg:#eef5fb;
+      --panel:#ffffff;
+      --primary:#0f4c81;
+      --primary-2:#1f6fb2;
+      --accent:#f4b400;
+      --text:#1d2b3a;
+      --muted:#65758b;
+      --border:#dce6f1;
+      --success:#168764;
+      --danger:#d64545;
+      --shadow:0 24px 70px rgba(15,76,129,.16);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,#edf4fb 0%,#f8fbfe 100%)}
+    .shell{min-height:100vh;padding:24px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.86);border:1px solid rgba(220,230,241,.9);border-radius:24px;padding:14px 18px;box-shadow:var(--shadow)}
+    .brand-mark{width:72px;height:72px;min-width:72px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.15rem;box-shadow:0 12px 28px rgba(15,76,129,.18)}
+    .brand h1{margin:0;font-size:1.45rem;line-height:1.1}
+    .brand p{margin:5px 0 0;color:var(--muted);font-size:.95rem}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 14px 35px rgba(15,76,129,.18)}
+
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:22px}
+    .card{background:var(--panel);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:22px}
+    .section-title{margin:0 0 6px;font-size:.95rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .helper{color:var(--muted);font-size:.92rem;line-height:1.5}
+    .user-block{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);padding:12px 14px;border-radius:18px}
+    .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff;font-weight:800}
+    .muted{color:var(--muted)}
+
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .stat{padding:14px;border-radius:18px;background:#f8fbff;border:1px solid var(--border)}
+    .stat small{display:block;color:var(--muted)}
+    .stat strong{display:block;margin-top:6px;font-size:1.35rem;color:var(--primary)}
+
+    label{display:block;font-size:.87rem;font-weight:700;color:var(--muted);margin-bottom:8px}
+    select,input,button{width:100%;border-radius:14px;border:1px solid #cedbea;padding:12px 14px;font-size:.96rem;outline:none;transition:.2s ease}
+    select:focus,input:focus{border-color:var(--primary-2);box-shadow:0 0 0 4px rgba(31,111,178,.12)}
+    button{cursor:pointer;border:0;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;font-weight:700;box-shadow:0 16px 32px rgba(15,76,129,.18)}
+    button.secondary{background:#fff;color:var(--primary);border:1px solid #cedbea;box-shadow:none}
+    button.success{background:linear-gradient(135deg,#0a8f6a,#15ad82)}
+    button[disabled]{opacity:.72;cursor:wait}
+
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .actions button{width:auto;min-width:160px}
+
+    .toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+    .toolbar-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
+
+    .status{margin-top:12px;min-height:24px;font-size:.93rem;font-weight:600}
+    .status.error{color:var(--danger)}
+    .status.success{color:var(--success)}
+
+    .empty{padding:32px;text-align:center;border-radius:20px;border:1px dashed #bfd3e7;color:var(--muted);background:#fbfdff}
+    .table-wrap{max-height:65vh;overflow:auto;border:1px solid var(--border);border-radius:18px}
+    table{width:100%;border-collapse:collapse;font-size:.92rem;background:#fff}
+    th,td{border-bottom:1px solid #e6eef7;padding:10px 10px;text-align:left;vertical-align:middle}
+    thead th{position:sticky;top:0;z-index:2;background:#eff6fc;font-size:.83rem;text-transform:uppercase;color:#47607b}
+    tbody tr:hover{background:#f8fbff}
+    .small-input{min-width:72px;padding:8px 8px;font-size:.88rem}
+    .note-total{font-weight:800;color:var(--primary)}
+
+    .info-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+    .info-box{background:#f9fcff;border:1px solid var(--border);border-radius:16px;padding:12px 14px}
+
+    .list{display:grid;gap:12px;max-height:420px;overflow:auto;padding-right:6px}
+    .list-item{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fbfdff}
+    .list-item h4{margin:0 0 6px;font-size:1rem}
+    .list-item p{margin:0;font-size:.9rem;color:var(--muted)}
+    .badge{display:inline-flex;align-items:center;padding:4px 10px;background:#eaf3fb;color:var(--primary);border-radius:999px;font-size:.8rem;font-weight:700}
+
+    .overlay{position:fixed;inset:0;background:rgba(17,32,51,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .overlay.show{display:flex}
+    .overlay-card{width:min(420px,96vw);background:#fff;border-radius:22px;border:1px solid var(--border);box-shadow:var(--shadow);padding:24px;text-align:center}
+    .spinner{width:56px;height:56px;border-radius:50%;border:6px solid #dce6f1;border-top-color:var(--primary-2);margin:0 auto 16px;animation:spin .9s linear infinite}
+    .overlay-card h3{margin:0 0 8px}
+    .overlay-card p{margin:0;color:var(--muted)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Modal iframe de Asistencia */
+    .mdj-asis-modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(17,32,51,.62);
+      z-index:99999;
+      padding:18px;
+    }
+    .mdj-asis-modal.show{display:flex}
+    .mdj-asis-box{
+      width:min(1500px,98vw);
+      height:min(900px,94vh);
+      background:#fff;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 28px 80px rgba(0,0,0,.28);
+      display:flex;
+      flex-direction:column;
+      border:1px solid var(--border);
+    }
+    .mdj-asis-head{
+      height:58px;
+      padding:12px 16px;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .mdj-asis-head button{
+      width:auto;
+      min-width:auto;
+      background:#fff;
+      color:var(--primary);
+      border:0;
+      border-radius:12px;
+      padding:9px 14px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:none;
+    }
+    #mdjAsisIframe{
+      width:100%;
+      height:100%;
+      border:0;
+      background:#fff;
+    }
+
+    @media (max-width:1100px){.layout{grid-template-columns:1fr}}
+    @media (max-width:760px){
+      .shell{padding:14px}
+      .topbar{flex-direction:column;align-items:stretch}
+      .toolbar,.toolbar-2,.stats,.info-strip{grid-template-columns:1fr}
+      .actions button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">MDJ</div>
+        <div>
+          <h1><?= app.nombre ?></h1>
+          <p>Módulo docente para consultar cursos por grado y año, y registrar calificaciones.</p>
+        </div>
+      </div>
+      <div class="chip">Modo maestro</div>
+    </div>
+
+    <div class="layout">
+      <aside class="card">
+        <p class="section-title">Panel del maestro</p>
+        <h2 style="margin:0 0 8px;">Consulta abierta por grado</h2>
+        <p class="helper">En esta fase, el docente puede consultar cualquier grado, año, bimestre y curso para registrar notas más rápido.</p>
+
+        <div class="user-block" style="margin-top:16px;">
+          <div class="avatar" id="teacherAvatar">M</div>
+          <div>
+            <strong id="teacherName">Docente</strong>
+            <div class="muted" id="teacherRole">maestro</div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <small>Grados disponibles</small>
+            <strong id="statBooks">0</strong>
+          </div>
+          <div class="stat">
+            <small>Años detectados</small>
+            <strong id="statYears">0</strong>
+          </div>
+        </div>
+
+        <div style="height:18px"></div>
+        <div class="actions">
+          <!-- Botón de asistencia agregado -->
+          <button class="secondary" onclick="abrirModuloAsistencia('asistencia')">Tomar Asistencia</button>
+          <button class="secondary" onclick="goLogin()">Cerrar sesión</button>
+          <button class="secondary" onclick="reloadTeacherPanel()">Recargar</button>
+        </div>
+
+        <div style="height:18px"></div>
+        <p class="section-title">Grados</p>
+        <div class="list" id="bookList"><div class="empty">Cargando grados...</div></div>
+      </aside>
+
+      <main class="card">
+        <div class="toolbar">
+          <div>
+            <label>Año</label>
+            <select id="yearSelect"></select>
+          </div>
+          <div>
+            <label>Grado</label>
+            <select id="bookSelect"></select>
+          </div>
+          <div>
+            <label>Bimestre</label>
+            <select id="bimestreSelect"></select>
+          </div>
+          <div>
+            <label>Curso</label>
+            <select id="courseSelect"></select>
+          </div>
+        </div>
+
+        <div class="toolbar-2">
+          <div>
+            <button onclick="loadCourses()">Buscar cursos</button>
+          </div>
+          <div>
+            <button onclick="loadStudents()">Abrir registro</button>
+          </div>
+        </div>
+
+        <div class="info-strip">
+          <div class="info-box">
+            <strong>Año</strong>
+            <div class="muted" id="infoYear">-</div>
+          </div>
+          <div class="info-box">
+            <strong>Grado</strong>
+            <div class="muted" id="infoBook">-</div>
+          </div>
+          <div class="info-box">
+            <strong>Curso</strong>
+            <div class="muted" id="infoCourse">-</div>
+          </div>
+          <div class="info-box">
+            <strong>Bimestre</strong>
+            <div class="muted" id="infoBimestre">-</div>
+          </div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="actions" style="margin-bottom:14px;">
+          <button class="success" onclick="saveGrades()">Guardar notas</button>
+        </div>
+
+        <div id="tableContainer" class="empty">Selecciona año, grado, bimestre y curso para cargar el registro.</div>
+      </main>
+    </div>
+  </div>
+
+  <div class="overlay" id="loadingOverlay">
+    <div class="overlay-card">
+      <div class="spinner"></div>
+      <h3 id="overlayTitle">Procesando</h3>
+      <p id="overlayMessage">Espera un momento...</p>
+    </div>
+  </div>
+
+  <!-- Modal de Asistencia -->
+  <script>
+  const WEB_APP_URL = '<?= webAppUrl ?>' || window.location.href.split('?')[0];
+
+
+  let SESSION = null;
+  let PANEL = null;
+  let CURRENT_ROWS = [];
+  let ALL_BOOKS = [];
+
+  function abrirModuloAsistencia(page) {
+    window.location.assign(buildPageUrl(page || 'asistencia'));
+  }
+
+  function setStatus(message, type) {
+    const el = document.getElementById('status');
+    el.textContent = message || '';
+    el.className = 'status ' + (type || '');
+  }
+
+  function setOverlay(show, title, message) {
+    const overlay = document.getElementById('loadingOverlay');
+    document.getElementById('overlayTitle').textContent = title || 'Procesando';
+    document.getElementById('overlayMessage').textContent = message || 'Espera un momento...';
+    overlay.classList.toggle('show', !!show);
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function buildPageUrl(page) {
+    return WEB_APP_URL + '?page=' + encodeURIComponent(page);
+  }
+
+  function clearLocalSession() {
+    localStorage.removeItem('mdj_token');
+    localStorage.removeItem('mdj_user');
+  }
+
+  function goLogin() {
+    clearLocalSession();
+    window.location.replace(buildPageUrl('login'));
+  }
+
+  function getUserPayload(response) {
+    if (!response || typeof response !== 'object') return null;
+    return response.user || response.usuario || response.sessionUser || null;
+  }
+
+  function getRolePayload(response) {
+    const user = getUserPayload(response);
+    if (user && user.rol) return String(user.rol).toLowerCase();
+    if (response && response.redirectPage) return String(response.redirectPage).toLowerCase();
+    return '';
+  }
+
+  function requireSession() {
+    const token = localStorage.getItem('mdj_token');
+    if (!token) return goLogin();
+
+    setOverlay(true, 'Validando sesión', 'Comprobando acceso del docente...');
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        setOverlay(false);
+        const user = getUserPayload(response);
+        const role = getRolePayload(response);
+
+        if (!response || !response.ok || !user) return goLogin();
+        if (role === 'admin') return window.location.replace(buildPageUrl('admin'));
+        if (role !== 'maestro') return goLogin();
+
+        SESSION = user;
+        document.getElementById('teacherName').textContent = user.nombre || user.usuario || 'Docente';
+        document.getElementById('teacherRole').textContent = role || 'maestro';
+        document.getElementById('teacherAvatar').textContent = String((user.nombre || user.usuario || 'M')).trim().charAt(0).toUpperCase();
+        loadPanel(token);
+      })
+      .withFailureHandler(function() {
+        setOverlay(false);
+        goLogin();
+      })
+      .mdjGetSession(token);
+  }
+
+  function loadPanel(token) {
+    setOverlay(true, 'Cargando panel', 'Preparando grados, años y bimestres...');
+    setStatus('Cargando panel...', '');
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        setOverlay(false);
+        if (!response || !response.ok) {
+          setStatus((response && response.message) || 'No fue posible cargar el panel.', 'error');
+          return;
+        }
+
+        PANEL = response;
+        ALL_BOOKS = Array.isArray(response.libros) ? response.libros : [];
+
+        renderBooks(ALL_BOOKS);
+        fillYearSelect(response.years || []);
+        fillBookSelect(ALL_BOOKS);
+        fillBimestreSelect(response.bimestres || []);
+
+        document.getElementById('statBooks').textContent = ALL_BOOKS.length;
+        document.getElementById('statYears').textContent = (response.years || []).length;
+
+        setStatus('Panel listo.', 'success');
+      })
+      .withFailureHandler(function(error) {
+        setOverlay(false);
+        setStatus(error && error.message ? error.message : 'Error al cargar el panel.', 'error');
+      })
+      .mdjGetTeacherOpenPanelData(token);
+  }
+
+  function reloadTeacherPanel() {
+    const token = localStorage.getItem('mdj_token');
+    if (!token) return goLogin();
+    loadPanel(token);
+  }
+
+  function renderBooks(books) {
+    const box = document.getElementById('bookList');
+    if (!books.length) {
+      box.innerHTML = '<div class="empty">No hay grados configurados.</div>';
+      return;
+    }
+
+    box.innerHTML = books.map(function(book) {
+      return `
+        <div class="list-item">
+          <h4>${escapeHtml(book.nombre || '')}</h4>
+          <p>${escapeHtml(book.programa || '')} · ${escapeHtml(book.nivel || '')}</p>
+          <p style="margin-top:6px;"><span class="badge">Año: ${escapeHtml(book.academicYear || '')}</span></p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function fillYearSelect(years) {
+    const el = document.getElementById('yearSelect');
+    el.innerHTML = '<option value="">Selecciona</option>' + years.map(function(y) {
+      return '<option value="' + escapeHtml(y) + '">' + escapeHtml(y) + '</option>';
+    }).join('');
+  }
+
+  function fillBookSelect(books) {
+    const el = document.getElementById('bookSelect');
+    el.innerHTML = '<option value="">Selecciona</option>' + books.map(function(book) {
+      return '<option value="' + escapeHtml(book.key) + '">' + escapeHtml(book.nombre) + '</option>';
+    }).join('');
+  }
+
+  function fillBimestreSelect(items) {
+    const el = document.getElementById('bimestreSelect');
+    el.innerHTML = '<option value="">Selecciona</option>' + items.map(function(item) {
+      return '<option value="' + escapeHtml(item) + '">' + escapeHtml(item) + '</option>';
+    }).join('');
+  }
+
+  document.getElementById('yearSelect').addEventListener('change', function() {
+    const year = String(this.value || '');
+    const filtered = !year ? ALL_BOOKS : ALL_BOOKS.filter(function(book) {
+      return String(book.academicYear || '') === year;
+    });
+    fillBookSelect(filtered);
+    document.getElementById('courseSelect').innerHTML = '<option value="">Selecciona</option>';
+    paintInfo();
+  });
+
+  document.getElementById('bookSelect').addEventListener('change', paintInfo);
+  document.getElementById('bimestreSelect').addEventListener('change', paintInfo);
+  document.getElementById('courseSelect').addEventListener('change', paintInfo);
+
+  function paintInfo() {
+    const year = document.getElementById('yearSelect').value || '-';
+    const bookKey = document.getElementById('bookSelect').value || '';
+    const course = document.getElementById('courseSelect').value || '-';
+    const bimestre = document.getElementById('bimestreSelect').value || '-';
+
+    const book = ALL_BOOKS.find(function(item) { return item.key === bookKey; });
+
+    document.getElementById('infoYear').textContent = year;
+    document.getElementById('infoBook').textContent = book ? (book.nombre || '-') : '-';
+    document.getElementById('infoCourse').textContent = course;
+    document.getElementById('infoBimestre').textContent = bimestre;
+  }
+
+  function loadCourses() {
+    const token = localStorage.getItem('mdj_token');
+    if (!token) return goLogin();
+
+    const bookKey = document.getElementById('bookSelect').value;
+    const bimestre = document.getElementById('bimestreSelect').value;
+
+    if (!bookKey || !bimestre) {
+      setStatus('Selecciona grado y bimestre.', 'error');
+      return;
+    }
+
+    setOverlay(true, 'Buscando cursos', 'Leyendo cursos del grado seleccionado...');
+    setStatus('Cargando cursos...', '');
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        setOverlay(false);
+        if (!response || !response.ok) {
+          setStatus((response && response.message) || 'No fue posible cargar cursos.', 'error');
+          return;
+        }
+
+        const cursos = Array.isArray(response.cursos) ? response.cursos : [];
+        const courseSelect = document.getElementById('courseSelect');
+        courseSelect.innerHTML = '<option value="">Selecciona</option>' + cursos.map(function(c) {
+          return '<option value="' + escapeHtml(c.name) + '">' + escapeHtml(c.name) + '</option>';
+        }).join('');
+
+        setStatus(cursos.length ? 'Cursos cargados.' : 'No se detectaron cursos.', cursos.length ? 'success' : 'error');
+      })
+      .withFailureHandler(function(error) {
+        setOverlay(false);
+        setStatus(error && error.message ? error.message : 'Error al cargar cursos.', 'error');
+      })
+      .mdjGetTeacherOpenCourses(token, bookKey, bimestre);
+  }
+
+  function loadStudents() {
+    const token = localStorage.getItem('mdj_token');
+    if (!token) return goLogin();
+
+    const bookKey = document.getElementById('bookSelect').value;
+    const bimestre = document.getElementById('bimestreSelect').value;
+    const curso = document.getElementById('courseSelect').value;
+
+    if (!bookKey || !bimestre || !curso) {
+      setStatus('Selecciona grado, bimestre y curso.', 'error');
+      return;
+    }
+
+    paintInfo();
+    setOverlay(true, 'Abriendo registro', 'Consultando estudiantes y notas...');
+    setStatus('Cargando registro...', '');
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        setOverlay(false);
+        if (!response || !response.ok) {
+          setStatus((response && response.message) || 'No fue posible abrir el registro.', 'error');
+          return;
+        }
+
+        CURRENT_ROWS = Array.isArray(response.alumnos) ? response.alumnos : [];
+        renderTable(CURRENT_ROWS);
+        setStatus('Registro cargado correctamente.', 'success');
+      })
+      .withFailureHandler(function(error) {
+        setOverlay(false);
+        setStatus(error && error.message ? error.message : 'Error al cargar el registro.', 'error');
+      })
+      .mdjGetTeacherOpenCourseStudents(token, bookKey, bimestre, curso);
+  }
+
+  function renderTable(rows) {
+    const wrap = document.getElementById('tableContainer');
+    if (!rows || !rows.length) {
+      wrap.className = 'empty';
+      wrap.innerHTML = 'No se encontraron estudiantes para este curso.';
+      return;
+    }
+
+    wrap.className = 'table-wrap';
+    wrap.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Estudiante</th>
+            <th>A1</th>
+            <th>A2</th>
+            <th>A3</th>
+            <th>A4</th>
+            <th>A5</th>
+            <th>A6</th>
+            <th>AP. OBJ.</th>
+            <th>EV. BIM.</th>
+            <th>EV. REM.</th>
+            <th>NOTA</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(function(item, index) {
+            return `
+              <tr data-index="${index}">
+                <td>${escapeHtml(item.numero || '')}</td>
+                <td>${escapeHtml(item.nombre || '')}</td>
+                <td><input class="small-input" data-field="a1" value="${escapeHtml(item.a1 || '')}"></td>
+                <td><input class="small-input" data-field="a2" value="${escapeHtml(item.a2 || '')}"></td>
+                <td><input class="small-input" data-field="a3" value="${escapeHtml(item.a3 || '')}"></td>
+                <td><input class="small-input" data-field="a4" value="${escapeHtml(item.a4 || '')}"></td>
+                <td><input class="small-input" data-field="a5" value="${escapeHtml(item.a5 || '')}"></td>
+                <td><input class="small-input" data-field="a6" value="${escapeHtml(item.a6 || '')}"></td>
+                <td><input class="small-input" data-field="apObjetiva" value="${escapeHtml(item.apObjetiva || '')}"></td>
+                <td><input class="small-input" data-field="evBimestral" value="${escapeHtml(item.evBimestral || '')}"></td>
+                <td><input class="small-input" data-field="evRemedial" value="${escapeHtml(item.evRemedial || '')}"></td>
+                <td class="note-total">${escapeHtml(item.notaBimestral || '')}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function collectRows() {
+    return Array.from(document.querySelectorAll('#tableContainer tbody tr')).map(function(tr, index) {
+      const base = CURRENT_ROWS[index] || {};
+      return {
+        rowNumber: Number(base.rowNumber || 0),
+        numero: base.numero || '',
+        nombre: base.nombre || '',
+        a1: tr.querySelector('[data-field="a1"]').value,
+        a2: tr.querySelector('[data-field="a2"]').value,
+        a3: tr.querySelector('[data-field="a3"]').value,
+        a4: tr.querySelector('[data-field="a4"]').value,
+        a5: tr.querySelector('[data-field="a5"]').value,
+        a6: tr.querySelector('[data-field="a6"]').value,
+        apObjetiva: tr.querySelector('[data-field="apObjetiva"]').value,
+        evBimestral: tr.querySelector('[data-field="evBimestral"]').value,
+        evRemedial: tr.querySelector('[data-field="evRemedial"]').value
+      };
+    });
+  }
+
+  function saveGrades() {
+    const token = localStorage.getItem('mdj_token');
+    if (!token) return goLogin();
+
+    const libroKey = document.getElementById('bookSelect').value;
+    const bimestre = document.getElementById('bimestreSelect').value;
+    const curso = document.getElementById('courseSelect').value;
+
+    if (!libroKey || !bimestre || !curso) {
+      setStatus('Selecciona grado, bimestre y curso.', 'error');
+      return;
+    }
+
+    const alumnos = collectRows();
+    if (!alumnos.length) {
+      setStatus('No hay alumnos cargados para guardar.', 'error');
+      return;
+    }
+
+    setOverlay(true, 'Guardando notas', 'Actualizando calificaciones...');
+    setStatus('Guardando notas...', '');
+
+    google.script.run
+      .withSuccessHandler(function(response) {
+        setOverlay(false);
+        if (!response || !response.ok) {
+          setStatus((response && response.message) || 'No fue posible guardar las notas.', 'error');
+          return;
+        }
+        setStatus((response && response.message) || 'Notas guardadas correctamente.', 'success');
+        loadStudents();
+      })
+      .withFailureHandler(function(error) {
+        setOverlay(false);
+        setStatus(error && error.message ? error.message : 'Error al guardar notas.', 'error');
+      })
+      .mdjSaveTeacherOpenCourseGrades(token, {
+        libroKey: libroKey,
+        bimestre: bimestre,
+        curso: curso,
+        alumnos: alumnos
+      });
+  }
+
+  requireSession();
+</script>
+</body>
+</html>

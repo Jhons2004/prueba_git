@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administrativo - <?= app.nombre ?></title>
+  <style>
+    :root{
+      --bg:#f4f8fc; --card:#ffffff;
+      --primary:#0f4c81; --primary2:#1f6fb2;
+      --accent:#f4b400; --text:#1d2b3a; --muted:#66788f;
+      --border:#dbe7f3; --success:#17835f; --danger:#d64545;
+      --shadow:0 24px 60px rgba(15,76,129,.14); --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,Arial,sans-serif;
+      background:linear-gradient(180deg,#edf4fb 0%,#f8fbfe 100%);color:var(--text);}
+    .shell{min-height:100vh;padding:22px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.88);
+      border:1px solid rgba(219,231,243,.95);border-radius:24px;box-shadow:var(--shadow);padding:14px 18px}
+    .brand-media{width:70px;height:70px;display:grid;place-items:center;flex:0 0 70px}
+    .brand-logo{width:70px;height:70px;object-fit:contain;border-radius:18px;background:#fff;
+      border:1px solid rgba(219,231,243,.95);padding:6px;box-shadow:0 14px 32px rgba(15,76,129,.12)}
+    .brand-logo-fallback{width:70px;height:70px;border-radius:18px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#fff;font-weight:900;font-size:1.1rem;box-shadow:0 14px 32px rgba(15,76,129,.18)}
+    .brand h1{margin:0;font-size:1.42rem;line-height:1.1}
+    .brand p{margin:5px 0 0;color:var(--muted);font-size:.95rem}
+    .chip{display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;
+      color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));
+      font-weight:800;box-shadow:0 14px 30px rgba(15,76,129,.18)}
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:20px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:22px}
+    .section-title{margin:0 0 6px;text-transform:uppercase;letter-spacing:.08em;
+      color:var(--muted);font-size:.86rem;font-weight:800}
+    .helper{margin:0;color:var(--muted);line-height:1.55;font-size:.93rem}
+    .user-box{margin-top:16px;padding:12px 14px;border:1px solid var(--border);border-radius:18px;background:#fbfdff}
+    .user-box strong{display:block}
+    .user-box span{color:var(--muted);font-size:.92rem}
+    .metrics{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .metric{padding:14px;border-radius:18px;background:linear-gradient(180deg,#f9fcff 0%,#eef5fb 100%);border:1px solid var(--border)}
+    .metric small{display:block;color:var(--muted)}
+    .metric strong{display:block;font-size:1.45rem;margin-top:6px}
+    .list{display:grid;gap:12px;max-height:360px;overflow:auto;padding-right:4px}
+    .list-item{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fbfdff}
+    .list-item h4{margin:0 0 6px;font-size:1rem}
+    .list-item p{margin:0;color:var(--muted);font-size:.9rem}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    button{border:0;border-radius:14px;padding:12px 16px;cursor:pointer;font-weight:800;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#fff;box-shadow:0 16px 30px rgba(15,76,129,.16)}
+    button.secondary{background:#fff;color:var(--primary);border:1px solid #cfe0ef;box-shadow:none}
+    button.success{background:linear-gradient(135deg,#10815f,#1aa378)}
+    button.warning{background:linear-gradient(135deg,#b7791f,#d69e2e)}
+    button.danger{background:linear-gradient(135deg,#b02a2a,#d64545)}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .tab-btn.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:0}
+    .tab-btn{background:#fff;color:var(--primary);border:1px solid #cfe0ef;box-shadow:none}
+    .toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .toolbar-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .toolbar-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    label{display:block;margin-bottom:8px;font-size:.86rem;font-weight:800;color:var(--muted)}
+    select,input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid #cedbea;
+      outline:none;font-size:.95rem;background:#fff}
+    select:focus,input:focus{border-color:var(--primary2);box-shadow:0 0 0 4px rgba(31,111,178,.12)}
+    .status{min-height:24px;margin-top:10px;font-size:.93rem;font-weight:700}
+    .status.error{color:var(--danger)}
+    .status.success{color:var(--success)}
+    .empty{padding:30px;text-align:center;border-radius:18px;border:1px dashed #c5d8ea;color:var(--muted);background:#fbfdff}
+    .table-wrap{max-height:65vh;overflow:auto;border:1px solid var(--border);border-radius:18px;background:#fff}
+    table{width:100%;border-collapse:collapse;font-size:.92rem}
+    th,td{padding:10px;border-bottom:1px solid #e6eef7;text-align:left;vertical-align:middle}
+    thead th{position:sticky;top:0;z-index:2;background:#eef5fb;color:#47607b;text-transform:uppercase;font-size:.82rem}
+    tbody tr:hover{background:#f9fcff}
+    .small-input{min-width:66px;padding:7px 8px;font-size:.86rem;border-radius:10px;border:1px solid #d3dfeb}
+    .note-total{font-weight:800;color:var(--primary)}
+    .pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef5fb;color:var(--primary);font-size:.8rem;font-weight:800}
+    .view{display:none}.view.active{display:block}
+    /* modals */
+    .modal{position:fixed;inset:0;background:rgba(17,32,51,.56);display:none;place-items:center;padding:20px;z-index:999}
+    .modal.show{display:grid}
+    .modal-content{width:min(1100px,96vw);max-height:90vh;overflow:auto;background:#fff;
+      border-radius:24px;border:1px solid var(--border);box-shadow:var(--shadow);padding:24px}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+    .modal-head h3{margin:0}
+    .subtitle{color:var(--muted);font-size:.95rem}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .summary-card{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fbfdff}
+    .boleta-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:14px;
+      border:1px solid var(--border);border-radius:16px;background:#fbfdff}
+    .boleta-logo{width:74px;height:74px;object-fit:contain;border-radius:14px;background:#fff;
+      border:1px solid var(--border);padding:6px}
+    .boleta-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .boleta-meta .summary-card strong{display:block;margin-bottom:4px}
+    .console{margin-top:14px;padding:12px;border-radius:14px;background:#0f172a;color:#d8e4f0;
+      font-family:Consolas,monospace;font-size:.8rem;max-height:190px;overflow:auto;white-space:pre-wrap}
+    /* busy */
+    .busy-backdrop{position:fixed;inset:0;background:rgba(10,24,41,.58);backdrop-filter:blur(2px);
+      display:none;align-items:center;justify-content:center;z-index:5000}
+    .busy-backdrop.show{display:flex}
+    .busy-card{width:min(520px,92vw);background:#fff;border-radius:24px;border:1px solid var(--border);
+      box-shadow:var(--shadow);padding:26px;text-align:center}
+    .busy-spinner{width:56px;height:56px;margin:0 auto 16px;border-radius:50%;
+      border:5px solid #d9e7f4;border-top-color:var(--primary2);animation:spin 1s linear infinite}
+    .busy-title{font-size:1.1rem;font-weight:800;color:var(--primary);margin-bottom:8px}
+    .busy-text{color:var(--muted);line-height:1.5}
+    .link-card{margin-top:14px;padding:16px;border-radius:16px;border:1px solid var(--border);background:#f8fbff}
+    .link-card a{color:var(--primary2);font-weight:800;text-decoration:none}
+    .link-card a:hover{text-decoration:underline}
+
+    /* ══ MÓDULO ALUMNOS ══ */
+    .ag-add-panel{display:flex;gap:10px;align-items:flex-end;padding:16px;border-radius:18px;
+      border:2px dashed #b8d4ed;background:linear-gradient(135deg,#f0f7ff,#e8f2fb);margin-bottom:14px}
+    .ag-add-panel .field{flex:1}
+    .ag-add-panel .field label{font-size:.82rem;font-weight:800;color:var(--muted);margin-bottom:6px;display:block}
+    .ag-add-panel input{padding:11px 13px;border-radius:12px;border:1px solid #cedbea;font-size:.93rem;background:#fff;width:100%}
+    .ag-add-panel button{white-space:nowrap;flex-shrink:0}
+    .alumnos-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .stat-card{padding:13px 14px;border-radius:16px;border:1px solid var(--border);
+      background:linear-gradient(180deg,#f9fcff 0%,#eef5fb 100%)}
+    .stat-card small{display:block;color:var(--muted);font-size:.78rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.06em}
+    .stat-card strong{display:block;font-size:1.4rem;margin-top:3px;color:var(--primary)}
+    .save-all-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-bottom:14px;padding:13px 16px;border-radius:16px;border:1px solid var(--border);background:#fbfdff}
+    .save-all-bar .info{font-size:.9rem;color:var(--muted)}
+    .save-all-bar .info strong{color:var(--text)}
+    .save-all-bar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .changes-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;
+      background:#fff8e1;color:#b7791f;font-size:.82rem;font-weight:800;border:1px solid #f0d080}
+    .changes-badge.hidden{display:none}
+    .search-bar{position:relative;margin-bottom:14px}
+    .search-bar input{padding-left:38px;border-radius:14px}
+    .search-bar::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none}
+    .alumnos-table-wrap{max-height:52vh;overflow:auto;border:1px solid var(--border);border-radius:18px;background:#fff}
+    .alumno-row-num{display:inline-flex;align-items:center;justify-content:center;
+      width:28px;height:28px;border-radius:8px;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:.8rem;font-weight:800}
+    .alumno-name-input{width:100%;padding:8px 10px;border-radius:10px;border:1px solid #d3dfeb;
+      font-size:.92rem;background:#fff;transition:border-color .18s,box-shadow .18s}
+    .alumno-name-input:focus{border-color:var(--primary2);box-shadow:0 0 0 3px rgba(31,111,178,.12);outline:none}
+    .alumno-name-input.modified{border-color:#d69e2e;background:#fffdf3}
+    .alumno-name-input.saved{border-color:var(--success);background:#f0faf6}
+    .row-actions{display:flex;gap:6px;align-items:center}
+    .btn-save-row{padding:6px 11px;border-radius:9px;font-size:.79rem;font-weight:800;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:0;cursor:pointer;
+      opacity:0;pointer-events:none;transition:opacity .18s}
+    .btn-save-row.visible{opacity:1;pointer-events:auto}
+    .btn-del-row{padding:6px 11px;border-radius:9px;font-size:.79rem;font-weight:800;
+      background:linear-gradient(135deg,#b02a2a,#d64545);color:#fff;border:0;cursor:pointer}
+    .btn-del-row:hover{opacity:.85}
+    tr.ag-new-row td{background:#f0fff8}
+    tr.ag-new-row .alumno-name-input{border-color:var(--success)}
+    /* confirm modal */
+    .confirm-modal{position:fixed;inset:0;background:rgba(17,32,51,.6);display:none;place-items:center;z-index:9999;padding:20px}
+    .confirm-modal.show{display:grid}
+    .confirm-box{background:#fff;border-radius:22px;border:1px solid var(--border);
+      box-shadow:var(--shadow);padding:28px;width:min(440px,96vw);text-align:center}
+    .confirm-box h3{margin:0 0 10px;color:var(--danger)}
+    .confirm-box p{margin:0 0 20px;color:var(--muted);line-height:1.6}
+    .confirm-box .actions{justify-content:center}
+    /* asistencia */
+    .mdj-asis-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+      background:rgba(17,32,51,.62);z-index:99999;padding:18px}
+    .mdj-asis-modal.show{display:flex}
+    .mdj-asis-box{width:min(1500px,98vw);height:min(900px,94vh);background:#fff;border-radius:24px;
+      overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.28);display:flex;flex-direction:column;border:1px solid var(--border)}
+    .mdj-asis-head{height:58px;padding:12px 16px;background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .mdj-asis-head button{width:auto;min-width:auto;background:#fff;color:var(--primary);border:0;
+      border-radius:12px;padding:9px 14px;font-weight:800;cursor:pointer;box-shadow:none}
+    #mdjAsisIframe{width:100%;height:100%;border:0;background:#fff}
+
+
+    /* ══ MÓDULO CONSOLIDADOS ══ */
+    .consol-period-select{font-weight:700}
+    .consol-preview-shell{border:1px solid var(--border);border-radius:20px;background:#fff;overflow:hidden;box-shadow:var(--shadow)}
+    .consol-preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;
+      background:linear-gradient(180deg,#f9fcff 0%,#eef5fb 100%);border-bottom:1px solid var(--border)}
+    .consol-preview-head h3{margin:0;color:var(--primary);font-size:1rem}
+    .consol-preview-head p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+    .consol-preview-frame{width:100%;height:72vh;border:0;background:#fff}
+    .consol-meta-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .consol-meta-card{padding:14px;border-radius:16px;border:1px solid var(--border);
+      background:linear-gradient(180deg,#f9fcff 0%,#eef5fb 100%)}
+    .consol-meta-card small{display:block;color:var(--muted);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+    .consol-meta-card strong{display:block;margin-top:5px;color:var(--primary);font-size:1.05rem}
+    .consol-stack{display:grid;gap:14px}
+    .consol-grid-2{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
+    .consol-card{background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:18px}
+    .consol-card h3{margin:0 0 6px;color:var(--primary)}
+    .consol-card p{margin:0;color:var(--muted);font-size:.92rem}
+    .consol-bitacora{margin-top:12px;padding:14px;border-radius:16px;background:#0f172a;color:#d8e4f0;
+      font-family:Consolas,monospace;font-size:.82rem;max-height:280px;overflow:auto;white-space:pre-wrap}
+    .consol-files{display:grid;gap:10px;margin-top:12px;max-height:420px;overflow:auto;padding-right:4px}
+    .consol-file-item{border:1px solid var(--border);border-radius:16px;padding:14px;background:#fbfdff;
+      display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .consol-file-item h4{margin:0 0 5px;font-size:.96rem;color:var(--text)}
+    .consol-file-item p{margin:0;font-size:.84rem;color:var(--muted);line-height:1.45}
+    .consol-file-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .mini-btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border-radius:10px;
+      text-decoration:none;font-weight:800;font-size:.82rem;border:1px solid #cfe0ef;background:#fff;color:var(--primary)}
+    .mini-btn:hover{text-decoration:none;opacity:.9}
+    .consol-result-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .consol-badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#eef5fb;color:var(--primary);font-size:.8rem;font-weight:800}
+
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .anim-in{animation:fadeUp .22s ease both}
+
+    @media(max-width:1100px){
+      .layout{grid-template-columns:1fr}
+      .toolbar,.toolbar-3,.boleta-meta,.summary-grid,.metrics,.alumnos-stats{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:760px){
+      .shell{padding:14px}
+      .topbar{flex-direction:column;align-items:stretch}
+      .toolbar,.toolbar-3,.summary-grid,.metrics,.boleta-meta,.alumnos-stats{grid-template-columns:1fr}
+      .actions button{width:100%}
+      .boleta-head,.ag-add-panel{flex-direction:column;align-items:stretch}
+      .save-all-bar{flex-direction:column;align-items:stretch}
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-media">
+        <img
+          class="brand-logo"
+          id="brandLogo"
+          src=""
+          alt="Logo <?= app.nombre ?>"
+          onerror="this.style.display='none';var fb=document.getElementById('brandLogoFallback');if(fb){fb.style.display='grid';}">
+        <div class="brand-logo-fallback" id="brandLogoFallback" style="display:none">MDJ</div>
+      </div>
+      <div>
+        <h1><?= app.nombre ?></h1>
+        <p>Panel administrativo · cursos, finales, boletas y gestión de alumnos.</p>
+      </div>
+    </div>
+    <div class="chip">Modo administración</div>
+  </div>
+
+  <div class="layout">
+    <aside class="card">
+      <p class="section-title">Panel administrativo</p>
+      <h2 style="margin:0 0 8px">Gestión académica</h2>
+      <p class="helper">Consulta cursos, revisa notas finales, genera boletas y administra el padrón de alumnos.</p>
+      <div class="user-box">
+        <strong id="userName">Administrador</strong>
+        <span id="userRole">admin</span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><small>Libros detectados</small><strong id="metricBooks">0</strong></div>
+        <div class="metric"><small>Cursos visibles</small><strong id="metricCourses">0</strong></div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="actions">
+        <button class="secondary" onclick="abrirModuloAsistencia('asistencia-admin')">Asistencia admin</button>
+        <button class="secondary" onclick="goLogin()">Cerrar sesión</button>
+      </div>
+      <div style="height:16px"></div>
+      <p class="section-title">Libros</p>
+      <div class="list" id="bookList"><div class="empty">Cargando libros...</div></div>
+      <div class="console" id="consoleBox"></div>
+    </aside>
+
+    <main class="card">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-curso"   onclick="showView('curso')">Consulta por curso</button>
+        <button class="tab-btn"        id="tab-finales" onclick="showView('finales')">Notas finales</button>
+        <button class="tab-btn"        id="tab-boletas" onclick="showView('boletas')">Boletas</button>
+        <button class="tab-btn"        id="tab-consolidados" onclick="showView('consolidados')">Consolidados</button>
+        <button class="tab-btn"        id="tab-alumnos" onclick="showView('alumnos')">Gestión alumnos</button>
+      </div>
+      <div class="status" id="status"></div>
+
+      <!-- TAB CURSOS -->
+      <section class="view active" id="view-curso">
+        <div class="toolbar">
+          <div><label>Libro / grado</label><select id="libroSelectCurso"></select></div>
+          <div><label>Bimestre</label><select id="bimestreSelectCurso"></select></div>
+          <div><label>Curso</label><select id="cursoSelectCurso"></select></div>
+          <div><label>Acción</label><button onclick="loadStudentsCurso()">Cargar estudiantes</button></div>
+        </div>
+        <div class="actions" style="margin-bottom:14px">
+          <button class="secondary" onclick="createFoldersForBook()">Crear carpetas</button>
+          <button class="success"   onclick="generateAllBoletasForBook()">Generar boletas del libro</button>
+          <button onclick="saveGradesCurso()">Guardar notas</button>
+        </div>
+        <div id="tableContainerCurso" class="empty">Selecciona libro, bimestre y curso para ver estudiantes.</div>
+      </section>
+
+      <!-- TAB FINALES -->
+      <section class="view" id="view-finales">
+        <div class="toolbar-3">
+          <div><label>Libro / grado</label><select id="libroSelectFinales"></select></div>
+          <div><label>Estudiante</label><select id="studentSelectFinales"></select></div>
+          <div><label>Acción</label><button onclick="loadFinalSummary()">Ver finales</button></div>
+        </div>
+        <div id="finalSummaryContainer" class="empty">Selecciona libro y estudiante para ver notas finales.</div>
+      </section>
+
+      <!-- TAB BOLETAS -->
+      <section class="view" id="view-boletas">
+        <div class="toolbar">
+          <div><label>Libro / grado</label><select id="libroSelectBoleta"></select></div>
+          <div><label>Estudiante</label><select id="studentSelectBoleta"></select></div>
+          <div>
+            <label>Boleta acumulada</label>
+            <select id="boletaTipoSelect">
+              <option value="">Selecciona</option>
+              <option value="B1">Solo I Bimestre</option>
+              <option value="B12">I y II Bimestre</option>
+              <option value="B123">I, II y III Bimestre</option>
+              <option value="FINAL">I a IV + Final</option>
+            </select>
+          </div>
+          <div><label>Acción</label><button onclick="previewBoleta()">Ver boleta</button></div>
+        </div>
+        <div class="actions" style="margin-bottom:14px">
+          <button class="success" onclick="savePreviewBoletaPdf()">Guardar PDF de la boleta</button>
+          <button class="warning" onclick="generateMassiveBoletas()">Generar boletas masivas del grado</button>
+        </div>
+        <div id="massiveResultContainer"></div>
+        <div id="boletaPreviewContainer" class="empty">Selecciona grado, estudiante y alcance para previsualizar.</div>
+      </section>
+
+
+      <!-- TAB CONSOLIDADOS -->
+      <section class="view" id="view-consolidados">
+        <div class="toolbar-3">
+          <div><label>Libro / grado</label><select id="libroSelectConsolidado"></select></div>
+          <div>
+            <label>Período</label>
+            <select id="periodoSelectConsolidado" class="consol-period-select">
+              <option value="">Selecciona</option>
+            </select>
+          </div>
+          <div><label>Vista previa</label><button onclick="previewConsolidado()">Generar vista previa</button></div>
+        </div>
+
+        <div class="actions" style="margin-bottom:14px">
+          <button class="success" onclick="generateConsolidadoPdf()">Guardar PDF del consolidado</button>
+          <button class="warning" onclick="generateAllConsolidadosPdf()">Generar todos los períodos</button>
+          <button class="secondary" onclick="openConsolidadosFolder()">Abrir carpeta</button>
+          <button class="secondary" onclick="loadConsolidadosList()">Ver ya generados</button>
+          <button class="secondary" onclick="runConsolidadosDiagnostico()">Diagnóstico</button>
+        </div>
+
+        <div id="consolidadoMetaContainer" class="empty">Selecciona grado y período para construir la vista previa del consolidado general.</div>
+
+        <div id="consolidadoPreviewContainer" class="empty" style="margin-top:14px">
+          La vista previa del consolidado aparecerá aquí con todos los estudiantes y todas las materias.
+        </div>
+
+        <div class="consol-grid-2">
+          <div class="consol-card">
+            <h3>Bitácora y resultado</h3>
+            <p>Resumen de generación, carpeta destino y evidencias del proceso.</p>
+            <div id="consolidadoBitacoraContainer" class="consol-bitacora">Sin actividad todavía.</div>
+          </div>
+          <div class="consol-card">
+            <h3>PDF ya generados</h3>
+            <p>Listado de consolidados guardados para el grado seleccionado.</p>
+            <div id="consolidadoFilesContainer" class="empty" style="margin-top:12px">Selecciona un grado y pulsa <strong>Ver ya generados</strong>.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB GESTIÓN ALUMNOS -->
+      <section class="view" id="view-alumnos">
+        <div class="toolbar-2">
+          <div>
+            <label>Libro / grado</label>
+            <select id="libroSelectAlumnos" onchange="onLibroAlumnosChange()">
+              <option value="">Selecciona un grado</option>
+            </select>
+          </div>
+          <div><label>Acción</label><button onclick="loadAlumnosGestion()">Cargar alumnos</button></div>
+        </div>
+
+        <!-- Panel agregar alumno -->
+        <div class="ag-add-panel anim-in" id="ag-add-panel" style="display:none">
+          <div class="field">
+            <label>Número / código</label>
+            <input type="text" id="ag-new-numero" placeholder="Ej: 15" maxlength="10">
+          </div>
+          <div class="field" style="flex:3">
+            <label>Nombre completo del nuevo alumno</label>
+            <input type="text" id="ag-new-nombre" placeholder="Apellidos y nombre…" maxlength="120"
+                   onkeydown="if(event.key==='Enter') addAlumnoGestion()">
+          </div>
+          <button class="success" onclick="addAlumnoGestion()">+ Agregar alumno</button>
+        </div>
+
+        <div id="alumnosGestionWrapper">
+          <div class="empty">Selecciona un grado y pulsa <strong>Cargar alumnos</strong> para gestionar el padrón.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Modal boleta -->
+<div class="modal" id="boletaModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <div>
+        <h3 id="boletaModalTitle">Boleta</h3>
+        <div class="subtitle" id="boletaModalSubtitle">Detalle del estudiante</div>
+      </div>
+      <div class="actions">
+        <button class="secondary" onclick="closeBoletaModal()">Cerrar</button>
+        <button onclick="window.print()">Imprimir</button>
+      </div>
+    </div>
+    <div id="boletaModalBody"></div>
+  </div>
+</div>
+
+<!-- Modal confirmación eliminar -->
+<div class="confirm-modal" id="confirmDeleteModal">
+  <div class="confirm-box">
+    <h3>⚠ Eliminar alumno</h3>
+    <p id="confirmDeleteText">¿Seguro que deseas eliminar este alumno?</p>
+    <div class="actions">
+      <button class="danger"    onclick="confirmDeleteAlumno()">Sí, eliminar</button>
+      <button class="secondary" onclick="closeConfirmDelete()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Busy -->
+<div class="busy-backdrop" id="busyBackdrop">
+  <div class="busy-card">
+    <div class="busy-spinner"></div>
+    <div class="busy-title" id="busyTitle">Procesando</div>
+    <div class="busy-text"  id="busyText">Espera un momento…</div>
+  </div>
+</div>
+
+<script>
+  const WEB_APP_URL   = <?= JSON.stringify(webAppUrl || '') ?> || window.location.href.split('?')[0];
+  const LOGO_DATA_URI = <?!= JSON.stringify(logoDataUri || '') ?>;
+
+  /* ── ESTADO GLOBAL ── */
+  let SESSION = null, BOOTSTRAP = null;
+  let CURRENT_ROWS_CURSO = [], CURRENT_FINAL_SUMMARY = null, CURRENT_BOLETA_DATA = null;
+  let CURRENT_CONSOLIDADO_PREVIEW = null, CURRENT_CONSOLIDADOS_LIST = [];
+  // Gestión alumnos
+  let AG_ROWS  = [];   // [{rowNumber, numero, nombre}]
+  let AG_DIRTY = {};   // {rowNumber: nuevoNombre}
+  let AG_LIBRO = '';
+  let AG_PENDING_DELETE = null; // rowNumber pendiente de confirmar
+
+  /* ── UTILS ── */
+  function log(lv, msg, extra) {
+    const box = document.getElementById('consoleBox');
+    box.textContent += (box.textContent?'\n':'')+`[${new Date().toLocaleTimeString()}] [${lv.toUpperCase()}] ${msg}`+(extra?' | '+JSON.stringify(extra):'');
+    box.scrollTop = box.scrollHeight;
+  }
+  function showBusy(t,tx){ document.getElementById('busyTitle').textContent=t||'Procesando'; document.getElementById('busyText').textContent=tx||'Espera…'; document.getElementById('busyBackdrop').classList.add('show'); }
+  function hideBusy(){ document.getElementById('busyBackdrop').classList.remove('show'); }
+  function setStatus(msg,type){ const el=document.getElementById('status'); el.textContent=msg||''; el.className='status '+(type||''); }
+  function escapeHtml(v){ return String(v==null?'':v).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'); }
+  function getToken(){ return localStorage.getItem('mdj_token')||''; }
+  function buildPageUrl(p){ return WEB_APP_URL+'?page='+encodeURIComponent(p); }
+  function clearLocalSession(){ localStorage.removeItem('mdj_token'); localStorage.removeItem('mdj_user'); }
+  function goLogin(){ clearLocalSession(); window.location.replace(buildPageUrl('login')); }
+  function getUserPayload(r){ return r&&(r.user||r.usuario||r.sessionUser)||null; }
+  function getRolePayload(r){ const u=getUserPayload(r); return u&&u.rol?String(u.rol).toLowerCase():(r&&r.redirectPage?String(r.redirectPage).toLowerCase():''); }
+  function showView(v){
+    document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+    document.getElementById('view-'+v).classList.add('active');
+    document.getElementById('tab-'+v).classList.add('active');
+  }
+
+  /* ── SESIÓN / BOOTSTRAP ── */
+  function requireSession(){
+    const token=getToken(); if(!token){goLogin();return;}
+    showBusy('Validando sesión','Comprobando permisos…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        const user=getUserPayload(r),role=getRolePayload(r);
+        if(!r||!r.ok||!user){goLogin();return;}
+        if(role!=='admin'){window.location.replace(buildPageUrl(role==='maestro'?'maestro':'login'));return;}
+        SESSION=user;
+        document.getElementById('userName').textContent=user.nombre||user.usuario||'Administrador';
+        document.getElementById('userRole').textContent=role||'admin';
+        loadBootstrap(token);
+      })
+      .withFailureHandler(function(){hideBusy();goLogin();})
+      .mdjGetSession(token);
+  }
+
+  function loadBootstrap(token){
+    setStatus('Cargando libros académicos...','');
+    showBusy('Cargando panel','Leyendo grados, cursos y resumen general…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al cargar el panel.','error');return;}
+        BOOTSTRAP=r; renderBootstrap(r); setStatus('Panel listo.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error al cargar el panel.','error');})
+      .mdjGetAdminBootstrap(token);
+  }
+
+  function renderBootstrap(data){
+    const libros=Array.isArray(data.libros)?data.libros:[];
+    const bimestres=Array.isArray(data.bimestres)?data.bimestres:[];
+    document.getElementById('metricBooks').textContent=libros.length;
+    document.getElementById('metricCourses').textContent=libros.reduce((a,i)=>a+Number(i.totalCursos||0),0);
+    const bookList=document.getElementById('bookList');
+    bookList.innerHTML=libros.length?libros.map(l=>`<div class="list-item">
+      <h4>${escapeHtml(l.nombre)}</h4>
+      <p>${escapeHtml(l.programa||'')} · ${escapeHtml(l.nivel||'')}</p>
+      <p style="margin-top:8px"><span class="pill">Cursos: ${escapeHtml(l.totalCursos||0)}</span> <span class="pill">Alumnos: ${escapeHtml(l.totalAlumnos||0)}</span></p>
+      ${l.ok===false&&l.error?`<p style="margin-top:8px;color:#dc2626;font-size:12px">Error: ${escapeHtml(l.error)}</p>`:''}
+    </div>`).join(''):'<div class="empty">No se encontraron libros.</div>';
+    ['libroSelectCurso','libroSelectFinales','libroSelectBoleta','libroSelectConsolidado','libroSelectAlumnos'].forEach(id=>fillLibroSelect(id,libros));
+    fillBimestreSelect('bimestreSelectCurso',bimestres);
+    fillConsolidadoPeriodoSelect();
+  }
+
+  function fillLibroSelect(id,libros){
+    document.getElementById(id).innerHTML='<option value="">Selecciona</option>'+
+      libros.map(l=>`<option value="${escapeHtml(l.key)}">${escapeHtml(l.nombre)}</option>`).join('');
+  }
+  function fillBimestreSelect(id,bimestres){
+    document.getElementById(id).innerHTML='<option value="">Selecciona</option>'+
+      bimestres.map(b=>`<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+  }
+  function fillConsolidadoPeriodoSelect(){
+    const periodos=['I BIMESTRE','II BIMESTRE','III BIMESTRE','IV BIMESTRE','FINAL'];
+    const el=document.getElementById('periodoSelectConsolidado');
+    if(!el) return;
+    el.innerHTML='<option value="">Selecciona</option>'+
+      periodos.map(p=>`<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
+  }
+  function formatBytes(bytes){
+    const n=Number(bytes||0);
+    if(!n) return '0 B';
+    const units=['B','KB','MB','GB']; let i=0,val=n;
+    while(val>=1024&&i<units.length-1){val/=1024;i++;}
+    return `${val.toFixed(val>=10||i===0?0:1)} ${units[i]}`;
+  }
+  function formatDateTime(value){
+    if(!value) return '-';
+    const d=new Date(value);
+    return isNaN(d.getTime())?String(value):d.toLocaleString();
+  }
+
+  /* ── TAB CURSOS ── */
+  function loadCoursesCurso(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectCurso').value;
+    const bimestre=document.getElementById('bimestreSelectCurso').value;
+    const cs=document.getElementById('cursoSelectCurso');
+    cs.innerHTML='<option value="">Selecciona</option>';
+    CURRENT_ROWS_CURSO=[];
+    const tc=document.getElementById('tableContainerCurso'); tc.className='empty'; tc.innerHTML='Selecciona libro, bimestre y curso.';
+    if(!token||!libroKey||!bimestre)return;
+    showBusy('Cargando cursos','Buscando cursos disponibles…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        const cursos=Array.isArray(r.cursos)?r.cursos:[];
+        cs.innerHTML='<option value="">Selecciona</option>'+cursos.map(c=>`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGetCoursesByBook(token,libroKey,bimestre);
+  }
+
+  function loadStudentsCurso(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectCurso').value;
+    const bimestre=document.getElementById('bimestreSelectCurso').value,curso=document.getElementById('cursoSelectCurso').value;
+    if(!libroKey||!bimestre||!curso){setStatus('Selecciona libro, bimestre y curso.','error');return;}
+    showBusy('Cargando estudiantes','Leyendo alumnos y notas…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        CURRENT_ROWS_CURSO=Array.isArray(r.alumnos)?r.alumnos:[];
+        renderStudentsTableCurso(CURRENT_ROWS_CURSO);
+        setStatus('Estudiantes cargados.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGetCourseStudents(token,libroKey,bimestre,curso);
+  }
+
+  function renderStudentsTableCurso(rows){
+    const wrap=document.getElementById('tableContainerCurso');
+    if(!rows||!rows.length){wrap.className='empty';wrap.innerHTML='No se encontraron estudiantes.';return;}
+    wrap.className='table-wrap';
+    wrap.innerHTML=`<table><thead><tr>
+      <th>No.</th><th>Estudiante</th><th>A1</th><th>A2</th><th>A3</th><th>A4</th><th>A5</th><th>A6</th>
+      <th>AP. OBJ.</th><th>EV. BIM.</th><th>EV. REM.</th><th>NOTA</th>
+    </tr></thead><tbody>${rows.map((item,i)=>`
+      <tr data-row-index="${i}">
+        <td>${escapeHtml(item.numero||'')}</td><td>${escapeHtml(item.nombre||'')}</td>
+        <td><input class="small-input" data-field="a1"          value="${escapeHtml(item.a1         ||'')}"></td>
+        <td><input class="small-input" data-field="a2"          value="${escapeHtml(item.a2         ||'')}"></td>
+        <td><input class="small-input" data-field="a3"          value="${escapeHtml(item.a3         ||'')}"></td>
+        <td><input class="small-input" data-field="a4"          value="${escapeHtml(item.a4         ||'')}"></td>
+        <td><input class="small-input" data-field="a5"          value="${escapeHtml(item.a5         ||'')}"></td>
+        <td><input class="small-input" data-field="a6"          value="${escapeHtml(item.a6         ||'')}"></td>
+        <td><input class="small-input" data-field="apObjetiva"  value="${escapeHtml(item.apObjetiva ||'')}"></td>
+        <td><input class="small-input" data-field="evBimestral" value="${escapeHtml(item.evBimestral||'')}"></td>
+        <td><input class="small-input" data-field="evRemedial"  value="${escapeHtml(item.evRemedial ||'')}"></td>
+        <td class="note-total">${escapeHtml(item.notaBimestral||'')}</td>
+      </tr>`).join('')}</tbody></table>`;
+  }
+
+  function collectRowsFromCursoTable(){
+    return Array.from(document.querySelectorAll('#tableContainerCurso tbody tr')).map(function(tr,i){
+      const base=CURRENT_ROWS_CURSO[i]||{};
+      return{rowNumber:Number(base.rowNumber||0),numero:base.numero||'',nombre:base.nombre||'',
+        a1:tr.querySelector('[data-field="a1"]').value, a2:tr.querySelector('[data-field="a2"]').value,
+        a3:tr.querySelector('[data-field="a3"]').value, a4:tr.querySelector('[data-field="a4"]').value,
+        a5:tr.querySelector('[data-field="a5"]').value, a6:tr.querySelector('[data-field="a6"]').value,
+        apObjetiva:tr.querySelector('[data-field="apObjetiva"]').value,
+        evBimestral:tr.querySelector('[data-field="evBimestral"]').value,
+        evRemedial:tr.querySelector('[data-field="evRemedial"]').value};
+    });
+  }
+
+  function saveGradesCurso(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectCurso').value;
+    const bimestre=document.getElementById('bimestreSelectCurso').value,curso=document.getElementById('cursoSelectCurso').value;
+    if(!libroKey||!bimestre||!curso){setStatus('Selecciona libro, bimestre y curso.','error');return;}
+    const alumnos=collectRowsFromCursoTable();
+    if(!alumnos.length){setStatus('No hay alumnos cargados.','error');return;}
+    showBusy('Guardando notas','Actualizando calificaciones…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        setStatus((r&&r.message)||'Notas actualizadas.','success'); loadStudentsCurso();
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjSaveCourseGrades(token,{libroKey,bimestre,curso,alumnos});
+  }
+
+  /* ── HELPER finales/boletas ── */
+  function loadStudentsByBook(srcId,tgtId){
+    const token=getToken(),libroKey=document.getElementById(srcId).value;
+    const target=document.getElementById(tgtId);
+    target.innerHTML='<option value="">Selecciona</option>';
+    if(!libroKey)return;
+    showBusy('Cargando estudiantes','Leyendo padrón del grado…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        const alumnos=Array.isArray(r.alumnos)?r.alumnos:[];
+        target.innerHTML='<option value="">Selecciona</option>'+
+          alumnos.map(a=>`<option value="${escapeHtml(a.rowNumber)}">${escapeHtml((a.numero?a.numero+' - ':'')+a.nombre)}</option>`).join('');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGetStudentsByBook(token,libroKey);
+  }
+
+  /* ── TAB FINALES ── */
+  function loadFinalSummary(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectFinales').value;
+    const rowNumber=Number(document.getElementById('studentSelectFinales').value||0);
+    if(!libroKey||!rowNumber){setStatus('Selecciona libro y estudiante.','error');return;}
+    showBusy('Cargando finales','Calculando resumen final…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        CURRENT_FINAL_SUMMARY=r; renderFinalSummary(r); setStatus('Resumen cargado.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGetStudentFinalSummary(token,libroKey,rowNumber);
+  }
+
+  function renderPromedioFinalRow(p){return `<tr><td colspan="5" style="text-align:right"><strong>PROMEDIO FINAL TOTAL</strong></td><td class="note-total">${escapeHtml(p||'')}</td></tr>`;}
+
+  function renderFinalSummary(data){
+    const wrap=document.getElementById('finalSummaryContainer');
+    const cursos=Array.isArray(data.cursos)?data.cursos:[];
+    if(!cursos.length){wrap.className='empty';wrap.innerHTML='Sin notas finales.';return;}
+    const a=data.alumno||{},l=data.libro||{};
+    wrap.className='';
+    wrap.innerHTML=`
+      <div class="summary-grid">
+        <div class="summary-card"><strong>Estudiante</strong><div>${escapeHtml(a.nombre||'')}</div><div class="subtitle">${escapeHtml(a.numero||'')}</div></div>
+        <div class="summary-card"><strong>Grado</strong><div>${escapeHtml(l.nombre||'')}</div><div class="subtitle">Promedio: <strong>${escapeHtml(data.promedioGeneral||'')}</strong></div></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Curso</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>Final</th></tr></thead>
+        <tbody>
+          ${cursos.map(c=>`<tr><td>${escapeHtml(c.curso||'')}</td><td>${escapeHtml(c.b1||'')}</td><td>${escapeHtml(c.b2||'')}</td><td>${escapeHtml(c.b3||'')}</td><td>${escapeHtml(c.b4||'')}</td><td class="note-total">${escapeHtml(c.final||'')}</td></tr>`).join('')}
+          ${renderPromedioFinalRow(data.promedioGeneral)}
+        </tbody>
+      </table></div>`;
+  }
+
+  /* ── TAB BOLETAS ── */
+  function buildBoletaHtml(data){
+    const a=data.alumno||{},l=data.libro||{},cursos=Array.isArray(data.cursos)?data.cursos:[],prom=data.promedioGeneral||'',logo=data.logoDataUri||LOGO_DATA_URI;
+    return `<div class="boleta-head">${logo?`<img class="boleta-logo" src="${logo}" alt="Logo">`:''}
+      <div><h3 style="margin:0;color:#0f4c81">Boleta de Calificaciones</h3><div class="subtitle">${escapeHtml(data.tipoBoleta||'')}</div></div></div>
+      <div class="boleta-meta">
+        <div class="summary-card"><strong>Estudiante</strong><div>${escapeHtml(a.nombre||'')}</div><div class="subtitle">${escapeHtml(a.numero||'')}</div></div>
+        <div class="summary-card"><strong>Grado</strong><div>${escapeHtml(l.nombre||'')}</div><div class="subtitle">Promedio: <strong>${escapeHtml(prom)}</strong></div></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Curso</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>Final</th></tr></thead>
+        <tbody>
+          ${cursos.map(c=>`<tr><td>${escapeHtml(c.curso||'')}</td><td>${escapeHtml(c.b1||'')}</td><td>${escapeHtml(c.b2||'')}</td><td>${escapeHtml(c.b3||'')}</td><td>${escapeHtml(c.b4||'')}</td><td class="note-total">${escapeHtml(c.final||'')}</td></tr>`).join('')}
+          ${renderPromedioFinalRow(prom)}
+        </tbody>
+      </table></div>`;
+  }
+
+  function previewBoleta(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectBoleta').value;
+    const rowNumber=Number(document.getElementById('studentSelectBoleta').value||0);
+    const tipo=document.getElementById('boletaTipoSelect').value;
+    if(!libroKey||!rowNumber||!tipo){setStatus('Selecciona grado, estudiante y alcance.','error');return;}
+    showBusy('Generando vista previa','Preparando boleta…');
+    const ok=function(r){hideBusy();if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}CURRENT_BOLETA_DATA=r;renderBoletaPreview(r);setStatus('Boleta cargada.','success');};
+    const fail=function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');};
+    const runner=google.script.run.withSuccessHandler(ok).withFailureHandler(fail);
+    if(tipo==='FINAL') runner.mdjGetBoletaAlumnoFinal(token,libroKey,rowNumber);
+    else               runner.mdjGetBoletaAlumnoBimestre(token,libroKey,rowNumber,tipo);
+  }
+
+  function renderBoletaPreview(data){
+    const wrap=document.getElementById('boletaPreviewContainer');
+    if(!Array.isArray(data.cursos)||!data.cursos.length){wrap.className='empty';wrap.innerHTML='Sin datos.';return;}
+    wrap.className='';
+    wrap.innerHTML=buildBoletaHtml(data)+`<div style="margin-top:12px" class="actions"><button onclick="openBoletaModal()">Abrir en modal</button></div>`;
+  }
+
+  function openBoletaModal(){
+    if(!CURRENT_BOLETA_DATA)return;
+    const d=CURRENT_BOLETA_DATA;
+    document.getElementById('boletaModalTitle').textContent='Boleta de Calificaciones';
+    document.getElementById('boletaModalSubtitle').textContent=((d.alumno&&d.alumno.nombre)||'')+' · '+((d.libro&&d.libro.nombre)||'');
+    document.getElementById('boletaModalBody').innerHTML=buildBoletaHtml(d);
+    document.getElementById('boletaModal').classList.add('show');
+  }
+  function closeBoletaModal(){document.getElementById('boletaModal').classList.remove('show');}
+
+  function savePreviewBoletaPdf(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectBoleta').value;
+    const rowNumber=Number(document.getElementById('studentSelectBoleta').value||0),tipo=document.getElementById('boletaTipoSelect').value;
+    if(!libroKey||!rowNumber||!tipo){setStatus('Selecciona grado, estudiante y alcance.','error');return;}
+    showBusy('Guardando PDF','Creando PDF…');
+    const ok=function(r){hideBusy();if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}setStatus('PDF guardado.','success');if(r.fileUrl)window.open(r.fileUrl,'_blank');};
+    const fail=function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');};
+    const runner=google.script.run.withSuccessHandler(ok).withFailureHandler(fail);
+    if(tipo==='FINAL') runner.mdjGenerarPdfBoletaAlumnoFinal(token,libroKey,rowNumber);
+    else               runner.mdjGenerarPdfBoletaAlumnoBimestre(token,libroKey,rowNumber,tipo);
+  }
+
+  function generateMassiveBoletas(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectBoleta').value,tipo=document.getElementById('boletaTipoSelect').value;
+    if(!libroKey||!tipo){setStatus('Selecciona grado y alcance.','error');return;}
+    if(!confirm('Se generarán masivamente todas las boletas del grado. ¿Continuar?'))return;
+    document.getElementById('massiveResultContainer').innerHTML='';
+    showBusy('Generando boletas masivas','Creando una boleta PDF por estudiante…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        document.getElementById('massiveResultContainer').innerHTML=`<div class="link-card">
+          <strong>Generación masiva completada</strong><br>
+          Grado: ${escapeHtml(r.libroNombre||'')} · Tipo: ${escapeHtml(r.tipoBoleta||'')}<br>
+          Total: ${escapeHtml(r.totalAlumnos||0)} · Generadas: ${escapeHtml(r.generadas||0)} · Errores: ${escapeHtml(r.errores||0)}
+          ${r.folderUrl?`<br><a target="_blank" href="${r.folderUrl}">Abrir carpeta</a>`:''}
+        </div>`;
+        setStatus('Boletas masivas generadas.',r.errores?'error':'success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGenerarBoletasMasivasPorGrado(token,libroKey,tipo);
+  }
+
+  function createFoldersForBook(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectCurso').value;
+    if(!libroKey){setStatus('Selecciona un libro primero.','error');return;}
+    showBusy('Creando carpetas','Preparando estructura…');
+    google.script.run
+      .withSuccessHandler(function(r){hideBusy();if(!r||!r.ok){setStatus('Error: '+((r&&r.message)||'Error'),'error');return;}setStatus('Carpetas creadas para '+(r.totalAlumnos||0)+' alumnos.','success');if(r.folderUrl)window.open(r.folderUrl,'_blank');})
+      .withFailureHandler(function(e){hideBusy();setStatus('Error: '+(e&&e.message?e.message:e),'error');})
+      .mdjCrearEstructuraBoletasLibro(token,libroKey);
+  }
+
+  function generateAllBoletasForBook(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectCurso').value;
+    if(!libroKey){setStatus('Selecciona un libro primero.','error');return;}
+    if(!confirm('Se generarán o reemplazarán las boletas PDF del libro. ¿Continuar?'))return;
+    showBusy('Generando boletas','Creando boletas del grado completo…');
+    google.script.run
+      .withSuccessHandler(function(r){hideBusy();const gen=(r&&r.generados)||0,err=(r&&r.errores)||0;setStatus('Completado. Generados: '+gen+' | Errores: '+err,err?'error':'success');})
+      .withFailureHandler(function(e){hideBusy();setStatus('Error: '+(e&&e.message?e.message:e),'error');})
+      .mdjGenerarPdfBoletasLibro(token,libroKey);
+  }
+
+
+  /* ══════════════════════════════════════════
+     TAB CONSOLIDADOS
+  ══════════════════════════════════════════ */
+
+  function setConsolidadoBitacora(lines){
+    const box=document.getElementById('consolidadoBitacoraContainer');
+    if(!box) return;
+    box.textContent=Array.isArray(lines)?lines.join('\n'):String(lines||'Sin actividad todavía.');
+  }
+
+  function appendConsolidadoBitacora(line,extra){
+    const box=document.getElementById('consolidadoBitacoraContainer');
+    if(!box) return;
+    const prefix=box.textContent&&box.textContent!=='Sin actividad todavía.'?box.textContent+'\n':'';
+    box.textContent=prefix+`[${new Date().toLocaleTimeString()}] ${line}`+(extra?' | '+JSON.stringify(extra):'');
+  }
+
+  function renderConsolidadoMeta(data){
+    const wrap=document.getElementById('consolidadoMetaContainer');
+    if(!data){wrap.className='empty';wrap.innerHTML='Selecciona grado y período para construir la vista previa del consolidado general.';return;}
+    wrap.className='consol-meta-grid';
+    wrap.innerHTML=`
+      <div class="consol-meta-card"><small>Grado</small><strong>${escapeHtml(data.libro&&data.libro.nombre||'')}</strong></div>
+      <div class="consol-meta-card"><small>Período</small><strong>${escapeHtml(data.periodoLabel||data.periodo||'')}</strong></div>
+      <div class="consol-meta-card"><small>Total estudiantes</small><strong>${escapeHtml(data.totalAlumnos||0)}</strong></div>
+      <div class="consol-meta-card"><small>Total materias</small><strong>${escapeHtml((data.courses||[]).length)}</strong></div>`;
+  }
+
+  function renderConsolidadoPreview(data){
+    const wrap=document.getElementById('consolidadoPreviewContainer');
+    if(!data||!data.html){wrap.className='empty';wrap.innerHTML='No hay vista previa disponible.';return;}
+    wrap.className='consol-preview-shell';
+    wrap.innerHTML=`
+      <div class="consol-preview-head">
+        <div>
+          <h3>Vista previa del consolidado general</h3>
+          <p>${escapeHtml(data.libro&&data.libro.nombre||'')} · ${escapeHtml(data.periodoLabel||data.periodo||'')} · ${escapeHtml(data.totalAlumnos||0)} estudiantes</p>
+        </div>
+        <div class="consol-result-badges">
+          <span class="consol-badge">Materias: ${escapeHtml((data.courses||[]).length)}</span>
+          <span class="consol-badge">Año: ${escapeHtml(data.anio||'')}</span>
+        </div>
+      </div>
+      <iframe class="consol-preview-frame" id="consolidadoPreviewFrame"></iframe>`;
+    const frame=document.getElementById('consolidadoPreviewFrame');
+    if(frame) frame.srcdoc=data.html;
+  }
+
+  function renderConsolidadosFiles(data){
+    const wrap=document.getElementById('consolidadoFilesContainer');
+    if(!data||!Array.isArray(data.items)||!data.items.length){
+      wrap.className='empty';
+      wrap.innerHTML='No hay PDFs generados todavía para este grado.';
+      return;
+    }
+    wrap.className='consol-files';
+    wrap.innerHTML=data.items.map(function(item){
+      return `<div class="consol-file-item">
+        <div>
+          <h4>${escapeHtml(item.name||'Archivo')}</h4>
+          <p>Actualizado: ${escapeHtml(formatDateTime(item.lastUpdated))}</p>
+          <p>Tamaño: ${escapeHtml(formatBytes(item.size))}</p>
+        </div>
+        <div class="consol-file-actions">
+          <a class="mini-btn" href="${escapeHtml(item.url||'#')}" target="_blank">Abrir PDF</a>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function previewConsolidado(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    const periodo=document.getElementById('periodoSelectConsolidado').value;
+    if(!libroKey||!periodo){setStatus('Selecciona grado y período para la vista previa.','error');return;}
+    showBusy('Construyendo vista previa','Armando el consolidado general del grado…');
+    appendConsolidadoBitacora('Generando vista previa del consolidado.',{libroKey,periodo});
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al construir la vista previa.','error');appendConsolidadoBitacora('Error en vista previa.',r||{});return;}
+        CURRENT_CONSOLIDADO_PREVIEW=r;
+        renderConsolidadoMeta(r);
+        renderConsolidadoPreview(r);
+        setStatus('Vista previa del consolidado lista.','success');
+        appendConsolidadoBitacora('Vista previa generada correctamente.',{
+          libro:r.libro&&r.libro.nombre||'',
+          periodo:r.periodoLabel||r.periodo||'',
+          alumnos:r.totalAlumnos||0,
+          materias:(r.courses||[]).length
+        });
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus(e&&e.message?e.message:'Error al construir la vista previa.','error');
+        appendConsolidadoBitacora('Error al construir vista previa.',e&&e.message?e.message:e);
+      })
+      .mdjConsolidadosPreview(token,libroKey,periodo);
+  }
+
+  function generateConsolidadoPdf(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    const periodo=document.getElementById('periodoSelectConsolidado').value;
+    if(!libroKey||!periodo){setStatus('Selecciona grado y período para generar el PDF.','error');return;}
+    showBusy('Generando PDF','Creando y guardando el consolidado en Drive…');
+    appendConsolidadoBitacora('Generando PDF del consolidado.',{libroKey,periodo});
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al generar el PDF.','error');appendConsolidadoBitacora('Error al generar PDF.',r||{});return;}
+        setStatus('PDF del consolidado generado y guardado.','success');
+        setConsolidadoBitacora([
+          `[${new Date().toLocaleTimeString()}] PDF generado correctamente.`,
+          `Grado: ${r.libroNombre||''}`,
+          `Período: ${r.periodo||''}`,
+          `Archivo: ${r.fileName||''}`,
+          `Estudiantes: ${r.totalAlumnos||0}`,
+          `Carpeta: ${r.folderUrl||''}`,
+          `PDF: ${r.fileUrl||''}`
+        ]);
+        loadConsolidadosList(true);
+        if(r.fileUrl) window.open(r.fileUrl,'_blank');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus(e&&e.message?e.message:'Error al generar el PDF.','error');
+        appendConsolidadoBitacora('Error al generar PDF.',e&&e.message?e.message:e);
+      })
+      .mdjGenerarPdfConsolidadoGrado(token,libroKey,periodo);
+  }
+
+  function generateAllConsolidadosPdf(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    if(!libroKey){setStatus('Selecciona un grado primero.','error');return;}
+    if(!confirm('Se generarán todos los consolidados del grado: I, II, III, IV y FINAL. ¿Continuar?')) return;
+    showBusy('Generando todos los consolidados','Creando los 5 PDFs del grado…');
+    appendConsolidadoBitacora('Generación masiva de consolidados iniciada.',{libroKey});
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok&&(!r||r.errores===undefined)){setStatus((r&&r.message)||'Error al generar consolidados.','error');appendConsolidadoBitacora('Error en generación masiva.',r||{});return;}
+        const detalle=(r.detalle||[]).map(function(item){
+          return item.ok
+            ? `✓ ${item.periodo||''} → ${item.fileName||''}`
+            : `✗ ${item.periodo||''} → ${item.error||'Error'}`;
+        });
+        setConsolidadoBitacora([
+          `[${new Date().toLocaleTimeString()}] Generación masiva completada.`,
+          `Grado: ${(r.libro&&r.libro.nombre)||''}`,
+          `Generados: ${r.generados||0}`,
+          `Errores: ${r.errores||0}`,
+          `Carpeta: ${r.folderUrl||''}`,
+          'Detalle:',
+          ...detalle
+        ]);
+        setStatus(`Consolidados generados. Generados: ${r.generados||0} · Errores: ${r.errores||0}`,r.errores?'error':'success');
+        loadConsolidadosList(true);
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus(e&&e.message?e.message:'Error al generar consolidados.','error');
+        appendConsolidadoBitacora('Error en generación masiva.',e&&e.message?e.message:e);
+      })
+      .mdjGenerarTodosPdfConsolidadoGrado(token,libroKey);
+  }
+
+  function loadConsolidadosList(silent){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    if(!libroKey){ if(!silent) setStatus('Selecciona un grado para ver los consolidados generados.','error'); return; }
+    if(!silent) showBusy('Consultando archivos','Leyendo PDFs generados en la carpeta del grado…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        if(!silent) hideBusy();
+        if(!r||!r.ok){if(!silent) setStatus((r&&r.message)||'Error al listar archivos.','error');return;}
+        CURRENT_CONSOLIDADOS_LIST=r.items||[];
+        renderConsolidadosFiles(r);
+        if(!silent) setStatus('Listado de consolidados actualizado.','success');
+      })
+      .withFailureHandler(function(e){
+        if(!silent) hideBusy();
+        if(!silent) setStatus(e&&e.message?e.message:'Error al listar archivos.','error');
+      })
+      .mdjListConsolidadosPorLibro(token,libroKey);
+  }
+
+  function openConsolidadosFolder(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    if(!libroKey){setStatus('Selecciona un grado primero.','error');return;}
+    showBusy('Abriendo carpeta','Consultando carpeta de consolidados del grado…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'No se pudo abrir la carpeta.','error');return;}
+        appendConsolidadoBitacora('Carpeta del grado lista para abrir.',{folderUrl:r.folderUrl||''});
+        if(r.folderUrl) window.open(r.folderUrl,'_blank');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus(e&&e.message?e.message:'No se pudo abrir la carpeta.','error');
+      })
+      .mdjAbrirCarpetaConsolidados(token,libroKey);
+  }
+
+  function runConsolidadosDiagnostico(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectConsolidado').value;
+    if(!libroKey){setStatus('Selecciona un grado primero.','error');return;}
+    showBusy('Ejecutando diagnóstico','Validando carpeta, estudiantes y materias detectadas…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error en diagnóstico.','error');appendConsolidadoBitacora('Error en diagnóstico.',r||{});return;}
+        setConsolidadoBitacora([
+          `[${new Date().toLocaleTimeString()}] Diagnóstico de consolidados.`,
+          `Raíz: ${r.rootFolderName||''}`,
+          `Carpeta grado: ${r.gradeFolderName||''}`,
+          `Total alumnos detectados: ${r.totalAlumnosDetectados||0}`,
+          `Total materias detectadas: ${r.totalMateriasDetectadas||0}`,
+          `Materias: ${(r.materias||[]).join(', ')}`,
+          `Carpeta grado URL: ${r.gradeFolderUrl||''}`
+        ]);
+        setStatus('Diagnóstico del módulo de consolidados completado.','success');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus(e&&e.message?e.message:'Error en diagnóstico.','error');
+        appendConsolidadoBitacora('Error en diagnóstico.',e&&e.message?e.message:e);
+      })
+      .mdjDiagnosticoConsolidados(token,libroKey);
+  }
+
+  /* ══════════════════════════════════════════
+     TAB GESTIÓN ALUMNOS
+  ══════════════════════════════════════════ */
+
+  function onLibroAlumnosChange(){
+    AG_ROWS=[]; AG_DIRTY={}; AG_LIBRO=''; AG_PENDING_DELETE=null;
+    document.getElementById('ag-add-panel').style.display='none';
+    document.getElementById('alumnosGestionWrapper').innerHTML=
+      `<div class="empty">Selecciona un grado y pulsa <strong>Cargar alumnos</strong>.</div>`;
+  }
+
+  function loadAlumnosGestion(){
+    const token=getToken(),libroKey=document.getElementById('libroSelectAlumnos').value;
+    if(!libroKey){setStatus('Selecciona un grado primero.','error');return;}
+    AG_DIRTY={}; AG_LIBRO=libroKey;
+    showBusy('Cargando padrón','Leyendo lista de alumnos…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al cargar el padrón.','error');return;}
+        AG_ROWS=Array.isArray(r.alumnos)?r.alumnos:[];
+        document.getElementById('ag-add-panel').style.display='flex';
+        renderAlumnosGestion(AG_ROWS,r.libro||{});
+        setStatus('Padrón cargado · '+AG_ROWS.length+' alumnos.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjGetStudentsByBook(token,libroKey);
+  }
+
+  function renderAlumnosGestion(rows,libro){
+    const wrapper=document.getElementById('alumnosGestionWrapper');
+    if(!rows||!rows.length){wrapper.innerHTML='<div class="empty">No se encontraron alumnos.</div>';return;}
+    wrapper.innerHTML=`
+      <div class="alumnos-stats anim-in">
+        <div class="stat-card"><small>Total alumnos</small><strong id="ag-total">${rows.length}</strong></div>
+        <div class="stat-card"><small>Con cambios</small><strong id="ag-dirty" style="color:#b7791f">0</strong></div>
+        <div class="stat-card"><small>Grado activo</small><strong style="font-size:.9rem">${escapeHtml(libro.nombre||AG_LIBRO)}</strong></div>
+        <div class="stat-card"><small>Última carga</small><strong style="font-size:.9rem">${new Date().toLocaleTimeString()}</strong></div>
+      </div>
+      <div class="save-all-bar anim-in">
+        <div class="info"><strong>Edita</strong> nombres directamente. Amarillo = cambio pendiente.</div>
+        <div class="save-all-bar-actions">
+          <span class="changes-badge hidden" id="ag-badge">⚠ 0 cambios</span>
+          <button class="success" onclick="saveAllAlumnos()">Guardar todos los cambios</button>
+          <button class="secondary" onclick="loadAlumnosGestion()">↺ Recargar</button>
+        </div>
+      </div>
+      <div class="search-bar anim-in">
+        <input type="text" id="ag-search" placeholder="Buscar por nombre o número…" oninput="filterAlumnosTable(this.value)">
+      </div>
+      <div class="alumnos-table-wrap anim-in">
+        <table id="ag-table">
+          <thead><tr>
+            <th style="width:42px">#</th>
+            <th style="width:60px">No.</th>
+            <th>Nombre completo</th>
+            <th style="width:140px">Acciones</th>
+          </tr></thead>
+          <tbody id="ag-tbody">
+            ${rows.map((a,i)=>buildAlumnoRowHtml(a,i)).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  function buildAlumnoRowHtml(a,idx){
+    return `<tr data-row-number="${escapeHtml(String(a.rowNumber))}" data-idx="${idx}">
+      <td><span class="alumno-row-num">${idx+1}</span></td>
+      <td style="color:var(--muted);font-size:.9rem">${escapeHtml(a.numero||'')}</td>
+      <td>
+        <input class="alumno-name-input" type="text"
+          value="${escapeHtml(a.nombre||'')}"
+          data-original="${escapeHtml(a.nombre||'')}"
+          data-row-number="${escapeHtml(String(a.rowNumber))}"
+          oninput="onAlumnoNameInput(this)"
+          placeholder="Nombre del alumno…">
+      </td>
+      <td>
+        <div class="row-actions">
+          <button class="btn-save-row" id="save-btn-${escapeHtml(String(a.rowNumber))}"
+            onclick="saveSingleAlumno(${a.rowNumber})">Guardar</button>
+          <button class="btn-del-row"
+            onclick="askDeleteAlumno(${a.rowNumber},'${escapeHtml((a.nombre||'').replace(/'/g,"\\'"))}')">Eliminar</button>
+        </div>
+      </td>
+    </tr>`;
+  }
+
+  /* ── Edición de nombres ── */
+  function onAlumnoNameInput(input){
+    const rn=Number(input.dataset.rowNumber),original=input.dataset.original,current=input.value;
+    const btn=document.getElementById('save-btn-'+rn);
+    if(current!==original){
+      input.classList.add('modified');input.classList.remove('saved');
+      AG_DIRTY[rn]=current; if(btn)btn.classList.add('visible');
+    } else {
+      input.classList.remove('modified','saved');
+      delete AG_DIRTY[rn]; if(btn)btn.classList.remove('visible');
+    }
+    updateDirtyBadge();
+  }
+
+  function updateDirtyBadge(){
+    const count=Object.keys(AG_DIRTY).length;
+    const el=document.getElementById('ag-dirty'),badge=document.getElementById('ag-badge');
+    if(el) el.textContent=count;
+    if(badge){
+      badge.textContent='⚠ '+count+' cambio'+(count!==1?'s':'')+' pendiente'+(count!==1?'s':'');
+      badge.classList.toggle('hidden',count===0);
+    }
+  }
+
+  function saveSingleAlumno(rowNumber){
+    const token=getToken(),libroKey=AG_LIBRO;
+    if(!libroKey){setStatus('No hay grado activo.','error');return;}
+    const nuevoNombre=AG_DIRTY[rowNumber];
+    if(nuevoNombre===undefined){setStatus('Sin cambios para este alumno.','');return;}
+    showBusy('Guardando nombre','Actualizando en la hoja…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        const input=document.querySelector(`[data-row-number="${rowNumber}"].alumno-name-input`);
+        if(input){input.dataset.original=nuevoNombre;input.classList.remove('modified');input.classList.add('saved');}
+        const btn=document.getElementById('save-btn-'+rowNumber);if(btn)btn.classList.remove('visible');
+        delete AG_DIRTY[rowNumber];
+        const row=AG_ROWS.find(r=>r.rowNumber===rowNumber);if(row)row.nombre=nuevoNombre;
+        updateDirtyBadge();
+        setStatus('Nombre actualizado.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjUpdateStudentName(token,libroKey,rowNumber,nuevoNombre);
+  }
+
+  function saveAllAlumnos(){
+    const token=getToken(),libroKey=AG_LIBRO;
+    if(!libroKey){setStatus('No hay grado activo.','error');return;}
+    const cambios=Object.entries(AG_DIRTY).map(([rn,nombre])=>({rowNumber:Number(rn),nombre}));
+    if(!cambios.length){setStatus('No hay cambios pendientes.','');return;}
+    showBusy('Guardando cambios','Actualizando '+cambios.length+' nombre(s)…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error.','error');return;}
+        cambios.forEach(function(c){
+          const input=document.querySelector(`[data-row-number="${c.rowNumber}"].alumno-name-input`);
+          if(input){input.dataset.original=c.nombre;input.classList.remove('modified');input.classList.add('saved');}
+          const btn=document.getElementById('save-btn-'+c.rowNumber);if(btn)btn.classList.remove('visible');
+          const row=AG_ROWS.find(rx=>rx.rowNumber===c.rowNumber);if(row)row.nombre=c.nombre;
+        });
+        AG_DIRTY={}; updateDirtyBadge();
+        setStatus('✓ '+cambios.length+' nombre(s) guardado(s).','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjUpdateStudentNamesBatch(token,libroKey,cambios);
+  }
+
+  /* ── Agregar alumno ── */
+  function addAlumnoGestion(){
+    const token=getToken(),libroKey=AG_LIBRO;
+    if(!libroKey){setStatus('Carga el padrón primero.','error');return;}
+    const numero=document.getElementById('ag-new-numero').value.trim();
+    const nombre=document.getElementById('ag-new-nombre').value.trim();
+    if(!nombre){setStatus('Ingresa el nombre del nuevo alumno.','error');document.getElementById('ag-new-nombre').focus();return;}
+    showBusy('Agregando alumno','Guardando nuevo alumno en la hoja…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al agregar alumno.','error');return;}
+        document.getElementById('ag-new-numero').value='';
+        document.getElementById('ag-new-nombre').value='';
+        const newAlumno={rowNumber:r.rowNumber,numero:numero||'',nombre:nombre};
+        AG_ROWS.push(newAlumno);
+        const tbody=document.getElementById('ag-tbody');
+        if(tbody){
+          const idx=AG_ROWS.length-1;
+          const tr=document.createElement('tr');
+          tr.className='ag-new-row';
+          tr.dataset.rowNumber=String(r.rowNumber);
+          tr.innerHTML=buildAlumnoRowHtml(newAlumno,idx).replace(/^<tr[^>]*>/,'').replace(/<\/tr>$/,'');
+          tbody.appendChild(tr);
+          tr.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }
+        const totalEl=document.getElementById('ag-total');if(totalEl)totalEl.textContent=AG_ROWS.length;
+        setStatus('Alumno "'+nombre+'" agregado (fila '+r.rowNumber+').','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjAddStudent(token,libroKey,numero,nombre);
+  }
+
+  /* ── Eliminar alumno ── */
+  function askDeleteAlumno(rowNumber,nombre){
+    AG_PENDING_DELETE=rowNumber;
+    document.getElementById('confirmDeleteText').innerHTML=
+      `¿Seguro que deseas eliminar a <strong>${escapeHtml(nombre)}</strong>?<br>
+       Se borrará la fila completa de la hoja de cálculo.<br>
+       <span style="color:#d64545;font-size:.88rem">⚠ Esta acción no se puede deshacer.</span>`;
+    document.getElementById('confirmDeleteModal').classList.add('show');
+  }
+  function closeConfirmDelete(){
+    AG_PENDING_DELETE=null;
+    document.getElementById('confirmDeleteModal').classList.remove('show');
+  }
+  function confirmDeleteAlumno(){
+    const rowNumber=AG_PENDING_DELETE; closeConfirmDelete();
+    if(!rowNumber)return;
+    const token=getToken(),libroKey=AG_LIBRO;
+    if(!libroKey){setStatus('No hay grado activo.','error');return;}
+    showBusy('Eliminando alumno','Borrando fila de la hoja…');
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+        if(!r||!r.ok){setStatus((r&&r.message)||'Error al eliminar.','error');return;}
+        const idx=AG_ROWS.findIndex(x=>x.rowNumber===rowNumber);
+        if(idx!==-1)AG_ROWS.splice(idx,1);
+        delete AG_DIRTY[rowNumber]; updateDirtyBadge();
+        const tr=document.querySelector(`#ag-tbody tr[data-row-number="${rowNumber}"]`);
+        if(tr){tr.style.transition='opacity .3s';tr.style.opacity='0';setTimeout(()=>tr.remove(),320);}
+        const totalEl=document.getElementById('ag-total');if(totalEl)totalEl.textContent=AG_ROWS.length;
+        setStatus('Alumno eliminado correctamente.','success');
+      })
+      .withFailureHandler(function(e){hideBusy();setStatus(e&&e.message?e.message:'Error.','error');})
+      .mdjDeleteStudent(token,libroKey,rowNumber);
+  }
+
+  /* ── Filtro ── */
+  function filterAlumnosTable(query){
+    const q=(query||'').toLowerCase().trim();
+    document.querySelectorAll('#ag-tbody tr').forEach(tr=>{
+      tr.style.display=(!q||tr.textContent.toLowerCase().includes(q))?'':'none';
+    });
+  }
+
+  /* Asistencia integrada: usa la sesión del sistema central. */
+  function abrirModuloAsistencia(page){
+    window.location.assign(buildPageUrl(page || 'asistencia-admin'));
+  }
+
+  /* ── LISTENERS ── */
+  document.getElementById('libroSelectCurso').addEventListener('change',loadCoursesCurso);
+  document.getElementById('bimestreSelectCurso').addEventListener('change',loadCoursesCurso);
+  document.getElementById('libroSelectFinales').addEventListener('change',function(){loadStudentsByBook('libroSelectFinales','studentSelectFinales');});
+  document.getElementById('libroSelectBoleta').addEventListener('change',function(){loadStudentsByBook('libroSelectBoleta','studentSelectBoleta');});
+  document.getElementById('libroSelectConsolidado').addEventListener('change',function(){
+    CURRENT_CONSOLIDADO_PREVIEW=null;
+    renderConsolidadoMeta(null);
+    document.getElementById('consolidadoPreviewContainer').className='empty';
+    document.getElementById('consolidadoPreviewContainer').innerHTML='La vista previa del consolidado aparecerá aquí con todos los estudiantes y todas las materias.';
+    document.getElementById('consolidadoFilesContainer').className='empty';
+    document.getElementById('consolidadoFilesContainer').innerHTML='Selecciona un grado y pulsa <strong>Ver ya generados</strong>.';
+  });
+
+  function initBrandLogo(){
+    const img = document.getElementById('brandLogo');
+    const fallback = document.getElementById('brandLogoFallback');
+    if(!img) return;
+
+    img.onload = function(){
+      img.style.display = 'block';
+      if(fallback) fallback.style.display = 'none';
+    };
+    img.onerror = function(){
+      img.style.display = 'none';
+      if(fallback) fallback.style.display = 'grid';
+    };
+
+    if(LOGO_DATA_URI && String(LOGO_DATA_URI).trim()){ 
+      img.src = LOGO_DATA_URI;
+    } else {
+      img.style.display = 'none';
+      if(fallback) fallback.style.display = 'grid';
+    }
+  }
+
+  initBrandLogo();
+
+  requireSession();
+</script>
+</body>
+</html>

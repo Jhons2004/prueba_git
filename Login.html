@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - <?= app.nombre ?></title>
+  <style>
+    :root {
+      --bg: #edf4fb;
+      --panel: #ffffff;
+      --primary: #0f4c81;
+      --primary-2: #1f6fb2;
+      --accent: #f4b400;
+      --text: #1d2b3a;
+      --muted: #64748b;
+      --border: #dce6f1;
+      --shadow: 0 28px 60px rgba(15, 76, 129, .16);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(244,180,0,.18), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(31,111,178,.20), transparent 30%),
+        linear-gradient(180deg,#edf4fb 0%, #f8fbfe 100%);
+    }
+    .login-shell {
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      overflow: hidden;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(220,230,241,.9);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 42px;
+      background:
+        linear-gradient(135deg, rgba(15,76,129,.97), rgba(31,111,178,.9)),
+        linear-gradient(180deg,#0f4c81,#1f6fb2);
+      color: #fff;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.18);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .hero h1 { margin: 0 0 12px; font-size: 2.35rem; line-height: 1.06; }
+    .hero p { margin: 0; font-size: 1rem; max-width: 560px; line-height: 1.65; color: rgba(255,255,255,.9); }
+    .hero-grid { display: grid; gap: 14px; margin-top: 32px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .mini-card {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .mini-card strong { display: block; font-size: 1.1rem; margin-bottom: 8px; }
+    .panel { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+    .badge {
+      display: inline-flex;
+      width: max-content;
+      padding: 8px 14px;
+      background: #eef5fb;
+      color: var(--primary);
+      border-radius: 999px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .panel h2 { margin: 0 0 10px; font-size: 1.8rem; }
+    .panel p { margin: 0 0 22px; color: var(--muted); line-height: 1.55; }
+    form { display: grid; gap: 16px; }
+    label { font-weight: 700; color: var(--muted); font-size: .9rem; display: block; margin-bottom: 8px; }
+    input {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #cedbea;
+      padding: 14px 16px;
+      font-size: 1rem;
+      outline: none;
+      transition: .2s ease;
+      background: #fff;
+    }
+    input:focus { border-color: var(--primary-2); box-shadow: 0 0 0 4px rgba(31,111,178,.12); }
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg,var(--primary),var(--primary-2));
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 18px 30px rgba(15,76,129,.18);
+    }
+    button[disabled] {
+      opacity: .7;
+      cursor: wait;
+    }
+    .demo {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #f7fbff;
+      border: 1px solid var(--border);
+      font-size: .92rem;
+    }
+    .status { min-height: 24px; margin-top: 12px; font-weight: 700; }
+    .status.error { color: #d64545; }
+    .status.success { color: #168764; }
+    @media (max-width: 900px) {
+      .login-shell { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-shell">
+    <section class="hero">
+      <div class="hero-badge">Colegio Mundo de Juguetes</div>
+      <h1><?= app.nombre ?></h1>
+      <p>Sistema académico para administración, consulta de cursos, carga de notas y control por roles de usuario.</p>
+
+      <div class="hero-grid">
+        <div class="mini-card">
+          <strong>Modo administración</strong>
+          <span>Consulta notas, revisa estudiantes por curso y genera boletas desde consolidado.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Modo maestro</strong>
+          <span>Visualiza cursos asignados y actualiza actividades, evaluación objetiva y nota bimestral.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="badge">Acceso al sistema</div>
+      <h2>Iniciar sesión</h2>
+      <p>Ingresa con el usuario y la contraseña registrados en tu hoja de control académico.</p>
+
+      <form id="frmLogin">
+        <div>
+          <label for="usuario">Usuario</label>
+          <input id="usuario" name="usuario" autocomplete="username" placeholder="Ej. admin o maestro1">
+        </div>
+        <div>
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa la contraseña">
+        </div>
+        <button id="btnLogin" type="submit">Entrar al sistema</button>
+      </form>
+
+      <div id="status" class="status"></div>
+
+      <div class="demo">
+        <strong>Primera configuración:</strong><br>
+        Ejecuta <code>mdjCrearPlantillaControl()</code> una vez, copia el ID retornado y pégalo en <code>MDJ_APP.hojaControlId</code>.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const WEB_APP_URL = '<?= webAppUrl ?>';
+
+    function setStatus(message, type) {
+      const el = document.getElementById('status');
+      el.textContent = message || '';
+      el.className = 'status ' + (type || '');
+    }
+
+    function setLoading(isLoading) {
+      const btn = document.getElementById('btnLogin');
+      if (!btn) return;
+      btn.disabled = !!isLoading;
+      btn.textContent = isLoading ? 'Validando acceso...' : 'Entrar al sistema';
+    }
+
+    function getUserFromResponse(response) {
+      if (!response || typeof response !== 'object') return null;
+      return response.user || response.usuario || response.sessionUser || null;
+    }
+
+    function getRoleFromResponse(response) {
+      const user = getUserFromResponse(response);
+      if (user && user.rol) return String(user.rol).toLowerCase();
+
+      if (response && response.redirectPage) {
+        const redirectPage = String(response.redirectPage).toLowerCase();
+        if (redirectPage === 'admin' || redirectPage === 'administrativo') return 'admin';
+        if (redirectPage === 'maestro' || redirectPage === 'teacher') return 'maestro';
+      }
+
+      return '';
+    }
+
+    function buildTargetUrl(role) {
+      const page = String(role || '').toLowerCase() === 'admin' ? 'admin' : 'maestro';
+      return WEB_APP_URL + '?page=' + encodeURIComponent(page);
+    }
+
+    function redirectByRole(role) {
+      window.location.replace(buildTargetUrl(role));
+    }
+
+    function login(event) {
+      event.preventDefault();
+
+      const usuario = document.getElementById('usuario').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!usuario || !password) {
+        setStatus('Debes ingresar usuario y contraseña.', 'error');
+        return;
+      }
+
+      setLoading(true);
+      setStatus('Validando acceso...', '');
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          setLoading(false);
+
+          if (!response || !response.ok) {
+            setStatus((response && response.message) || 'No fue posible iniciar sesión.', 'error');
+            return;
+          }
+
+          const user = getUserFromResponse(response);
+          const role = getRoleFromResponse(response);
+
+          if (response.token) {
+            localStorage.setItem('mdj_token', response.token);
+          }
+          if (user) {
+            localStorage.setItem('mdj_user', JSON.stringify(user));
+          }
+
+          if (!role) {
+            setStatus('El login fue correcto, pero no se pudo determinar el rol del usuario.', 'error');
+            return;
+          }
+
+          setStatus('Acceso correcto. Redirigiendo...', 'success');
+          setTimeout(function() {
+            redirectByRole(role);
+          }, 250);
+        })
+        .withFailureHandler(function(error) {
+          setLoading(false);
+          setStatus(error && error.message ? error.message : 'Error inesperado al iniciar sesión.', 'error');
+          console.error('Error login:', error);
+        })
+        .mdjLogin(usuario, password);
+    }
+
+    document.getElementById('frmLogin').addEventListener('submit', login);
+
+    (function autoValidate() {
+      const token = localStorage.getItem('mdj_token');
+      if (!token) return;
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          if (!response || !response.ok) return;
+          const role = getRoleFromResponse(response);
+          if (role) redirectByRole(role);
+        })
+        .withFailureHandler(function() {})
+        .mdjGetSession(token);
+    })();
+  </script>
+</body>
+</html>
