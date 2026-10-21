@@ -27,10 +27,10 @@ function doGet(e) {
     administrativo: MDJ_APP.adminPage,
     maestro: MDJ_APP.teacherPage,
     teacher: MDJ_APP.teacherPage,
-    tomar: MDJ_ASIS_APP.tomarPage,
-    asistencia: MDJ_ASIS_APP.tomarPage,
-    'asistencia-admin': MDJ_ASIS_APP.adminPage,
-    'admin-asistencia': MDJ_ASIS_APP.adminPage
+    tomar: MDJ_APP.teacherPage,
+    asistencia: MDJ_APP.teacherPage,
+    'asistencia-admin': MDJ_APP.adminPage,
+    'admin-asistencia': MDJ_APP.adminPage
   };
 
   const fileName = fileMap[page] || MDJ_APP.loginPage;
@@ -40,6 +40,7 @@ function doGet(e) {
   tpl.logoDataUri = (typeof MDJ_LOGO_DATA_URI !== 'undefined' && MDJ_LOGO_DATA_URI) ? MDJ_LOGO_DATA_URI : '';
   tpl.webAppUrl = ScriptApp.getService().getUrl();
   tpl.currentPage = page;
+  tpl.initialView = (page === 'asistencia-admin' || page === 'admin-asistencia') ? 'asistencia-admin' : (page === 'asistencia' || page === 'tomar' ? 'asistencia' : '');
   tpl.asistenciaUrl = mdjAsisGetAsistenciaUrl_();
   tpl.asistenciaSpreadsheetId = MDJ_ASIS_APP.asistenciaSpreadsheetId;
 

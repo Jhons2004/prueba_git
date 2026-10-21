@@ -1,0 +1,950 @@
+<style>
+
+    
+#mdjAsisDocRoot{
+      --primary:#0f4c81;
+      --primary-2:#1f6fb2;
+      --text:#1d2b3a;
+      --muted:#64748b;
+      --border:#dbe7f3;
+      --success:#17835f;
+      --danger:#d64545;
+      --warning:#b7791f;
+      --bg:#edf4fb;
+      --shadow:0 24px 60px rgba(15,76,129,.14);
+      --radius:20px;
+    }
+
+
+    
+#mdjAsisDocRoot *{box-sizing:border-box}
+
+
+    
+#mdjAsisDocRoot{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(31,111,178,.16),transparent 32%),
+        linear-gradient(180deg,#edf4fb 0%,#f8fbfe 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+
+    
+#mdjAsisDocRoot{padding:20px}
+
+
+    
+#mdjAsisDocRoot .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsisDocRoot .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:12px 18px;
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsisDocRoot .brand img{
+      width:62px;
+      height:62px;
+      object-fit:contain;
+      border-radius:14px;
+      background:#f8fbff;
+      padding:4px;
+      border:1px solid var(--border);
+    }
+
+
+    
+#mdjAsisDocRoot .brand h1{
+      margin:0;
+      font-size:1.25rem;
+      color:var(--primary);
+    }
+
+
+    
+#mdjAsisDocRoot .brand p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+
+    
+#mdjAsisDocRoot .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsisDocRoot .user-chip{
+      display:inline-flex;
+      align-items:center;
+      padding:10px 16px;
+      border-radius:999px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      font-weight:900;
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsisDocRoot .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:18px;
+    }
+
+
+    
+#mdjAsisDocRoot .toolbar{
+      display:grid;
+      grid-template-columns:1.2fr .8fr auto auto;
+      gap:12px;
+      align-items:end;
+    }
+
+
+    
+#mdjAsisDocRoot label{
+      display:block;
+      margin-bottom:6px;
+      font-size:.85rem;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+
+    
+#mdjAsisDocRoot select, #mdjAsisDocRoot input{
+      width:100%;
+      padding:11px 13px;
+      border-radius:12px;
+      border:1px solid #cedbea;
+      outline:none;
+      font-size:.95rem;
+      background:#fff;
+    }
+
+
+    
+#mdjAsisDocRoot select:focus, #mdjAsisDocRoot input:focus{
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 4px rgba(31,111,178,.12);
+    }
+
+
+    
+#mdjAsisDocRoot button{
+      border:0;
+      border-radius:12px;
+      padding:11px 16px;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 14px 28px rgba(15,76,129,.18);
+      transition:.16s ease;
+      white-space:nowrap;
+    }
+
+
+    
+#mdjAsisDocRoot button:hover{transform:translateY(-1px)}
+
+    
+#mdjAsisDocRoot button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+
+    
+#mdjAsisDocRoot button.secondary{
+      background:#fff;
+      color:var(--primary);
+      border:1px solid #cfe0ef;
+      box-shadow:none;
+    }
+
+
+    
+#mdjAsisDocRoot button.success{background:linear-gradient(135deg,#10815f,#1aa378)}
+
+    
+#mdjAsisDocRoot button.warning{background:linear-gradient(135deg,#b7791f,#d69e2e)}
+
+    
+#mdjAsisDocRoot button.danger{background:linear-gradient(135deg,#b91c1c,#dc2626)}
+
+
+    
+#mdjAsisDocRoot .status{
+      min-height:22px;
+      font-weight:800;
+      margin-bottom:10px;
+      padding-left:4px;
+    }
+
+
+    
+#mdjAsisDocRoot .status.error{color:var(--danger)}
+
+    
+#mdjAsisDocRoot .status.success{color:var(--success)}
+
+    
+#mdjAsisDocRoot .status.warning{color:var(--warning)}
+
+
+    
+#mdjAsisDocRoot .summary{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+
+    
+#mdjAsisDocRoot .metric{
+      padding:14px;
+      background:#f8fbff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      text-align:center;
+    }
+
+
+    
+#mdjAsisDocRoot .metric small{
+      color:var(--muted);
+      display:block;
+      margin-bottom:4px;
+      font-weight:800;
+    }
+
+
+    
+#mdjAsisDocRoot .metric strong{
+      font-size:1.55rem;
+      color:var(--primary);
+    }
+
+
+    
+#mdjAsisDocRoot .empty{
+      padding:32px;
+      border:1px dashed #c5d8ea;
+      border-radius:16px;
+      color:var(--muted);
+      text-align:center;
+      background:#fbfdff;
+      line-height:1.55;
+    }
+
+
+    
+#mdjAsisDocRoot .table-wrap{
+      max-height:62vh;
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#fff;
+    }
+
+
+    
+#mdjAsisDocRoot table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.93rem;
+    }
+
+
+    
+#mdjAsisDocRoot thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#eef5fb;
+      padding:10px;
+      text-align:left;
+      color:#45607a;
+      text-transform:uppercase;
+      font-size:.78rem;
+      border-bottom:1px solid #d8e5f2;
+      white-space:nowrap;
+    }
+
+
+    
+#mdjAsisDocRoot tbody td{
+      padding:9px 10px;
+      border-bottom:1px solid #eaf1f7;
+      vertical-align:middle;
+    }
+
+
+    
+#mdjAsisDocRoot tbody tr:hover{background:#f9fcff}
+
+
+    
+#mdjAsisDocRoot .estado-toggle{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsisDocRoot .estado-btn{
+      padding:7px 10px;
+      border-radius:10px;
+      border:1px solid #cedbea;
+      background:#fff;
+      color:var(--muted);
+      font-weight:900;
+      font-size:.8rem;
+      cursor:pointer;
+      box-shadow:none;
+      min-width:48px;
+    }
+
+
+    
+#mdjAsisDocRoot .estado-btn:hover{transform:none}
+
+
+    
+#mdjAsisDocRoot .estado-btn.active.si{
+      background:#d4f5dd;
+      border-color:#8fd8a6;
+      color:#0d5e3a;
+    }
+
+
+    
+#mdjAsisDocRoot .estado-btn.active.no{
+      background:#fddddd;
+      border-color:#e6a4a4;
+      color:#8a1f1f;
+    }
+
+
+    
+#mdjAsisDocRoot .estado-btn.active.just{
+      background:#fff3cd;
+      border-color:#e4cf7b;
+      color:#7a5a00;
+    }
+
+
+    
+#mdjAsisDocRoot .justif-input{
+      min-width:230px;
+      padding:8px 10px;
+      font-size:.85rem;
+      border-radius:10px;
+      border:1px solid #d3dfeb;
+    }
+
+
+    
+#mdjAsisDocRoot .helper-bar{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsisDocRoot .helper-left, #mdjAsisDocRoot .helper-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+
+    
+#mdjAsisDocRoot .pill{
+      display:inline-flex;
+      padding:7px 12px;
+      border-radius:999px;
+      background:#eef5fb;
+      color:var(--primary);
+      font-size:.82rem;
+      font-weight:900;
+    }
+
+
+    
+#mdjAsisDocRoot .busy{
+      position:fixed;
+      inset:0;
+      background:rgba(10,24,41,.58);
+      backdrop-filter:blur(2px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:5000;
+      padding:20px;
+    }
+
+
+    
+#mdjAsisDocRoot .busy.show{display:flex}
+
+
+    
+#mdjAsisDocRoot .busy-card{
+      width:min(460px,92vw);
+      background:#fff;
+      border-radius:22px;
+      padding:24px;
+      text-align:center;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsisDocRoot .spinner{
+      width:54px;
+      height:54px;
+      margin:0 auto 14px;
+      border-radius:50%;
+      border:5px solid #d9e7f4;
+      border-top-color:var(--primary-2);
+      animation:sp 1s linear infinite;
+    }
+
+
+    
+@keyframes sp{to{transform:rotate(360deg)}}
+
+
+    
+@media(max-width:950px){
+      
+#mdjAsisDocRoot .toolbar{grid-template-columns:1fr 1fr}
+
+      
+#mdjAsisDocRoot .summary{grid-template-columns:1fr 1fr}
+
+    }
+
+
+    
+@media(max-width:620px){
+      
+#mdjAsisDocRoot{padding:12px}
+
+      
+#mdjAsisDocRoot .toolbar{grid-template-columns:1fr}
+
+      
+#mdjAsisDocRoot .summary{grid-template-columns:1fr}
+
+      
+#mdjAsisDocRoot .brand{width:100%}
+
+      
+#mdjAsisDocRoot .top-actions{width:100%}
+
+      
+#mdjAsisDocRoot .user-chip{width:100%;justify-content:center}
+
+      
+#mdjAsisDocRoot button{width:100%}
+
+      
+#mdjAsisDocRoot .estado-toggle button{width:auto}
+
+      
+#mdjAsisDocRoot .helper-left, #mdjAsisDocRoot .helper-right{width:100%}
+
+    }
+
+  
+</style>
+<div id="mdjAsisDocRoot">
+<div class="card">
+<div class="toolbar">
+<div>
+<label>Grado</label>
+<select id="asisDoc-gradoSelect"></select>
+</div>
+<div>
+<label>Fecha de asistencia</label>
+<input id="asisDoc-fechaInput" type="date"/>
+</div>
+<div>
+<label> </label>
+<button onclick="MDJ_ASIS_DOC.cargarLista()">Cargar lista</button>
+</div>
+<div>
+<label> </label>
+<button class="secondary" onclick="MDJ_ASIS_DOC.marcarTodos('SI')">Todos presentes</button>
+</div>
+</div>
+</div>
+<div class="status" id="asisDoc-status"></div>
+<div class="card" id="asisDoc-panelLista" style="display:none">
+<div class="summary">
+<div class="metric">
+<small>Total alumnos</small>
+<strong id="asisDoc-mTotal">0</strong>
+</div>
+<div class="metric">
+<small>Presentes</small>
+<strong id="asisDoc-mSi">0</strong>
+</div>
+<div class="metric">
+<small>Ausentes</small>
+<strong id="asisDoc-mNo">0</strong>
+</div>
+<div class="metric">
+<small>Justificados</small>
+<strong id="asisDoc-mJust">0</strong>
+</div>
+</div>
+<div class="helper-bar">
+<div class="helper-left">
+<span class="pill" id="asisDoc-gradoPill">Grado: —</span>
+<span class="pill" id="asisDoc-fechaPill">Fecha: —</span>
+<span class="pill" id="asisDoc-estadoFechaPill">Estado: —</span>
+</div>
+<div class="helper-right">
+<button class="success" onclick="MDJ_ASIS_DOC.guardar()">Guardar asistencia</button>
+<button class="warning" onclick="MDJ_ASIS_DOC.marcarTodos('NO')">Todos ausentes</button>
+<button class="secondary" onclick="MDJ_ASIS_DOC.cargarLista()">Recargar</button>
+</div>
+</div>
+<div class="empty" id="asisDoc-listaContainer">
+        Selecciona un grado y fecha para comenzar.
+      </div>
+</div>
+<div class="busy" id="asisDoc-busy">
+<div class="busy-card">
+<div class="spinner"></div>
+<div id="asisDoc-busyTitle" style="font-weight:900;color:var(--primary);font-size:1.1rem;margin-bottom:6px">
+        Procesando
+      </div>
+<div id="asisDoc-busyText" style="color:var(--muted)">
+        Espera un momento…
+      </div>
+</div>
+</div>
+</div>
+<script>
+(function(){
+'use strict';
+let initialized=false;
+
+    const WEB_APP_URL = '';
+    
+    // --- NUEVO: Extraemos la configuración estrictamente del .gs ---
+    // Inyectamos la URL de la hoja maestra (la única permitida)
+    const URL_MAESTRA = '';
+    
+    // Inyectamos el catálogo oficial de grados permitidos desde Config.gs
+    const GRADOS_PERMITIDOS = null;
+
+    let SESSION = null;
+    let ROLE = '';
+    let GRADOS = [];
+    let CURRENT_ALUMNOS = [];
+    let CURRENT_GRADO = null;
+    let CURRENT_FECHA = null;
+    let CURRENT_FECHA_EXISTE = false;
+
+    function getToken(){
+      return localStorage.getItem('mdj_token') || '';
+    }
+
+    function volverPanelCentral(){ window.mostrarNotasDocente(); }
+
+  function goLogin(){ window.goLogin(); }
+
+    function abrirHoja(){
+      google.script.run.withSuccessHandler(function(r){
+        if(r && r.ok && r.url) window.open(r.url, '_blank');
+        else setStatus((r && r.message) || 'No se pudo abrir la hoja.', 'error');
+      }).withFailureHandler(function(e){ setStatus(e.message || 'Error abriendo hoja.', 'error'); })
+      .mdjAsisObtenerEnlaceHoja(getToken());
+    }
+
+    function showBusy(t,s){
+      document.getElementById('asisDoc-busyTitle').textContent = t || 'Procesando';
+      document.getElementById('asisDoc-busyText').textContent = s || 'Espera un momento…';
+      document.getElementById('asisDoc-busy').classList.add('show');
+    }
+
+    function hideBusy(){
+      document.getElementById('asisDoc-busy').classList.remove('show');
+    }
+
+    function setStatus(m,t){
+      const el = document.getElementById('asisDoc-status');
+      el.textContent = m || '';
+      el.className = 'status ' + (t || '');
+    }
+
+    function esc(s){
+      return String(s == null ? '' : s)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    function iniciar(){
+      const token = getToken();
+
+      if(!token){ setStatus('Sesión no disponible. Ingresa de nuevo.', 'error'); return; }
+
+      showBusy('Validando sesión','Cargando módulo de asistencia…');
+
+      google.script.run
+        .withSuccessHandler(function(r){
+          hideBusy();
+
+          if(!r || !r.ok){ setStatus((r && r.message) || 'No tienes acceso a asistencia.', 'error'); return; }
+
+          SESSION = r.user || {};
+          ROLE = String(r.role || SESSION.rol || '').toLowerCase();
+          
+          GRADOS = Array.isArray(r.grados) ? r.grados : [];
+
+          document.getElementById('asisDoc-fechaInput').value = r.fechaHoy || '';
+
+          const sel = document.getElementById('asisDoc-gradoSelect');
+          sel.innerHTML =
+            '<option value="">Selecciona un grado</option>' +
+            GRADOS.map(function(g){
+              return '<option value="' + esc(g.key) + '">' + esc(g.nombre) + '</option>';
+            }).join('');
+
+          setStatus('Selecciona grado y fecha para cargar la lista.', '');
+
+        })
+        .withFailureHandler(function(e){
+          hideBusy();
+          setStatus((e && e.message) || 'Error cargando asistencia.', 'error');
+        })
+        .mdjAsisGetTomarBootstrap(token);
+    }
+
+    function getGradoSeleccionado(){
+      const key = document.getElementById('asisDoc-gradoSelect').value;
+      return GRADOS.find(function(g){ return g.key === key; }) || null;
+    }
+
+    function cargarLista(){
+      const token = getToken();
+      const libroKey = document.getElementById('asisDoc-gradoSelect').value;
+      const fechaISO = document.getElementById('asisDoc-fechaInput').value;
+
+      if(!libroKey || !fechaISO){
+        setStatus('Selecciona grado y fecha.', 'error');
+        return;
+      }
+
+      CURRENT_GRADO = getGradoSeleccionado();
+      CURRENT_FECHA = fechaISO;
+
+      showBusy('Cargando lista','Leyendo alumnos desde la hoja maestra de asistencia…');
+
+      google.script.run
+        .withSuccessHandler(function(r){
+          hideBusy();
+
+          if(!r || !r.ok){
+            setStatus((r && r.message) || 'Error cargando lista.', 'error');
+            return;
+          }
+
+          CURRENT_ALUMNOS = r.alumnos || [];
+          CURRENT_FECHA_EXISTE = !!r.fechaExiste;
+
+          document.getElementById('asisDoc-panelLista').style.display = 'block';
+
+          renderLista();
+          actualizarPills();
+
+          if(!CURRENT_ALUMNOS.length){
+            setStatus(
+              'Este grado no tiene alumnos cargados. Pide al administrador sincronizar desde notas.',
+              'warning'
+            );
+          }else{
+            setStatus(
+              CURRENT_FECHA_EXISTE
+                ? 'Esta fecha ya tenía asistencia registrada. Puedes revisar o actualizar.'
+                : 'Fecha nueva. Marca la asistencia y guarda.',
+              CURRENT_FECHA_EXISTE ? 'warning' : 'success'
+            );
+          }
+        })
+        .withFailureHandler(function(e){
+          hideBusy();
+          setStatus((e && e.message) || 'Error cargando lista.', 'error');
+        })
+        .mdjAsisGetListaAlumnos(token, libroKey, fechaISO);
+    }
+
+    function actualizarPills(){
+      document.getElementById('asisDoc-gradoPill').textContent =
+        'Grado: ' + (CURRENT_GRADO ? CURRENT_GRADO.nombre : '—');
+
+      document.getElementById('asisDoc-fechaPill').textContent =
+        'Fecha: ' + (CURRENT_FECHA || '—');
+
+      document.getElementById('asisDoc-estadoFechaPill').textContent =
+        CURRENT_FECHA_EXISTE ? 'Estado: ya registrada' : 'Estado: nueva';
+    }
+
+    function renderLista(){
+      const cont = document.getElementById('asisDoc-listaContainer');
+
+      if(!CURRENT_ALUMNOS.length){
+        cont.className = 'empty';
+        cont.innerHTML =
+          '<strong>No hay alumnos cargados para este grado.</strong><br>' +
+          'Primero sincroniza alumnos desde el panel administrativo.';
+        actualizarMetricas();
+        return;
+      }
+
+      cont.className = 'table-wrap';
+
+      cont.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th style="width:70px">No.</th>
+              <th>Nombre del estudiante</th>
+              <th style="width:260px">Estado</th>
+              <th>Justificación / comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${CURRENT_ALUMNOS.map(function(a,i){
+              const e = String(a.estado || '').toUpperCase();
+
+              return `
+                <tr data-idx="${i}">
+                  <td>${esc(a.numero || '')}</td>
+                  <td><strong>${esc(a.nombre)}</strong></td>
+                  <td>
+                    <div class="estado-toggle">
+                      <button type="button" class="estado-btn si ${e === 'SI' ? 'active' : ''}" onclick="MDJ_ASIS_DOC.setEstado(${i}, 'SI')">SÍ</button>
+                      <button type="button" class="estado-btn no ${e === 'NO' ? 'active' : ''}" onclick="MDJ_ASIS_DOC.setEstado(${i}, 'NO')">NO</button>
+                      <button type="button" class="estado-btn just ${e === 'JUSTIFICADO' ? 'active' : ''}" onclick="MDJ_ASIS_DOC.setEstado(${i}, 'JUSTIFICADO')">Justif.</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input
+                      class="justif-input"
+                      placeholder="Ej. constancia médica, permiso, motivo..."
+                      value="${esc(a.justificacion || '')}"
+                      onchange="MDJ_ASIS_DOC.setJustif(${i}, this.value)"
+                    >
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+
+      actualizarMetricas();
+    }
+
+    function setEstado(idx, estado){
+      if(!CURRENT_ALUMNOS[idx]) return;
+
+      CURRENT_ALUMNOS[idx].estado = estado;
+
+      if(estado === 'NO' && !CURRENT_ALUMNOS[idx].justificacion){
+        CURRENT_ALUMNOS[idx].justificacion = 'Pendiente de justificación';
+      }
+
+      if(estado === 'SI'){
+        CURRENT_ALUMNOS[idx].justificacion = '';
+      }
+
+      renderLista();
+    }
+
+    function setJustif(idx, value){
+      if(!CURRENT_ALUMNOS[idx]) return;
+      CURRENT_ALUMNOS[idx].justificacion = value;
+    }
+
+    function marcarTodos(estado){
+      if(!CURRENT_ALUMNOS.length){
+        setStatus('Primero carga la lista.', 'error');
+        return;
+      }
+
+      CURRENT_ALUMNOS.forEach(function(a){
+        a.estado = estado;
+
+        if(estado === 'SI'){
+          a.justificacion = '';
+        }
+
+        if(estado === 'NO' && !a.justificacion){
+          a.justificacion = 'Pendiente de justificación';
+        }
+      });
+
+      renderLista();
+
+      setStatus(
+        estado === 'SI'
+          ? 'Todos fueron marcados como presentes.'
+          : 'Todos fueron marcados como ausentes.',
+        estado === 'SI' ? 'success' : 'warning'
+      );
+    }
+
+    function actualizarMetricas(){
+      const total = CURRENT_ALUMNOS.length;
+
+      const si = CURRENT_ALUMNOS.filter(function(a){
+        return String(a.estado || '').toUpperCase() === 'SI';
+      }).length;
+
+      const no = CURRENT_ALUMNOS.filter(function(a){
+        return String(a.estado || '').toUpperCase() === 'NO';
+      }).length;
+
+      const just = CURRENT_ALUMNOS.filter(function(a){
+        return String(a.estado || '').toUpperCase() === 'JUSTIFICADO';
+      }).length;
+
+      document.getElementById('asisDoc-mTotal').textContent = total;
+      document.getElementById('asisDoc-mSi').textContent = si;
+      document.getElementById('asisDoc-mNo').textContent = no;
+      document.getElementById('asisDoc-mJust').textContent = just;
+    }
+
+    function guardar(){
+      const token = getToken();
+      const libroKey = document.getElementById('asisDoc-gradoSelect').value;
+      const fechaISO = document.getElementById('asisDoc-fechaInput').value;
+
+      if(!libroKey || !fechaISO){
+        setStatus('Grado y fecha son requeridos.', 'error');
+        return;
+      }
+
+      if(!CURRENT_ALUMNOS.length){
+        setStatus('No hay alumnos para guardar.', 'error');
+        return;
+      }
+
+      const sinEstado = CURRENT_ALUMNOS.filter(function(a){
+        return !String(a.estado || '').trim();
+      });
+
+      if(sinEstado.length){
+        const ok = confirm(
+          'Hay ' + sinEstado.length + ' alumno(s) sin marcar. ' +
+          'Si continúas, esas celdas quedarán vacías. ¿Guardar de todos modos?'
+        );
+
+        if(!ok) return;
+      }
+
+      const registros = CURRENT_ALUMNOS.map(function(a){
+        return {
+          rowNumber: a.rowNumber,
+          estado: a.estado || '',
+          justificacion: a.justificacion || ''
+        };
+      });
+
+      showBusy('Guardando asistencia','Escribiendo únicamente en la hoja maestra consolidada…');
+
+      google.script.run
+        .withSuccessHandler(function(r){
+          hideBusy();
+
+          if(!r || !r.ok){
+            setStatus((r && r.message) || 'Error al guardar asistencia.', 'error');
+            return;
+          }
+
+          CURRENT_FECHA_EXISTE = true;
+          actualizarPills();
+
+          setStatus('Asistencia guardada correctamente en la hoja maestra.', 'success');
+        })
+        .withFailureHandler(function(e){
+          hideBusy();
+          setStatus((e && e.message) || 'Error guardando asistencia.', 'error');
+        })
+        .mdjAsisGuardarAsistencia(token, {
+          libroKey: libroKey,
+          fechaISO: fechaISO,
+          registros: registros
+        });
+    }
+
+    
+window.MDJ_ASIS_DOC = {
+ mount: function(){ if(initialized)return; initialized=true; iniciar(); },
+ getToken:getToken,
+ volverPanelCentral:volverPanelCentral,
+ goLogin:goLogin,
+ abrirHoja:abrirHoja,
+ showBusy:showBusy,
+ hideBusy:hideBusy,
+ setStatus:setStatus,
+ esc:esc,
+ iniciar:iniciar,
+ getGradoSeleccionado:getGradoSeleccionado,
+ cargarLista:cargarLista,
+ actualizarPills:actualizarPills,
+ renderLista:renderLista,
+ setEstado:setEstado,
+ setJustif:setJustif,
+ marcarTodos:marcarTodos,
+ actualizarMetricas:actualizarMetricas,
+ guardar:guardar
+};
+})();
+
+</script>

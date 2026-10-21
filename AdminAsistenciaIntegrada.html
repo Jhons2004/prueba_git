@@ -1,0 +1,1575 @@
+<!-- Asistencia/Dirección integrada: misma página, sesión y backend. -->
+<style>
+
+    
+#mdjAsistenciaPanel {
+      --primary:#0f4c81;
+      --primary-2:#1f6fb2;
+      --text:#1d2b3a;
+      --muted:#64748b;
+      --border:#dbe7f3;
+      --success:#17835f;
+      --danger:#d64545;
+      --warning:#b7791f;
+      --shadow:0 24px 60px rgba(15,76,129,.14);
+      --radius:20px;
+    }
+
+
+    
+#mdjAsistenciaPanel * {box-sizing:border-box}
+
+
+    
+#mdjAsistenciaPanel {
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(31,111,178,.16),transparent 32%),
+        linear-gradient(180deg,#edf4fb 0%,#f8fbfe 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+
+    
+#mdjAsistenciaPanel {padding:20px}
+
+
+    
+#mdjAsistenciaPanel .topbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsistenciaPanel .brand {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:12px 18px;
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsistenciaPanel .brand img {
+      width:62px;
+      height:62px;
+      object-fit:contain;
+      border-radius:14px;
+      background:#f8fbff;
+      padding:4px;
+      border:1px solid var(--border);
+    }
+
+
+    
+#mdjAsistenciaPanel .brand h1 {
+      margin:0;
+      font-size:1.25rem;
+      color:var(--primary);
+    }
+
+
+    
+#mdjAsistenciaPanel .brand p {
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+
+    
+#mdjAsistenciaPanel .top-actions {
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsistenciaPanel .user-chip {
+      display:inline-flex;
+      align-items:center;
+      padding:10px 16px;
+      border-radius:999px;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      font-weight:900;
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsistenciaPanel .tabs {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+
+    
+#mdjAsistenciaPanel .tab-btn {
+      background:#fff;
+      color:var(--primary);
+      border:1px solid #cfe0ef;
+      padding:10px 18px;
+      border-radius:12px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:none;
+    }
+
+
+    
+#mdjAsistenciaPanel .tab-btn.active {
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      border:0;
+      box-shadow:0 14px 28px rgba(15,76,129,.18);
+    }
+
+
+    
+#mdjAsistenciaPanel .card {
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:18px;
+    }
+
+
+    
+#mdjAsistenciaPanel .toolbar {
+      display:grid;
+      grid-template-columns:1.2fr auto auto;
+      gap:12px;
+      align-items:end;
+      margin-bottom:14px;
+    }
+
+
+    
+#mdjAsistenciaPanel .toolbar-4 {
+      display:grid;
+      grid-template-columns:1fr 1fr auto auto;
+      gap:12px;
+      align-items:end;
+      margin-bottom:14px;
+    }
+
+
+    
+#mdjAsistenciaPanel label {
+      display:block;
+      margin-bottom:6px;
+      font-size:.85rem;
+      font-weight:900;
+      color:var(--muted);
+    }
+
+
+    
+#mdjAsistenciaPanel select, #mdjAsistenciaPanel input {
+      width:100%;
+      padding:11px 13px;
+      border-radius:12px;
+      border:1px solid #cedbea;
+      outline:none;
+      font-size:.95rem;
+      background:#fff;
+    }
+
+
+    
+#mdjAsistenciaPanel select:focus, #mdjAsistenciaPanel input:focus {
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 4px rgba(31,111,178,.12);
+    }
+
+
+    
+#mdjAsistenciaPanel button {
+      border:0;
+      border-radius:12px;
+      padding:11px 16px;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 14px 28px rgba(15,76,129,.18);
+      transition:.16s ease;
+      white-space:nowrap;
+    }
+
+
+    
+#mdjAsistenciaPanel button:hover {transform:translateY(-1px)}
+
+    
+#mdjAsistenciaPanel button:disabled {opacity:.55;cursor:not-allowed;transform:none}
+
+
+    
+#mdjAsistenciaPanel button.secondary {
+      background:#fff;
+      color:var(--primary);
+      border:1px solid #cfe0ef;
+      box-shadow:none;
+    }
+
+
+    
+#mdjAsistenciaPanel button.success {background:linear-gradient(135deg,#10815f,#1aa378)}
+
+    
+#mdjAsistenciaPanel button.warning {background:linear-gradient(135deg,#b7791f,#d69e2e)}
+
+    
+#mdjAsistenciaPanel button.danger {background:linear-gradient(135deg,#b91c1c,#dc2626)}
+
+
+    
+#mdjAsistenciaPanel .status {
+      min-height:22px;
+      font-weight:800;
+      margin-bottom:10px;
+      padding-left:4px;
+      white-space:pre-line;
+    }
+
+
+    
+#mdjAsistenciaPanel .status.error {color:var(--danger)}
+
+    
+#mdjAsistenciaPanel .status.success {color:var(--success)}
+
+    
+#mdjAsistenciaPanel .status.warning {color:var(--warning)}
+
+
+    
+#mdjAsistenciaPanel .view {display:none}
+
+    
+#mdjAsistenciaPanel .view.active {display:block}
+
+
+    
+#mdjAsistenciaPanel .empty {
+      padding:30px;
+      border:1px dashed #c5d8ea;
+      border-radius:16px;
+      color:var(--muted);
+      text-align:center;
+      background:#fbfdff;
+      line-height:1.55;
+    }
+
+
+    
+#mdjAsistenciaPanel .table-wrap {
+      max-height:68vh;
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:#fff;
+    }
+
+
+    
+#mdjAsistenciaPanel table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:.9rem;
+    }
+
+
+    
+#mdjAsistenciaPanel thead th {
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#eef5fb;
+      padding:10px;
+      text-align:left;
+      color:#45607a;
+      text-transform:uppercase;
+      font-size:.78rem;
+      border-bottom:1px solid #d8e5f2;
+      white-space:nowrap;
+    }
+
+
+    
+#mdjAsistenciaPanel tbody td {
+      padding:8px 10px;
+      border-bottom:1px solid #eaf1f7;
+      vertical-align:middle;
+    }
+
+
+    
+#mdjAsistenciaPanel tbody tr:hover {background:#f9fcff}
+
+
+    
+#mdjAsistenciaPanel .cell-si {
+      background:#d4f5dd;
+      cursor:pointer;
+      text-align:center;
+      font-weight:900;
+      color:#0d5e3a;
+    }
+
+
+    
+#mdjAsistenciaPanel .cell-no {
+      background:#fddddd;
+      cursor:pointer;
+      text-align:center;
+      font-weight:900;
+      color:#8a1f1f;
+    }
+
+
+    
+#mdjAsistenciaPanel .cell-just {
+      background:#fff3cd;
+      cursor:pointer;
+      text-align:center;
+      font-weight:900;
+      color:#7a5a00;
+    }
+
+
+    
+#mdjAsistenciaPanel .cell-empty {
+      background:#f4f6f9;
+      cursor:pointer;
+      text-align:center;
+      color:#999;
+    }
+
+
+    
+#mdjAsistenciaPanel .pill {
+      display:inline-flex;
+      padding:6px 11px;
+      border-radius:999px;
+      background:#eef5fb;
+      color:var(--primary);
+      font-size:.78rem;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+
+    
+#mdjAsistenciaPanel .grado-card {
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px;
+      background:#fbfdff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsistenciaPanel .grado-card h4 {
+      margin:0;
+      font-size:1rem;
+      color:var(--primary);
+    }
+
+
+    
+#mdjAsistenciaPanel .grado-card .actions {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+
+    
+#mdjAsistenciaPanel .modal {
+      position:fixed;
+      inset:0;
+      background:rgba(17,32,51,.56);
+      display:none;
+      place-items:center;
+      z-index:999;
+      padding:20px;
+    }
+
+
+    
+#mdjAsistenciaPanel .modal.show {display:grid}
+
+
+    
+#mdjAsistenciaPanel .modal-content {
+      width:min(620px,96vw);
+      background:#fff;
+      border-radius:22px;
+      padding:24px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      max-height:90vh;
+      overflow:auto;
+    }
+
+
+    
+#mdjAsistenciaPanel .modal-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+      gap:10px;
+    }
+
+
+    
+#mdjAsistenciaPanel .modal-head h3 {
+      margin:0;
+      color:var(--primary);
+    }
+
+
+    
+#mdjAsistenciaPanel .form-grid {
+      display:grid;
+      gap:12px;
+    }
+
+
+    
+#mdjAsistenciaPanel .busy {
+      position:fixed;
+      inset:0;
+      background:rgba(10,24,41,.58);
+      backdrop-filter:blur(2px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:5000;
+      padding:20px;
+    }
+
+
+    
+#mdjAsistenciaPanel .busy.show {display:flex}
+
+
+    
+#mdjAsistenciaPanel .busy-card {
+      width:min(460px,92vw);
+      background:#fff;
+      border-radius:22px;
+      padding:24px;
+      text-align:center;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+
+    
+#mdjAsistenciaPanel .spinner {
+      width:54px;
+      height:54px;
+      margin:0 auto 14px;
+      border-radius:50%;
+      border:5px solid #d9e7f4;
+      border-top-color:var(--primary-2);
+      animation:sp 1s linear infinite;
+    }
+
+
+    
+@keyframes sp{to{transform:rotate(360deg)}}
+
+
+    
+@media(max-width:900px){
+      
+#mdjAsistenciaPanel .toolbar {grid-template-columns:1fr 1fr}
+
+      
+#mdjAsistenciaPanel .toolbar-4 {grid-template-columns:1fr 1fr}
+
+    }
+
+
+    
+@media(max-width:620px){
+      
+#mdjAsistenciaPanel {padding:12px}
+
+      
+#mdjAsistenciaPanel .toolbar, #mdjAsistenciaPanel .toolbar-4 {grid-template-columns:1fr}
+
+      
+#mdjAsistenciaPanel .brand {width:100%}
+
+      
+#mdjAsistenciaPanel .top-actions {width:100%}
+
+      
+#mdjAsistenciaPanel .user-chip {width:100%;justify-content:center}
+
+      
+#mdjAsistenciaPanel button {width:100%}
+
+      
+#mdjAsistenciaPanel .grado-card .actions {width:100%}
+
+    }
+
+  
+</style>
+<div id="mdjAsistenciaPanel" aria-label="Administración de asistencia">
+<div class="tabs">
+<button class="tab-btn active" id="asis-tab-reportes" onclick="MDJ_ASIS_ADMIN.showView('reportes')">Reportes</button>
+<button class="tab-btn" id="asis-tab-tomar" onclick="MDJ_ASIS_ADMIN.showView('tomar')">Tomar asistencia</button>
+<button class="tab-btn" id="asis-tab-hojas" onclick="MDJ_ASIS_ADMIN.showView('hojas')">Sincronizar alumnos</button>
+<button class="tab-btn" id="asis-tab-usuarios" onclick="MDJ_ASIS_ADMIN.showView('usuarios')">Usuarios</button>
+</div>
+<div class="status" id="asis-status"></div>
+<section class="view active" id="asis-view-reportes">
+<div class="card">
+<div class="toolbar">
+<div>
+<label>Grado</label>
+<select id="asis-gradoReporte"></select>
+</div>
+<div>
+<label> </label>
+<button onclick="MDJ_ASIS_ADMIN.cargarReporte()">Cargar reporte</button>
+</div>
+<div>
+<label> </label>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.abrirHojaAsistencia()">Abrir hoja</button>
+</div>
+</div>
+<div class="empty" id="asis-reporteContainer">
+        Selecciona un grado para ver la asistencia consolidada.
+      </div>
+</div>
+</section>
+<section class="view" id="asis-view-tomar">
+<div class="card">
+<h3 style="margin:0 0 8px;color:var(--primary)">Tomar asistencia como administrador</h3>
+<p style="color:var(--muted);margin:0 0 14px;line-height:1.55">
+        El administrador puede registrar o actualizar asistencia por grado y fecha.
+        Si la fecha ya tenía asistencia, se cargará y podrás editarla antes de guardar.
+      </p>
+<div class="toolbar-4">
+<div>
+<label>Grado</label>
+<select id="asis-gradoTomar"></select>
+</div>
+<div>
+<label>Fecha</label>
+<input id="asis-fechaTomar" type="date"/>
+</div>
+<div>
+<label> </label>
+<button onclick="MDJ_ASIS_ADMIN.adminCargarListaAsistencia()">Cargar lista</button>
+</div>
+<div>
+<label> </label>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.adminMarcarTodos('SI')">Todos presentes</button>
+</div>
+</div>
+</div>
+<div class="card" id="asis-adminPanelTomar" style="display:none">
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+<span class="pill" id="asis-adminTomarGradoPill">Grado: —</span>
+<span class="pill" id="asis-adminTomarFechaPill">Fecha: —</span>
+<span class="pill" id="asis-adminTomarEstadoPill">Estado: —</span>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+<button class="success" onclick="MDJ_ASIS_ADMIN.adminGuardarAsistencia()">Guardar asistencia</button>
+<button class="warning" onclick="MDJ_ASIS_ADMIN.adminMarcarTodos('NO')">Todos ausentes</button>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.adminCargarListaAsistencia()">Recargar</button>
+</div>
+<div class="empty" id="asis-adminTomarContainer">
+        Selecciona grado y fecha para cargar alumnos.
+      </div>
+</div>
+</section>
+<section class="view" id="asis-view-hojas">
+<div class="card">
+<h3 style="margin:0 0 8px;color:var(--primary)">Sincronizar alumnos desde notas</h3>
+<p style="color:var(--muted);margin:0 0 14px;line-height:1.55">
+        Lee alumnos desde la hoja <strong>I BIMESTRE</strong> de cada libro de notas y los guarda en la hoja maestra de asistencia.
+        No modifica los archivos originales de notas.
+      </p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+<button class="success" onclick="MDJ_ASIS_ADMIN.sincronizarTodos()">Sincronizar TODOS los grados</button>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.abrirHojaAsistencia()">Abrir hoja maestra</button>
+</div>
+<div id="asis-gradosListContainer"></div>
+</div>
+</section>
+<section class="view" id="asis-view-usuarios">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+<h3 style="margin:0;color:var(--primary)">Gestión de usuarios</h3>
+<button onclick="MDJ_ASIS_ADMIN.abrirModalUsuario()">+ Nuevo usuario</button>
+</div>
+<div class="empty" id="asis-usuariosContainer">Cargando usuarios...</div>
+</div>
+</section>
+<div class="modal" id="asis-modalCelda">
+<div class="modal-content">
+<div class="modal-head">
+<h3 id="asis-modalCeldaTitle">Editar asistencia</h3>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.cerrarModalCelda()">Cerrar</button>
+</div>
+<div id="asis-modalCeldaInfo" style="margin-bottom:12px;color:var(--muted)"></div>
+<label>Estado</label>
+<select id="asis-modalCeldaEstado">
+<option value="SI">SÍ - Presente</option>
+<option value="NO">NO - Ausente</option>
+<option value="JUSTIFICADO">JUSTIFICADO - Cuenta como asistencia</option>
+<option value="">Sin marcar</option>
+</select>
+<div style="height:12px"></div>
+<label>Justificación / Comentario</label>
+<input id="asis-modalCeldaJustif" placeholder="Ej. Constancia médica, permiso, motivo..."/>
+<div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.cerrarModalCelda()">Cancelar</button>
+<button class="success" onclick="MDJ_ASIS_ADMIN.guardarCelda()">Guardar</button>
+</div>
+</div>
+</div>
+<div class="modal" id="asis-modalUsuario">
+<div class="modal-content">
+<div class="modal-head">
+<h3 id="asis-modalUsuarioTitle">Nuevo usuario</h3>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.cerrarModalUsuario()">Cerrar</button>
+</div>
+<div class="form-grid">
+<div>
+<label>Usuario</label>
+<input id="asis-uUsuario" placeholder="maestro01"/>
+</div>
+<div>
+<label>Nombre completo</label>
+<input id="asis-uNombre" placeholder="Nombre del maestro"/>
+</div>
+<div>
+<label>Contraseña <span id="asis-uPassHelp" style="color:var(--muted);font-weight:normal">(requerida al crear)</span></label>
+<input id="asis-uPassword" placeholder="Contraseña" type="text"/>
+</div>
+<div>
+<label>Rol</label>
+<select id="asis-uRol">
+<option value="maestro">Maestro</option>
+<option value="admin">Administrador</option>
+</select>
+</div>
+<div>
+<label>Estado</label>
+<select id="asis-uActivo">
+<option value="1">Activo</option>
+<option value="0">Inactivo</option>
+</select>
+</div>
+</div>
+<div style="margin-top:18px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.cerrarModalUsuario()">Cancelar</button>
+<button class="success" onclick="MDJ_ASIS_ADMIN.guardarUsuario()">Guardar</button>
+</div>
+</div>
+</div>
+<div class="modal" id="asis-modalPreview">
+<div class="modal-content">
+<div class="modal-head">
+<h3 id="asis-modalPreviewTitle">Vista previa</h3>
+<button class="secondary" onclick="MDJ_ASIS_ADMIN.cerrarModalPreview()">Cerrar</button>
+</div>
+<div id="asis-modalPreviewInfo" style="margin-bottom:12px;color:var(--muted)"></div>
+<div id="asis-modalPreviewList" style="max-height:50vh;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:12px;background:#fbfdff;font-family:monospace;font-size:.88rem"></div>
+</div>
+</div>
+<div class="busy" id="asis-busy">
+<div class="busy-card">
+<div class="spinner"></div>
+<div id="asis-busyTitle" style="font-weight:900;color:var(--primary);font-size:1.1rem;margin-bottom:6px">
+      Procesando
+    </div>
+<div id="asis-busyText" style="color:var(--muted)">Espera un momento…</div>
+</div>
+</div>
+</div>
+<script>
+(function(){
+  'use strict';
+  const root = document.getElementById('mdjAsistenciaPanel');
+  let initialized = false;
+
+  const WEB_APP_URL = '';
+  const ASISTENCIA_URL = '';
+
+  let SESSION = null;
+  let GRADOS = [];
+  let CURRENT_REPORTE = null;
+  let EDIT_CELDA = null;
+  let EDIT_USUARIO = null;
+
+  // Variables para Tomar Asistencia (admin)
+  let ADMIN_TOMAR_ALUMNOS = [];
+  let ADMIN_TOMAR_GRADO = null;
+  let ADMIN_TOMAR_FECHA = '';
+  let ADMIN_TOMAR_FECHA_EXISTE = false;
+
+  function getToken(){
+    return localStorage.getItem('mdj_token') || '';
+  }
+
+  function volverPanelCentral(){ window.showView('curso'); }
+
+  function goLogin(){ window.goLogin(); }
+
+  function showBusy(t,s){
+    document.getElementById('asis-busyTitle').textContent = t || 'Procesando';
+    document.getElementById('asis-busyText').textContent = s || 'Espera un momento…';
+    document.getElementById('asis-busy').classList.add('show');
+  }
+
+  function hideBusy(){
+    document.getElementById('asis-busy').classList.remove('show');
+  }
+
+  function setStatus(m,t){
+    const el = document.getElementById('asis-status');
+    el.textContent = m || '';
+    el.className = 'status ' + (t || '');
+  }
+
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+
+  function escJs(s){
+    return String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '');
+  }
+
+  function showView(v){
+    root.querySelectorAll('.view').forEach(function(e){ e.classList.remove('active'); });
+    root.querySelectorAll('.tab-btn').forEach(function(e){ e.classList.remove('active'); });
+
+    document.getElementById('asis-view-' + v).classList.add('active');
+    document.getElementById('asis-tab-' + v).classList.add('active');
+
+    if(v === 'usuarios') cargarUsuarios();
+    if(v === 'hojas') renderGradosList();
+  }
+
+  function iniciar(){
+    const token = getToken();
+
+    if(!token){
+      setStatus('No hay sesión activa. Regresa al inicio de sesión.', 'error');
+      return;
+    }
+
+    showBusy('Validando sesión','Cargando panel administrativo…');
+
+    google.script.run
+      .withSuccessHandler(function(b){
+        hideBusy();
+
+        if(!b || !b.ok){
+          setStatus((b && b.message) || 'Sin permisos para el módulo de asistencia.', 'error');
+          return;
+        }
+
+        SESSION = b.user || {};
+        GRADOS = b.grados || [];
+
+
+        const opts =
+          '<option value="">Selecciona un grado</option>' +
+          GRADOS.map(function(g){
+            return '<option value="' + esc(g.key) + '">' + esc(g.nombre) + '</option>';
+          }).join('');
+
+        document.getElementById('asis-gradoReporte').innerHTML = opts;
+        document.getElementById('asis-gradoTomar').innerHTML = opts;
+        document.getElementById('asis-fechaTomar').value = b.fechaHoy || '';
+
+        renderGradosList();
+        setStatus('Panel cargado correctamente.', 'success');
+      })
+      .withFailureHandler(function(error){
+        hideBusy();
+        setStatus((error && error.message) || 'Error cargando asistencia.', 'error');
+      })
+      .mdjAsisGetAdminBootstrap(token);
+  }
+
+  function abrirHojaAsistencia(){
+    if(ASISTENCIA_URL){
+      window.open(ASISTENCIA_URL, '_blank');
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        if(r && r.ok && r.url){
+          window.open(r.url, '_blank');
+        }else{
+          setStatus('No se pudo obtener el enlace de la hoja.', 'error');
+        }
+      })
+      .withFailureHandler(function(e){
+        setStatus((e && e.message) || 'Error abriendo hoja.', 'error');
+      })
+      .mdjAsisObtenerEnlaceHoja(getToken());
+  }
+
+  /* ==================== REPORTES ==================== */
+  function cargarReporte(){
+    const token = getToken();
+    const libroKey = document.getElementById('asis-gradoReporte').value;
+
+    if(!libroKey){
+      setStatus('Selecciona un grado.', 'error');
+      return;
+    }
+
+    showBusy('Cargando reporte','Leyendo asistencia consolidada del grado…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error cargando reporte.', 'error');
+          return;
+        }
+
+        CURRENT_REPORTE = r;
+        renderReporte();
+        setStatus('Reporte cargado correctamente.', 'success');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error cargando reporte.', 'error');
+      })
+      .mdjAsisGetReporteGrado(token, libroKey);
+  }
+
+  function renderReporte(){
+    const c = document.getElementById('asis-reporteContainer');
+    const r = CURRENT_REPORTE;
+
+    if(!r || !r.alumnos || !r.alumnos.length){
+      c.className = 'empty';
+      c.innerHTML =
+        '<strong>No hay alumnos cargados para este grado.</strong><br>' +
+        'Primero sincroniza alumnos desde notas.';
+      return;
+    }
+
+    c.className = '';
+
+    let html = '<div style="margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap">' +
+      '<span class="pill">Alumnos: ' + esc(r.totalAlumnos || 0) + '</span>' +
+      '<span class="pill">Días registrados: ' + esc(r.totalDias || 0) + '</span>' +
+      '</div>';
+
+    html += '<div class="table-wrap"><table><thead><tr>' +
+      '<th>No.</th><th>Nombre</th><th>Total</th><th>Asist.</th><th>%</th>';
+
+    (r.fechas || []).forEach(function(f){
+      html += '<th style="text-align:center">' + esc(f.header) + '</th>';
+    });
+
+    html += '</tr></thead><tbody>';
+
+    r.alumnos.forEach(function(a){
+      html += '<tr>' +
+        '<td>' + esc(a.numero || '') + '</td>' +
+        '<td><strong>' + esc(a.nombre) + '</strong></td>' +
+        '<td>' + esc(a.totalDias || 0) + '</td>' +
+        '<td>' + esc(a.diasAsistidos || 0) + '</td>' +
+        '<td><strong>' + esc(a.porcentaje || '0.00%') + '</strong></td>';
+
+      (a.dias || []).forEach(function(d){
+        const e = String(d.estado || '').toUpperCase();
+        let cls = 'cell-empty';
+        let label = '—';
+
+        if(e === 'SI'){ cls = 'cell-si'; label = 'SÍ'; }
+        else if(e === 'NO'){ cls = 'cell-no'; label = 'NO'; }
+        else if(e === 'JUSTIFICADO'){ cls = 'cell-just'; label = 'J'; }
+
+        html += '<td class="' + cls + '" title="' + esc(d.justificacion || '') + '" ' +
+          'onclick="MDJ_ASIS_ADMIN.abrirModalCelda(' +
+          a.rowNumber + ',' +
+          d.col + ',' +
+          '\'' + escJs(a.nombre) + '\',' +
+          '\'' + escJs(d.header) + '\',' +
+          '\'' + escJs(e) + '\',' +
+          '\'' + escJs(d.justificacion || '') + '\'' +
+          ')">' + label + '</td>';
+      });
+
+      html += '</tr>';
+    });
+
+    html += '</tbody></table></div>';
+    c.innerHTML = html;
+  }
+
+  function abrirModalCelda(rowNumber, col, nombreAlumno, fechaHeader, estado, justif){
+    EDIT_CELDA = {
+      rowNumber: Number(rowNumber),
+      col: Number(col),
+      libroKey: document.getElementById('asis-gradoReporte').value
+    };
+
+    document.getElementById('asis-modalCeldaTitle').textContent = 'Editar: ' + nombreAlumno;
+    document.getElementById('asis-modalCeldaInfo').textContent = 'Fecha: ' + fechaHeader;
+    document.getElementById('asis-modalCeldaEstado').value = estado || '';
+    document.getElementById('asis-modalCeldaJustif').value = justif || '';
+    document.getElementById('asis-modalCelda').classList.add('show');
+  }
+
+  function cerrarModalCelda(){
+    document.getElementById('asis-modalCelda').classList.remove('show');
+    EDIT_CELDA = null;
+  }
+
+  function guardarCelda(){
+    if(!EDIT_CELDA) return;
+
+    const token = getToken();
+    const estado = document.getElementById('asis-modalCeldaEstado').value;
+    const justificacion = document.getElementById('asis-modalCeldaJustif').value;
+
+    showBusy('Guardando cambio','Actualizando celda y recalculando porcentajes…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error actualizando celda.', 'error');
+          return;
+        }
+
+        cerrarModalCelda();
+        setStatus('Celda actualizada correctamente.', 'success');
+        cargarReporte();
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error actualizando celda.', 'error');
+      })
+      .mdjAsisEditarCelda(token, {
+        libroKey: EDIT_CELDA.libroKey,
+        rowNumber: EDIT_CELDA.rowNumber,
+        col: EDIT_CELDA.col,
+        estado: estado,
+        justificacion: justificacion
+      });
+  }
+
+  /* ==================== SINCRONIZAR ==================== */
+  function renderGradosList(){
+    const c = document.getElementById('asis-gradosListContainer');
+
+    if(!GRADOS || !GRADOS.length){
+      c.innerHTML = '<div class="empty">No hay grados configurados.</div>';
+      return;
+    }
+
+    c.innerHTML = GRADOS.map(function(g){
+      return '<div class="grado-card">' +
+        '<div>' +
+          '<h4>' + esc(g.nombre) + '</h4>' +
+          '<div style="color:var(--muted);font-size:.85rem;margin-top:4px">Key: ' + esc(g.key) + '</div>' +
+        '</div>' +
+        '<div class="actions">' +
+          '<button class="secondary" onclick="MDJ_ASIS_ADMIN.previewGrado(\'' + escJs(g.key) + '\',\'' + escJs(g.nombre) + '\')">Ver alumnos</button>' +
+          '<button class="success" onclick="MDJ_ASIS_ADMIN.sincronizarGrado(\'' + escJs(g.key) + '\',\'' + escJs(g.nombre) + '\',false)">Sincronizar</button>' +
+          '<button class="danger" onclick="MDJ_ASIS_ADMIN.sincronizarGrado(\'' + escJs(g.key) + '\',\'' + escJs(g.nombre) + '\',true)">Reiniciar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function previewGrado(libroKey, nombre){
+    showBusy('Leyendo notas','Consultando alumnos de ' + nombre + '…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error leyendo alumnos.', 'error');
+          return;
+        }
+
+        document.getElementById('asis-modalPreviewTitle').textContent = 'Vista previa: ' + nombre;
+        document.getElementById('asis-modalPreviewInfo').textContent =
+          'Alumnos encontrados en I BIMESTRE: ' + (r.total || 0);
+
+        const alumnos = r.alumnos || [];
+
+        document.getElementById('asis-modalPreviewList').innerHTML = alumnos.length
+          ? alumnos.map(function(a,i){
+              return (i + 1) + '. ' + esc(a.numero ? a.numero + ' - ' : '') + esc(a.nombre);
+            }).join('<br>')
+          : 'No se encontraron alumnos.';
+
+        document.getElementById('asis-modalPreview').classList.add('show');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error leyendo alumnos.', 'error');
+      })
+      .mdjAsisPreviewAlumnosDesdeNotas(getToken(), libroKey);
+  }
+
+  function cerrarModalPreview(){
+    document.getElementById('asis-modalPreview').classList.remove('show');
+  }
+
+  function sincronizarGrado(libroKey, nombre, forceReset){
+    const msg = forceReset
+      ? 'Esto borrará la hoja actual de asistencia de "' + nombre + '" y la volverá a crear con los alumnos del libro de notas. ¿Continuar?'
+      : 'Se agregarán alumnos nuevos de "' + nombre + '" sin borrar asistencia histórica. ¿Continuar?';
+
+    if(!confirm(msg)) return;
+
+    showBusy(forceReset ? 'Reiniciando grado' : 'Sincronizando grado', 'Leyendo alumnos desde notas…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error sincronizando.', 'error');
+          return;
+        }
+
+        setStatus(r.message || 'Grado sincronizado.', 'success');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error sincronizando.', 'error');
+      })
+      .mdjAsisSincronizarGrado(getToken(), libroKey, forceReset);
+  }
+
+  function sincronizarTodos(){
+    if(!confirm('Sincronizará todos los grados desde los libros de notas. No modifica los archivos originales. ¿Continuar?')){
+      return;
+    }
+
+    showBusy('Sincronización masiva','Procesando todos los grados…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r){
+          setStatus('Error sincronizando todos los grados.', 'error');
+          return;
+        }
+
+        const resumen = (r.resultados || []).map(function(x){
+          return (x.ok ? '✓ ' : '✗ ') + x.grado + ': ' + x.message;
+        }).join('\n');
+
+        setStatus((r.message || 'Sincronización terminada.') + '\n\n' + resumen, r.ok ? 'success' : 'warning');
+        alert((r.message || 'Sincronización terminada.') + '\n\n' + resumen);
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error en sincronización masiva.', 'error');
+      })
+      .mdjAsisSincronizarTodos(getToken());
+  }
+
+  /* ==================== USUARIOS ==================== */
+  function cargarUsuarios(){
+    showBusy('Cargando usuarios','Leyendo hoja USUARIOS…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        const c = document.getElementById('asis-usuariosContainer');
+
+        if(!r || !r.ok){
+          c.className = 'empty';
+          c.innerHTML = 'Error: ' + esc((r && r.message) || '');
+          return;
+        }
+
+        if(!r.usuarios || !r.usuarios.length){
+          c.className = 'empty';
+          c.innerHTML = 'No hay usuarios.';
+          return;
+        }
+
+        c.className = 'table-wrap';
+        c.innerHTML = '<table><thead><tr>' +
+          '<th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th>Acciones</th>' +
+          '</tr></thead><tbody>' +
+          r.usuarios.map(function(u){
+            return '<tr>' +
+              '<td><strong>' + esc(u.usuario) + '</strong></td>' +
+              '<td>' + esc(u.nombre) + '</td>' +
+              '<td><span class="pill">' + esc(u.rol) + '</span></td>' +
+              '<td>' + (u.activo
+                ? '<span style="color:var(--success);font-weight:900">Activo</span>'
+                : '<span style="color:var(--danger);font-weight:900">Inactivo</span>') + '</td>' +
+              '<td>' +
+                '<button class="secondary" onclick="MDJ_ASIS_ADMIN.editarUsuario(' +
+                  u.rowNumber + ',' +
+                  '\'' + escJs(u.usuario) + '\',' +
+                  '\'' + escJs(u.nombre) + '\',' +
+                  '\'' + escJs(u.rol) + '\',' +
+                  (u.activo ? 1 : 0) +
+                ')">Editar</button> ' +
+                '<button class="danger" onclick="MDJ_ASIS_ADMIN.eliminarUsuario(' + u.rowNumber + ',\'' + escJs(u.usuario) + '\')">Eliminar</button>' +
+              '</td>' +
+            '</tr>';
+          }).join('') +
+        '</tbody></table>';
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error cargando usuarios.', 'error');
+      })
+      .mdjAsisListarUsuarios(getToken());
+  }
+
+  function abrirModalUsuario(){
+    EDIT_USUARIO = null;
+
+    document.getElementById('asis-modalUsuarioTitle').textContent = 'Nuevo usuario';
+    document.getElementById('asis-uUsuario').value = '';
+    document.getElementById('asis-uUsuario').disabled = false;
+    document.getElementById('asis-uNombre').value = '';
+    document.getElementById('asis-uPassword').value = '';
+    document.getElementById('asis-uPassHelp').textContent = '(requerida al crear)';
+    document.getElementById('asis-uRol').value = 'maestro';
+    document.getElementById('asis-uActivo').value = '1';
+
+    document.getElementById('asis-modalUsuario').classList.add('show');
+  }
+
+  function editarUsuario(rowNumber, usuario, nombre, rol, activo){
+    EDIT_USUARIO = { rowNumber: rowNumber };
+
+    document.getElementById('asis-modalUsuarioTitle').textContent = 'Editar: ' + usuario;
+    document.getElementById('asis-uUsuario').value = usuario;
+    document.getElementById('asis-uUsuario').disabled = true;
+    document.getElementById('asis-uNombre').value = nombre;
+    document.getElementById('asis-uPassword').value = '';
+    document.getElementById('asis-uPassHelp').textContent = '(dejar vacío para no cambiar)';
+    document.getElementById('asis-uRol').value = rol === 'admin' ? 'admin' : 'maestro';
+    document.getElementById('asis-uActivo').value = activo ? '1' : '0';
+
+    document.getElementById('asis-modalUsuario').classList.add('show');
+  }
+
+  function cerrarModalUsuario(){
+    document.getElementById('asis-modalUsuario').classList.remove('show');
+    EDIT_USUARIO = null;
+  }
+
+  function guardarUsuario(){
+    const usuario = document.getElementById('asis-uUsuario').value.trim();
+    const nombre = document.getElementById('asis-uNombre').value.trim();
+    const password = document.getElementById('asis-uPassword').value.trim();
+    const rol = document.getElementById('asis-uRol').value;
+    const activo = document.getElementById('asis-uActivo').value === '1';
+
+    if(!EDIT_USUARIO){
+      if(!usuario || !nombre || !password){
+        alert('Usuario, nombre y contraseña son requeridos.');
+        return;
+      }
+
+      showBusy('Creando usuario','Guardando en hoja USUARIOS…');
+
+      google.script.run
+        .withSuccessHandler(function(r){
+          hideBusy();
+
+          if(!r || !r.ok){
+            alert((r && r.message) || 'Error creando usuario.');
+            return;
+          }
+
+          cerrarModalUsuario();
+          cargarUsuarios();
+          setStatus('Usuario creado correctamente.', 'success');
+        })
+        .withFailureHandler(function(e){
+          hideBusy();
+          alert((e && e.message) || 'Error creando usuario.');
+        })
+        .mdjAsisCrearUsuario(getToken(), {
+          usuario: usuario,
+          nombre: nombre,
+          password: password,
+          rol: rol,
+          activo: activo
+        });
+
+    }else{
+      if(!nombre){
+        alert('El nombre es requerido.');
+        return;
+      }
+
+      const payload = {
+        rowNumber: EDIT_USUARIO.rowNumber,
+        nombre: nombre,
+        rol: rol,
+        activo: activo
+      };
+
+      if(password) payload.password = password;
+
+      showBusy('Actualizando usuario','Guardando cambios…');
+
+      google.script.run
+        .withSuccessHandler(function(r){
+          hideBusy();
+
+          if(!r || !r.ok){
+            alert((r && r.message) || 'Error actualizando usuario.');
+            return;
+          }
+
+          cerrarModalUsuario();
+          cargarUsuarios();
+          setStatus('Usuario actualizado correctamente.', 'success');
+        })
+        .withFailureHandler(function(e){
+          hideBusy();
+          alert((e && e.message) || 'Error actualizando usuario.');
+        })
+        .mdjAsisActualizarUsuario(getToken(), payload);
+    }
+  }
+
+  function eliminarUsuario(rowNumber, usuario){
+    if(!confirm('¿Eliminar al usuario "' + usuario + '"? Esta acción es irreversible.')){
+      return;
+    }
+
+    showBusy('Eliminando usuario','Actualizando hoja USUARIOS…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error eliminando usuario.', 'error');
+          return;
+        }
+
+        cargarUsuarios();
+        setStatus('Usuario eliminado correctamente.', 'success');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error eliminando usuario.', 'error');
+      })
+      .mdjAsisEliminarUsuario(getToken(), rowNumber);
+  }
+
+  /* ==================== TOMAR ASISTENCIA (ADMIN) ==================== */
+  function adminGetGradoTomar(){
+    const key = document.getElementById('asis-gradoTomar').value;
+    return GRADOS.find(function(g){ return g.key === key; }) || null;
+  }
+
+  function adminCargarListaAsistencia(){
+    const token = getToken();
+    const libroKey = document.getElementById('asis-gradoTomar').value;
+    const fechaISO = document.getElementById('asis-fechaTomar').value;
+
+    if(!libroKey || !fechaISO){
+      setStatus('Selecciona grado y fecha.', 'error');
+      return;
+    }
+
+    ADMIN_TOMAR_GRADO = adminGetGradoTomar();
+    ADMIN_TOMAR_FECHA = fechaISO;
+
+    showBusy('Cargando lista', 'Leyendo alumnos desde la hoja maestra…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error cargando lista.', 'error');
+          return;
+        }
+
+        ADMIN_TOMAR_ALUMNOS = r.alumnos || [];
+        ADMIN_TOMAR_FECHA_EXISTE = !!r.fechaExiste;
+
+        document.getElementById('asis-adminPanelTomar').style.display = 'block';
+
+        adminRenderListaAsistencia();
+        adminActualizarPillsTomar();
+
+        setStatus(
+          ADMIN_TOMAR_FECHA_EXISTE
+            ? 'Esta fecha ya tenía asistencia. Puedes editarla y guardar.'
+            : 'Lista cargada. Marca asistencia y guarda.',
+          ADMIN_TOMAR_FECHA_EXISTE ? 'warning' : 'success'
+        );
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error cargando lista.', 'error');
+      })
+      .mdjAsisGetListaAlumnos(token, libroKey, fechaISO);
+  }
+
+  function adminActualizarPillsTomar(){
+    document.getElementById('asis-adminTomarGradoPill').textContent =
+      'Grado: ' + (ADMIN_TOMAR_GRADO ? ADMIN_TOMAR_GRADO.nombre : '—');
+
+    document.getElementById('asis-adminTomarFechaPill').textContent =
+      'Fecha: ' + (ADMIN_TOMAR_FECHA || '—');
+
+    document.getElementById('asis-adminTomarEstadoPill').textContent =
+      ADMIN_TOMAR_FECHA_EXISTE ? 'Estado: ya registrada' : 'Estado: nueva';
+  }
+
+  function adminRenderListaAsistencia(){
+    const cont = document.getElementById('asis-adminTomarContainer');
+
+    if(!ADMIN_TOMAR_ALUMNOS.length){
+      cont.className = 'empty';
+      cont.innerHTML =
+        '<strong>No hay alumnos cargados.</strong><br>' +
+        'Primero sincroniza alumnos desde la pestaña "Sincronizar alumnos".';
+      return;
+    }
+
+    cont.className = 'table-wrap';
+
+    cont.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th style="width:70px">No.</th>
+            <th>Nombre del estudiante</th>
+            <th style="width:260px">Estado</th>
+            <th>Justificación / comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${ADMIN_TOMAR_ALUMNOS.map(function(a,i){
+            const e = String(a.estado || '').toUpperCase();
+
+            return `
+              <tr>
+                <td>${esc(a.numero || '')}</td>
+                <td><strong>${esc(a.nombre || '')}</strong></td>
+                <td>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <button type="button" class="secondary" onclick="MDJ_ASIS_ADMIN.adminSetEstado(${i}, 'SI')" style="${e === 'SI' ? 'background:#d4f5dd;color:#0d5e3a' : ''}">SÍ</button>
+                    <button type="button" class="secondary" onclick="MDJ_ASIS_ADMIN.adminSetEstado(${i}, 'NO')" style="${e === 'NO' ? 'background:#fddddd;color:#8a1f1f' : ''}">NO</button>
+                    <button type="button" class="secondary" onclick="MDJ_ASIS_ADMIN.adminSetEstado(${i}, 'JUSTIFICADO')" style="${e === 'JUSTIFICADO' ? 'background:#fff3cd;color:#7a5a00' : ''}">Justif.</button>
+                  </div>
+                </td>
+                <td>
+                  <input
+                    value="${esc(a.justificacion || '')}"
+                    placeholder="Motivo, permiso, constancia..."
+                    onchange="MDJ_ASIS_ADMIN.adminSetJustif(${i}, this.value)"
+                  >
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function adminSetEstado(idx, estado){
+    if(!ADMIN_TOMAR_ALUMNOS[idx]) return;
+
+    ADMIN_TOMAR_ALUMNOS[idx].estado = estado;
+
+    if(estado === 'SI'){
+      ADMIN_TOMAR_ALUMNOS[idx].justificacion = '';
+    }
+
+    if(estado === 'NO' && !ADMIN_TOMAR_ALUMNOS[idx].justificacion){
+      ADMIN_TOMAR_ALUMNOS[idx].justificacion = 'Pendiente de justificación';
+    }
+
+    adminRenderListaAsistencia();
+  }
+
+  function adminSetJustif(idx, value){
+    if(!ADMIN_TOMAR_ALUMNOS[idx]) return;
+    ADMIN_TOMAR_ALUMNOS[idx].justificacion = value || '';
+  }
+
+  function adminMarcarTodos(estado){
+    if(!ADMIN_TOMAR_ALUMNOS.length){
+      setStatus('Primero carga la lista.', 'error');
+      return;
+    }
+
+    ADMIN_TOMAR_ALUMNOS.forEach(function(a){
+      a.estado = estado;
+
+      if(estado === 'SI') a.justificacion = '';
+      if(estado === 'NO' && !a.justificacion) a.justificacion = 'Pendiente de justificación';
+    });
+
+    adminRenderListaAsistencia();
+
+    setStatus(
+      estado === 'SI'
+        ? 'Todos fueron marcados como presentes.'
+        : 'Todos fueron marcados como ausentes.',
+      estado === 'SI' ? 'success' : 'warning'
+    );
+  }
+
+  function adminGuardarAsistencia(){
+    const token = getToken();
+    const libroKey = document.getElementById('asis-gradoTomar').value;
+    const fechaISO = document.getElementById('asis-fechaTomar').value;
+
+    if(!libroKey || !fechaISO){
+      setStatus('Grado y fecha son requeridos.', 'error');
+      return;
+    }
+
+    if(!ADMIN_TOMAR_ALUMNOS.length){
+      setStatus('No hay alumnos para guardar.', 'error');
+      return;
+    }
+
+    const registros = ADMIN_TOMAR_ALUMNOS.map(function(a){
+      return {
+        rowNumber: a.rowNumber,
+        estado: a.estado || '',
+        justificacion: a.justificacion || ''
+      };
+    });
+
+    showBusy('Guardando asistencia', 'Escribiendo en la hoja maestra…');
+
+    google.script.run
+      .withSuccessHandler(function(r){
+        hideBusy();
+
+        if(!r || !r.ok){
+          setStatus((r && r.message) || 'Error guardando asistencia.', 'error');
+          return;
+        }
+
+        ADMIN_TOMAR_FECHA_EXISTE = true;
+        adminActualizarPillsTomar();
+
+        setStatus('Asistencia guardada correctamente por administrador.', 'success');
+      })
+      .withFailureHandler(function(e){
+        hideBusy();
+        setStatus((e && e.message) || 'Error guardando asistencia.', 'error');
+      })
+      .mdjAsisGuardarAsistencia(token, {
+        libroKey: libroKey,
+        fechaISO: fechaISO,
+        registros: registros
+      });
+  }
+
+  
+  window.MDJ_ASIS_ADMIN = {
+    mount: function(){ if(initialized) return; initialized = true; iniciar(); },
+    getToken: getToken,
+    volverPanelCentral: volverPanelCentral,
+    goLogin: goLogin,
+    showBusy: showBusy,
+    hideBusy: hideBusy,
+    setStatus: setStatus,
+    esc: esc,
+    escJs: escJs,
+    showView: showView,
+    iniciar: iniciar,
+    abrirHojaAsistencia: abrirHojaAsistencia,
+    cargarReporte: cargarReporte,
+    renderReporte: renderReporte,
+    abrirModalCelda: abrirModalCelda,
+    cerrarModalCelda: cerrarModalCelda,
+    guardarCelda: guardarCelda,
+    renderGradosList: renderGradosList,
+    previewGrado: previewGrado,
+    cerrarModalPreview: cerrarModalPreview,
+    sincronizarGrado: sincronizarGrado,
+    sincronizarTodos: sincronizarTodos,
+    cargarUsuarios: cargarUsuarios,
+    abrirModalUsuario: abrirModalUsuario,
+    editarUsuario: editarUsuario,
+    cerrarModalUsuario: cerrarModalUsuario,
+    guardarUsuario: guardarUsuario,
+    eliminarUsuario: eliminarUsuario,
+    adminGetGradoTomar: adminGetGradoTomar,
+    adminCargarListaAsistencia: adminCargarListaAsistencia,
+    adminActualizarPillsTomar: adminActualizarPillsTomar,
+    adminRenderListaAsistencia: adminRenderListaAsistencia,
+    adminSetEstado: adminSetEstado,
+    adminSetJustif: adminSetJustif,
+    adminMarcarTodos: adminMarcarTodos,
+    adminGuardarAsistencia: adminGuardarAsistencia
+  };
+})();
+
+</script>

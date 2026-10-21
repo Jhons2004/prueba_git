@@ -189,7 +189,8 @@
         <div style="height:18px"></div>
         <div class="actions">
           <!-- Botón de asistencia agregado -->
-          <button class="secondary" onclick="abrirModuloAsistencia('asistencia')">Tomar Asistencia</button>
+          <button class="secondary" id="btnDocAsistencia" onclick="abrirModuloAsistencia()">Tomar asistencia</button>
+          <button class="secondary" id="btnDocNotas" onclick="mostrarNotasDocente()" style="display:none">Volver a calificaciones</button>
           <button class="secondary" onclick="goLogin()">Cerrar sesión</button>
           <button class="secondary" onclick="reloadTeacherPanel()">Recargar</button>
         </div>
@@ -200,6 +201,7 @@
       </aside>
 
       <main class="card">
+        <div id="mdjNotasDocente">
         <div class="toolbar">
           <div>
             <label>Año</label>
@@ -254,6 +256,14 @@
         </div>
 
         <div id="tableContainer" class="empty">Selecciona año, grado, bimestre y curso para cargar el registro.</div>
+        </div>
+        <div id="mdjAsistenciaDocente" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+            <h2 style="margin:0;color:var(--primary)">Tomar asistencia</h2>
+            <button class="secondary" onclick="mostrarNotasDocente()">Volver a calificaciones</button>
+          </div>
+          <?!= include('TomarAsistenciaIntegrada'); ?>
+        </div>
       </main>
     </div>
   </div>
@@ -269,6 +279,7 @@
   <!-- Modal de Asistencia -->
   <script>
   const WEB_APP_URL = '<?= webAppUrl ?>' || window.location.href.split('?')[0];
+  const MDJ_INITIAL_VIEW = <?= JSON.stringify(initialView || '') ?>;
 
 
   let SESSION = null;
@@ -276,8 +287,18 @@
   let CURRENT_ROWS = [];
   let ALL_BOOKS = [];
 
-  function abrirModuloAsistencia(page) {
-    window.location.assign(buildPageUrl(page || 'asistencia'));
+  function abrirModuloAsistencia(){
+    document.getElementById('mdjNotasDocente').style.display='none';
+    document.getElementById('mdjAsistenciaDocente').style.display='block';
+    document.getElementById('btnDocNotas').style.display='inline-flex';
+    document.getElementById('btnDocAsistencia').style.display='none';
+    if(window.MDJ_ASIS_DOC) window.MDJ_ASIS_DOC.mount();
+  }
+  function mostrarNotasDocente(){
+    document.getElementById('mdjNotasDocente').style.display='block';
+    document.getElementById('mdjAsistenciaDocente').style.display='none';
+    document.getElementById('btnDocNotas').style.display='none';
+    document.getElementById('btnDocAsistencia').style.display='inline-flex';
   }
 
   function setStatus(message, type) {
@@ -652,6 +673,7 @@
   }
 
   requireSession();
+  if(MDJ_INITIAL_VIEW === 'asistencia') abrirModuloAsistencia();
 </script>
 </body>
 </html>

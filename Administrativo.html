@@ -224,6 +224,40 @@
       .boleta-head,.ag-add-panel{flex-direction:column;align-items:stretch}
       .save-all-bar{flex-direction:column;align-items:stretch}
     }
+
+    /* Menú lateral plegable, accesible, sin modificar el encabezado ni el logo. */
+    .layout{grid-template-columns:288px minmax(0,1fr);align-items:start;transition:grid-template-columns .18s ease}
+    .layout > main.card{min-width:0}
+    .sidebar-left{position:sticky;top:12px;padding:16px;min-width:0;max-height:calc(100vh - 24px);overflow:auto}
+    .sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+    .sidebar-heading{font-size:1rem;color:var(--primary)}
+    .sidebar-toggle{padding:10px 13px;min-width:44px;min-height:44px;box-shadow:none}
+    .sidebar-nav{display:grid;gap:7px;margin-bottom:15px}
+    .sidebar-link{width:100%;display:flex;align-items:center;text-align:left;gap:12px;justify-content:flex-start;min-height:46px;padding:10px 12px;border-radius:12px;font-size:.91rem}
+    .sidebar-link.active{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-color:transparent}
+    .sidebar-icon{display:inline-flex;width:25px;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+    .sidebar-label{white-space:normal}
+    .sidebar-details{border-top:1px solid var(--border);padding-top:14px}
+    .main-view-head{margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .main-view-head h2{margin:0;color:var(--primary);font-size:1.3rem}
+    .main-view-head p{margin:5px 0 0;color:var(--muted);font-size:.87rem}
+    body.sidebar-collapsed .layout{grid-template-columns:78px minmax(0,1fr)}
+    body.sidebar-collapsed .sidebar-heading,body.sidebar-collapsed .sidebar-details,body.sidebar-collapsed .sidebar-label{display:none}
+    body.sidebar-collapsed .sidebar-left{padding:10px 8px}
+    body.sidebar-collapsed .sidebar-header{justify-content:center}
+    body.sidebar-collapsed .sidebar-link{justify-content:center;padding:10px 6px}
+    body.sidebar-collapsed .sidebar-nav{margin-bottom:0}
+    @media(max-width:900px){
+      .layout,body.sidebar-collapsed .layout{grid-template-columns:minmax(0,1fr)}
+      .sidebar-left{position:relative;top:auto;max-height:none}
+      .sidebar-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+      body.sidebar-collapsed .sidebar-nav{display:none}
+      body.sidebar-collapsed .sidebar-heading{display:block}
+      body.sidebar-collapsed .sidebar-left{padding:14px}
+      body.sidebar-collapsed .sidebar-details{display:none}
+    }
+    @media(max-width:560px){.sidebar-nav{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -248,7 +282,20 @@
   </div>
 
   <div class="layout">
-    <aside class="card">
+    <aside class="card sidebar-left" id="mdjSidebar" aria-label="Menú lateral de Dirección">
+      <div class="sidebar-header">
+        <strong class="sidebar-heading">Menú de Dirección</strong>
+        <button class="sidebar-toggle secondary" id="sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Contraer menú" aria-expanded="true" title="Plegar / desplegar menú">☰</button>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav" aria-label="Secciones del sistema">
+        <button class="tab-btn sidebar-link active" id="tab-curso" title="Consulta por curso" onclick="showView('curso')"><span class="sidebar-icon">📚</span><span class="sidebar-label">Consulta por curso</span></button>
+        <button class="tab-btn sidebar-link" id="tab-finales" title="Notas finales" onclick="showView('finales')"><span class="sidebar-icon">📋</span><span class="sidebar-label">Notas finales</span></button>
+        <button class="tab-btn sidebar-link" id="tab-boletas" title="Boletas" onclick="showView('boletas')"><span class="sidebar-icon">📄</span><span class="sidebar-label">Boletas</span></button>
+        <button class="tab-btn sidebar-link" id="tab-consolidados" title="Consolidados" onclick="showView('consolidados')"><span class="sidebar-icon">📊</span><span class="sidebar-label">Consolidados</span></button>
+        <button class="tab-btn sidebar-link" id="tab-alumnos" title="Gestión alumnos" onclick="showView('alumnos')"><span class="sidebar-icon">🎓</span><span class="sidebar-label">Gestión alumnos</span></button>
+        <button class="tab-btn sidebar-link" id="tab-asistencia-admin" title="Asistencia administrativa" onclick="showView('asistencia-admin')"><span class="sidebar-icon">✅</span><span class="sidebar-label">Asistencia administrativa</span></button>
+      </nav>
+      <div class="sidebar-details">
       <p class="section-title">Panel administrativo</p>
       <h2 style="margin:0 0 8px">Gestión académica</h2>
       <p class="helper">Consulta cursos, revisa notas finales, genera boletas y administra el padrón de alumnos.</p>
@@ -261,24 +308,18 @@
         <div class="metric"><small>Cursos visibles</small><strong id="metricCourses">0</strong></div>
       </div>
       <div style="height:14px"></div>
-      <div class="actions">
-        <button class="secondary" onclick="abrirModuloAsistencia('asistencia-admin')">Asistencia admin</button>
+      <div class="actions sidebar-session-actions">
         <button class="secondary" onclick="goLogin()">Cerrar sesión</button>
       </div>
       <div style="height:16px"></div>
       <p class="section-title">Libros</p>
       <div class="list" id="bookList"><div class="empty">Cargando libros...</div></div>
       <div class="console" id="consoleBox"></div>
+      </div>
     </aside>
 
     <main class="card">
-      <div class="tabs">
-        <button class="tab-btn active" id="tab-curso"   onclick="showView('curso')">Consulta por curso</button>
-        <button class="tab-btn"        id="tab-finales" onclick="showView('finales')">Notas finales</button>
-        <button class="tab-btn"        id="tab-boletas" onclick="showView('boletas')">Boletas</button>
-        <button class="tab-btn"        id="tab-consolidados" onclick="showView('consolidados')">Consolidados</button>
-        <button class="tab-btn"        id="tab-alumnos" onclick="showView('alumnos')">Gestión alumnos</button>
-      </div>
+      <div class="main-view-head"><h2 id="currentViewTitle">Consulta por curso</h2><p>Gestiona todos los módulos desde el menú lateral.</p></div>
       <div class="status" id="status"></div>
 
       <!-- TAB CURSOS -->
@@ -404,6 +445,11 @@
           <div class="empty">Selecciona un grado y pulsa <strong>Cargar alumnos</strong> para gestionar el padrón.</div>
         </div>
       </section>
+
+      <!-- La asistencia se dibuja aquí mismo, sin otra URL ni iframe. -->
+      <section class="view" id="view-asistencia-admin">
+        <?!= include('AdminAsistenciaIntegrada'); ?>
+      </section>
     </main>
   </div>
 </div>
@@ -449,6 +495,7 @@
 <script>
   const WEB_APP_URL   = <?= JSON.stringify(webAppUrl || '') ?> || window.location.href.split('?')[0];
   const LOGO_DATA_URI = <?!= JSON.stringify(logoDataUri || '') ?>;
+  const MDJ_INITIAL_VIEW = <?= JSON.stringify(initialView || '') ?>;
 
   /* ── ESTADO GLOBAL ── */
   let SESSION = null, BOOTSTRAP = null;
@@ -476,12 +523,34 @@
   function goLogin(){ clearLocalSession(); window.location.replace(buildPageUrl('login')); }
   function getUserPayload(r){ return r&&(r.user||r.usuario||r.sessionUser)||null; }
   function getRolePayload(r){ const u=getUserPayload(r); return u&&u.rol?String(u.rol).toLowerCase():(r&&r.redirectPage?String(r.redirectPage).toLowerCase():''); }
+  const MDJ_VIEW_TITLES = {
+    curso: 'Consulta por curso', finales: 'Notas finales', boletas: 'Boletas',
+    consolidados: 'Consolidados', alumnos: 'Gestión de alumnos',
+    'asistencia-admin': 'Control de asistencia'
+  };
   function showView(v){
-    document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
-    document.getElementById('view-'+v).classList.add('active');
-    document.getElementById('tab-'+v).classList.add('active');
+    const view = document.getElementById('view-'+v);
+    const tab = document.getElementById('tab-'+v);
+    if(!view || !tab) return;
+    document.querySelectorAll('main.card > .view').forEach(el=>el.classList.remove('active'));
+    document.querySelectorAll('#sidebarNav > .tab-btn').forEach(el=>el.classList.remove('active'));
+    view.classList.add('active');
+    tab.classList.add('active');
+    tab.setAttribute('aria-current','page');
+    document.querySelectorAll('#sidebarNav > .tab-btn').forEach(el=>{ if(el!==tab)el.removeAttribute('aria-current'); });
+    document.getElementById('currentViewTitle').textContent = MDJ_VIEW_TITLES[v] || 'Administración';
+    if(v === 'asistencia-admin' && window.MDJ_ASIS_ADMIN){ window.MDJ_ASIS_ADMIN.mount(); }
   }
+  function setSidebarCollapsed(collapsed){
+    document.body.classList.toggle('sidebar-collapsed',!!collapsed);
+    const btn = document.getElementById('sidebarToggle');
+    btn.setAttribute('aria-expanded',String(!collapsed));
+    btn.setAttribute('aria-label',collapsed ? 'Desplegar menú' : 'Contraer menú');
+    btn.title = collapsed ? 'Desplegar menú' : 'Contraer menú';
+    try { localStorage.setItem('mdj_sidebar_collapsed',collapsed ? '1':'0'); } catch(e){}
+  }
+  function toggleSidebar(){ setSidebarCollapsed(!document.body.classList.contains('sidebar-collapsed')); }
+  try { setSidebarCollapsed(localStorage.getItem('mdj_sidebar_collapsed')==='1'); } catch(e) {}
 
   /* ── SESIÓN / BOOTSTRAP ── */
   function requireSession(){
@@ -1274,10 +1343,8 @@
     });
   }
 
-  /* Asistencia integrada: usa la sesión del sistema central. */
-  function abrirModuloAsistencia(page){
-    window.location.assign(buildPageUrl(page || 'asistencia-admin'));
-  }
+  /* Compatibilidad con botones anteriores: navegación dentro del mismo panel. */
+  function abrirModuloAsistencia(){ showView('asistencia-admin'); }
 
   /* ── LISTENERS ── */
   document.getElementById('libroSelectCurso').addEventListener('change',loadCoursesCurso);
@@ -1318,6 +1385,7 @@
   initBrandLogo();
 
   requireSession();
+  if(MDJ_INITIAL_VIEW === 'asistencia-admin') showView('asistencia-admin');
 </script>
 </body>
 </html>

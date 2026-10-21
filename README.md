@@ -14,7 +14,8 @@ mantiene los registros diarios en una **hoja maestra propia**.
 
 El usuario y la sesión son **únicos** (`mdjLogin`, `mdjGetSession`, `mdj_token`).
 La asistencia consulta `MDJ_LIBROS` del sistema central y usa el mismo logo `MDJ_LOGO_DATA_URI`.
-No hay acceso mediante iframe a otro Web App.
+**Asistencia administrativa y docente se muestran en sus respectivos paneles centrales**, sin iframe ni navegación hacia otro Web App.
+En Dirección el menú se encuentra a la izquierda y puede plegarse/desplegarse con **☰**; su estado se conserva por navegador.
 
 ## Instalación segura en Apps Script QA
 
@@ -39,7 +40,8 @@ No hay acceso mediante iframe a otro Web App.
 - `Code.js`, `Config.js`, `Auth.js`: sesión, navegación, grados y académico.
 - `Administrativo.html`, `Maestro.html`, `Login.html`: interfaz central.
 - `AsistenciaConfig.js`, `AsistenciaAuth.js`, `AsistenciaCodigo.js`, `AsistenciaHelpers.js`, `AsistenciaLogo.js`, `Asistencia.js`: módulo integrado.
-- `AdminAsistencia.html`, `TomarAsistencia.html`: interfaces integradas.
+- `AdminAsistenciaIntegrada.html`, `TomarAsistenciaIntegrada.html`: vistas incrustadas nativamente en `Administrativo.html` y `Maestro.html`, con estilos y JavaScript aislados por módulo.
+- `AdminAsistencia.html`, `TomarAsistencia.html`: páginas originales conservadas únicamente como referencia/compatibilidad, no son el destino del menú central.
 - Otros `.js`: boletas, consolidados y utilidades del sistema anterior.
 
 ## Validación
@@ -47,3 +49,23 @@ No hay acceso mediante iframe a otro Web App.
 `node --check` para cada `.js`; inspeccionar duplicados de funciones globales.
 La conexión, permisos, datos y generación real de documentos **requieren pruebas
 contra copias de Sheets y Drive en Google Apps Script**.
+
+## Navegación integrada (revisión octubre 2026)
+
+- Dirección: ingresar normalmente a `?page=admin`, presionar **Asistencia administrativa** en la barra lateral. Dentro de la misma página aparecen **Reportes**, **Tomar asistencia**, **Sincronizar alumnos** y **Usuarios**. La barra lateral se pliega mediante **☰** sin perder el módulo seleccionado.
+- Docentes: ingresar a `?page=maestro`, seleccionar **Tomar asistencia**; el registro aparece dentro del mismo panel. **Volver a calificaciones** restaura la vista anterior sin perder la sesión.
+- Los enlaces antiguos `?page=asistencia-admin` y `?page=asistencia` abren el panel central correspondiente con el módulo seleccionado.
+- Se conservaron el logo institucional, la autenticación, las funciones del servidor de asistencia y la configuración por propiedades de Apps Script.
+
+### Actualizar proyecto Apps Script QA existente
+
+```powershell
+cd "$HOME\Documents\prueba_git"
+git pull origin main
+clasp status
+clasp push
+```
+
+Después, **Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar**. Si se usa la URL `/dev` en sesión de editor, los cambios guardados pueden revisarse sin generar una nueva versión. Para datos de producción se recomienda restringir permisos y comprobar con una cuenta de cada rol.
+
+> Estas son modificaciones de interfaz verificadas con análisis estático y `node --check`. La prueba de navegación autenticada con Google Apps Script y las lecturas/escrituras reales requiere un despliegue de QA.
