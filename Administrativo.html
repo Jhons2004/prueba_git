@@ -293,7 +293,7 @@
         <button class="tab-btn sidebar-link" id="tab-boletas" title="Boletas" onclick="showView('boletas')"><span class="sidebar-icon">📄</span><span class="sidebar-label">Boletas</span></button>
         <button class="tab-btn sidebar-link" id="tab-consolidados" title="Consolidados" onclick="showView('consolidados')"><span class="sidebar-icon">📊</span><span class="sidebar-label">Consolidados</span></button>
         <button class="tab-btn sidebar-link" id="tab-alumnos" title="Gestión alumnos" onclick="showView('alumnos')"><span class="sidebar-icon">🎓</span><span class="sidebar-label">Gestión alumnos</span></button>
-        <button class="tab-btn sidebar-link" id="tab-asistencia-admin" title="Asistencia administrativa" onclick="showView('asistencia-admin')"><span class="sidebar-icon">✅</span><span class="sidebar-label">Asistencia administrativa</span></button>
+        <button class="tab-btn sidebar-link" id="tab-asistencia-admin" title="Asistencia de Estudiantes" onclick="showView('asistencia-admin')"><span class="sidebar-icon">✅</span><span class="sidebar-label">Asistencia de Estudiantes</span></button>
       </nav>
       <div class="sidebar-details">
       <p class="section-title">Panel administrativo</p>
@@ -526,7 +526,7 @@
   const MDJ_VIEW_TITLES = {
     curso: 'Consulta por curso', finales: 'Notas finales', boletas: 'Boletas',
     consolidados: 'Consolidados', alumnos: 'Gestión de alumnos',
-    'asistencia-admin': 'Control de asistencia'
+    'asistencia-admin': 'Asistencia de Estudiantes'
   };
   function showView(v){
     const view = document.getElementById('view-'+v);

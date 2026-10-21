@@ -3,286 +3,198 @@
 <head>
   <base target="_top">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - <?= app.nombre ?></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102a50">
+  <title>Acceso | <?= app.nombre ?></title>
   <style>
-    :root {
-      --bg: #edf4fb;
-      --panel: #ffffff;
-      --primary: #0f4c81;
-      --primary-2: #1f6fb2;
-      --accent: #f4b400;
-      --text: #1d2b3a;
-      --muted: #64748b;
-      --border: #dce6f1;
-      --shadow: 0 28px 60px rgba(15, 76, 129, .16);
-      --radius: 28px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      font-family: Inter, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(244,180,0,.18), transparent 26%),
-        radial-gradient(circle at bottom right, rgba(31,111,178,.20), transparent 30%),
-        linear-gradient(180deg,#edf4fb 0%, #f8fbfe 100%);
-    }
-    .login-shell {
-      width: min(1100px, 100%);
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      overflow: hidden;
-      background: rgba(255,255,255,.88);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(220,230,241,.9);
-      border-radius: 34px;
-      box-shadow: var(--shadow);
-    }
-    .hero {
-      padding: 42px;
-      background:
-        linear-gradient(135deg, rgba(15,76,129,.97), rgba(31,111,178,.9)),
-        linear-gradient(180deg,#0f4c81,#1f6fb2);
-      color: #fff;
-      position: relative;
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.16);
-      border: 1px solid rgba(255,255,255,.18);
-      font-weight: 800;
-      margin-bottom: 18px;
-    }
-    .hero h1 { margin: 0 0 12px; font-size: 2.35rem; line-height: 1.06; }
-    .hero p { margin: 0; font-size: 1rem; max-width: 560px; line-height: 1.65; color: rgba(255,255,255,.9); }
-    .hero-grid { display: grid; gap: 14px; margin-top: 32px; grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .mini-card {
-      padding: 16px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.18);
-    }
-    .mini-card strong { display: block; font-size: 1.1rem; margin-bottom: 8px; }
-    .panel { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-    .badge {
-      display: inline-flex;
-      width: max-content;
-      padding: 8px 14px;
-      background: #eef5fb;
-      color: var(--primary);
-      border-radius: 999px;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .panel h2 { margin: 0 0 10px; font-size: 1.8rem; }
-    .panel p { margin: 0 0 22px; color: var(--muted); line-height: 1.55; }
-    form { display: grid; gap: 16px; }
-    label { font-weight: 700; color: var(--muted); font-size: .9rem; display: block; margin-bottom: 8px; }
-    input {
-      width: 100%;
-      border-radius: 16px;
-      border: 1px solid #cedbea;
-      padding: 14px 16px;
-      font-size: 1rem;
-      outline: none;
-      transition: .2s ease;
-      background: #fff;
-    }
-    input:focus { border-color: var(--primary-2); box-shadow: 0 0 0 4px rgba(31,111,178,.12); }
-    button {
-      border: 0;
-      border-radius: 16px;
-      padding: 14px 18px;
-      background: linear-gradient(135deg,var(--primary),var(--primary-2));
-      color: #fff;
-      font-weight: 800;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 18px 30px rgba(15,76,129,.18);
-    }
-    button[disabled] {
-      opacity: .7;
-      cursor: wait;
-    }
-    .demo {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 18px;
-      background: #f7fbff;
-      border: 1px solid var(--border);
-      font-size: .92rem;
-    }
-    .status { min-height: 24px; margin-top: 12px; font-weight: 700; }
-    .status.error { color: #d64545; }
-    .status.success { color: #168764; }
-    @media (max-width: 900px) {
-      .login-shell { grid-template-columns: 1fr; }
-      .hero-grid { grid-template-columns: 1fr; }
-    }
+    :root{--navy:#102a50;--navy2:#174779;--blue:#266ba6;--gold:#efbe5e;--ink:#182d47;--muted:#657790;--line:#dce6f1;--red:#be374c;--paper:#fff;--success:#0d8067}
+    *{box-sizing:border-box} html,body{min-height:100%;margin:0}
+    body{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:#eaf2f9;color:var(--ink)}
+    button,input{font:inherit} button{cursor:pointer}
+    .backdrop{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(circle at 13% 14%,#d4e8fb 0%,transparent 38%),radial-gradient(circle at 87% 86%,#cce2fa 0%,transparent 37%),linear-gradient(135deg,#edf5fc,#e5eff9)}
+    .backdrop:before{content:"";position:absolute;inset:-35%;background:repeating-radial-gradient(circle at center,transparent 0 72px,rgba(39,100,161,.035) 73px 74px);animation:drift 42s linear infinite}
+    @keyframes drift{to{transform:rotate(12deg)}}
+    .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 18px}
+    .shell{width:min(1060px,100%);display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.88fr);overflow:hidden;border-radius:30px;background:#fff;box-shadow:0 25px 90px rgba(17,48,91,.16);border:1px solid #dce7f1;animation:rise .65s ease both}
+    @keyframes rise{from{opacity:0;transform:translateY(16px) scale(.99)}to{opacity:1;transform:none}}
+    .hero{position:relative;isolation:isolate;padding:48px 44px 42px;background:linear-gradient(145deg,#0e2c56,#16538a 70%,#236da5);color:white;overflow:hidden;min-height:574px;display:flex;flex-direction:column;justify-content:space-between}
+    .hero:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(circle at 95% 8%,rgba(239,190,94,.17),transparent 35%),radial-gradient(circle at 5% 93%,rgba(148,207,245,.22),transparent 48%)}
+    .orbit{position:absolute;right:-128px;bottom:-148px;width:420px;height:420px;border:1px solid rgba(255,255,255,.14);border-radius:50%;pointer-events:none;animation:spin 45s linear infinite}
+    .orbit:before,.orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12)}.orbit:before{inset:45px}.orbit:after{inset:108px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .orbit-dot{position:absolute;width:12px;height:12px;right:75px;top:28px;background:#f0c874;box-shadow:0 0 26px #f2c569;border-radius:50%}
+    .logo-badge{width:104px;height:104px;border-radius:25px;background:white;display:grid;place-items:center;box-shadow:0 14px 34px #00192f44;border:5px solid #ffffff35;position:relative;overflow:hidden}
+    .logo-badge img{max-width:94%;max-height:94%;object-fit:contain;display:none}.logo-badge .fallback{font-size:28px;font-weight:900;color:var(--navy)}
+    .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.19em;font-weight:800;color:#e8c781;margin:28px 0 13px}
+    .hero h1{font-size:clamp(34px,4vw,51px);line-height:1.08;letter-spacing:-.045em;margin:0 0 16px;max-width:500px}
+    .hero .lead{color:#d5e6f8;line-height:1.7;font-size:15px;max-width:425px;margin:0}
+    .hero-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:35px}
+    .hero-card{background:#ffffff14;border:1px solid #ffffff24;border-radius:17px;padding:17px 15px;backdrop-filter:blur(5px)}
+    .hero-card b{display:block;font-size:13px;margin:7px 0 3px}.hero-card small{display:block;color:#c5def5;line-height:1.5;font-size:12px}
+    .hero-card .ico{font-size:22px}.hero-foot{position:relative;color:#bdd5ed;font-size:12px;margin-top:30px}
+    .access{display:flex;align-items:center;padding:48px 49px}
+    .access-inner{width:100%;max-width:374px;margin:auto}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:#ecf4fc;border:1px solid #d9e8f5;color:#185b94;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;border-radius:999px;padding:8px 12px}
+    .pill:before{content:"";width:7px;height:7px;border-radius:50%;background:#18a081;box-shadow:0 0 0 3px #d7f5eb}
+    h2{font-size:30px;letter-spacing:-.035em;line-height:1.12;margin:20px 0 9px;color:var(--navy)}
+    .description{margin:0 0 29px;color:var(--muted);font-size:14px;line-height:1.7}
+    .field{margin:0 0 18px;position:relative}
+    label{display:block;font-weight:750;color:#324b67;font-size:13px;margin-bottom:8px}
+    .input-wrap{position:relative}.field input{width:100%;border:1px solid #d6e3f0;border-radius:13px;background:#fbfdff;color:#142d49;padding:14px 46px 14px 15px;height:49px;outline:0;transition:border-color .2s,box-shadow .2s;font-size:14px}
+    .field input:focus{border-color:#2f76ae;box-shadow:0 0 0 4px #2879b51b;background:white}
+    .field input::placeholder{color:#92a3b5}
+    .input-icon{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#879ab2;font-size:18px;pointer-events:none}
+    .reveal{position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#4e6885;padding:9px 12px;border-radius:9px;font-size:12px;font-weight:800}
+    .reveal:hover{background:#edf5fc}.caps{display:none;color:#9d6b08;font-size:12px;margin:-10px 0 13px}.caps.show{display:block}
+    .submit{width:100%;border:0;border-radius:13px;min-height:52px;color:white;font-weight:800;background:linear-gradient(105deg,#103d70,#216da7);box-shadow:0 13px 26px #184f862d;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .18s,box-shadow .18s,opacity .18s;margin-top:12px}
+    .submit:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 17px 30px #184f8640}.submit:disabled{opacity:.72;cursor:wait}
+    .spinner{display:none;width:17px;height:17px;border:2px solid #ffffff66;border-top-color:white;border-radius:50%;animation:spin .75s linear infinite}.submit.loading .spinner{display:block}
+    .status{min-height:23px;margin-top:14px;font-size:13px;font-weight:700;text-align:center;line-height:1.5}.status.error{color:#ad3447}.status.success{color:var(--success)}
+    .security{display:flex;align-items:center;gap:9px;border-top:1px solid #e7eef5;margin-top:26px;padding-top:20px;color:#768ba3;font-size:12px;line-height:1.5}
+    .page-foot{font-size:12px;color:#697f95;text-align:center;margin-top:23px}
+    #particles{position:fixed;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
+    .dissolve{animation:depart .55s ease forwards}@keyframes depart{to{opacity:0;transform:translateY(-12px) scale(.985);filter:blur(3px)}}
+    .shake{animation:shake .33s ease}@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+    @media(max-width:840px){.shell{grid-template-columns:1fr;max-width:540px}.hero{min-height:auto;padding:25px 28px 24px}.hero h1{font-size:30px;max-width:none}.logo-badge{width:76px;height:76px;border-radius:20px}.eyebrow{margin:16px 0 9px}.hero-info,.hero-foot{display:none}.hero .lead{font-size:13px;line-height:1.55}.access{padding:32px 29px 34px}.access-inner{max-width:none}}
+    @media(max-width:420px){.page{padding:10px}.shell{border-radius:20px}.hero{padding:21px}.access{padding:26px 20px}.hero h1{font-size:27px}.access h2{font-size:27px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
 </head>
 <body>
-  <div class="login-shell">
-    <section class="hero">
-      <div class="hero-badge">Colegio Mundo de Juguetes</div>
-      <h1><?= app.nombre ?></h1>
-      <p>Sistema académico para administración, consulta de cursos, carga de notas y control por roles de usuario.</p>
-
-      <div class="hero-grid">
-        <div class="mini-card">
-          <strong>Modo administración</strong>
-          <span>Consulta notas, revisa estudiantes por curso y genera boletas desde consolidado.</span>
-        </div>
-        <div class="mini-card">
-          <strong>Modo maestro</strong>
-          <span>Visualiza cursos asignados y actualiza actividades, evaluación objetiva y nota bimestral.</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="badge">Acceso al sistema</div>
-      <h2>Iniciar sesión</h2>
-      <p>Ingresa con el usuario y la contraseña registrados en tu hoja de control académico.</p>
-
-      <form id="frmLogin">
+  <div class="backdrop" aria-hidden="true"></div>
+  <main class="page">
+    <div class="shell" id="loginShell">
+      <section class="hero" aria-label="Identidad institucional">
+        <div class="orbit" aria-hidden="true"><span class="orbit-dot"></span></div>
         <div>
-          <label for="usuario">Usuario</label>
-          <input id="usuario" name="usuario" autocomplete="username" placeholder="Ej. admin o maestro1">
+          <div class="logo-badge" id="logoBadge">
+            <img id="logoInstitucional" alt="Escudo del Colegio Mundo de Juguetes">
+            <span class="fallback" id="logoFallback">MDJ</span>
+          </div>
+          <div class="eyebrow">Plataforma institucional</div>
+          <h1>Colegio Mundo de Juguetes</h1>
+          <p class="lead">Un mismo espacio para Dirección y docentes: control académico, calificaciones, boletas y asistencia de estudiantes.</p>
         </div>
         <div>
-          <label for="password">Contraseña</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa la contraseña">
+          <div class="hero-info" aria-hidden="true">
+            <div class="hero-card"><span class="ico">📚</span><b>Gestión académica</b><small>Notas, cursos y expedientes</small></div>
+            <div class="hero-card"><span class="ico">✅</span><b>Asistencia</b><small>Registro y seguimiento estudiantil</small></div>
+          </div>
+          <div class="hero-foot">Educación • Organización • Compromiso</div>
         </div>
-        <button id="btnLogin" type="submit">Entrar al sistema</button>
-      </form>
-
-      <div id="status" class="status"></div>
-
-      <div class="demo">
-        <strong>Primera configuración:</strong><br>
-        Ejecuta <code>mdjCrearPlantillaControl()</code> una vez, copia el ID retornado y pégalo en <code>MDJ_APP.hojaControlId</code>.
-      </div>
-    </section>
-  </div>
-
+      </section>
+      <section class="access" aria-label="Inicio de sesión">
+        <div class="access-inner">
+          <div class="pill">Portal de acceso</div>
+          <h2>Bienvenido de nuevo</h2>
+          <p class="description">Ingresa tus credenciales institucionales para continuar. El sistema mostrará las funciones correspondientes a tu rol.</p>
+          <form id="frmLogin" autocomplete="on" novalidate>
+            <div class="field">
+              <label for="usuario">Usuario</label>
+              <div class="input-wrap"><input id="usuario" name="username" autocomplete="username" inputmode="text" maxlength="120" required placeholder="Tu usuario institucional" autofocus><span class="input-icon" aria-hidden="true">♙</span></div>
+            </div>
+            <div class="field">
+              <label for="password">Contraseña</label>
+              <div class="input-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Ingresa tu contraseña"><button class="reveal" id="togglePass" type="button" aria-label="Mostrar contraseña" aria-pressed="false">Mostrar</button></div>
+            </div>
+            <div id="capsWarning" class="caps">Bloq Mayús está activado.</div>
+            <button id="btnLogin" class="submit" type="submit"><span class="spinner" aria-hidden="true"></span><span id="btnText">Ingresar al sistema</span><span aria-hidden="true" id="btnArrow">→</span></button>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+          </form>
+          <div class="security"><span aria-hidden="true">🔒</span><span>Acceso para personal autorizado. La sesión se valida con el sistema central del colegio.</span></div>
+        </div>
+      </section>
+    </div>
+    <footer class="page-foot">Colegio Mundo de Juguetes · Sistema de gestión escolar</footer>
+  </main>
+  <canvas id="particles" aria-hidden="true"></canvas>
   <script>
-    const WEB_APP_URL = '<?= webAppUrl ?>';
-
-    function setStatus(message, type) {
-      const el = document.getElementById('status');
-      el.textContent = message || '';
-      el.className = 'status ' + (type || '');
+  (function(){
+    'use strict';
+    const WEB_APP_URL = <?!= JSON.stringify(webAppUrl || '') ?>;
+    const LOGO_DATA_URI = <?!= JSON.stringify(logoDataUri || '') ?>;
+    const $ = id => document.getElementById(id);
+    const form=$('frmLogin'), shell=$('loginShell'), password=$('password'), username=$('usuario');
+    const button=$('btnLogin'), status=$('status'), text=$('btnText');
+    let processing=false;
+    if(LOGO_DATA_URI && String(LOGO_DATA_URI).startsWith('data:image/')){
+      const img=$('logoInstitucional');
+      img.onload=()=>{img.style.display='block';$('logoFallback').style.display='none';};
+      img.onerror=()=>{img.style.display='none';$('logoFallback').style.display='block';};
+      img.src=LOGO_DATA_URI;
     }
-
-    function setLoading(isLoading) {
-      const btn = document.getElementById('btnLogin');
-      if (!btn) return;
-      btn.disabled = !!isLoading;
-      btn.textContent = isLoading ? 'Validando acceso...' : 'Entrar al sistema';
-    }
-
-    function getUserFromResponse(response) {
-      if (!response || typeof response !== 'object') return null;
-      return response.user || response.usuario || response.sessionUser || null;
-    }
-
-    function getRoleFromResponse(response) {
-      const user = getUserFromResponse(response);
-      if (user && user.rol) return String(user.rol).toLowerCase();
-
-      if (response && response.redirectPage) {
-        const redirectPage = String(response.redirectPage).toLowerCase();
-        if (redirectPage === 'admin' || redirectPage === 'administrativo') return 'admin';
-        if (redirectPage === 'maestro' || redirectPage === 'teacher') return 'maestro';
-      }
-
+    const getUser=response=>response && (response.user||response.usuario||response.sessionUser)||null;
+    function roleOf(response){
+      const user=getUser(response);
+      const role=user && user.rol ? String(user.rol).trim().toLowerCase():'';
+      if(role==='admin'||role==='maestro') return role;
+      const page=String(response&&response.redirectPage||'').toLowerCase();
+      if(page==='admin'||page==='administrativo') return 'admin';
+      if(page==='maestro'||page==='teacher') return 'maestro';
       return '';
     }
-
-    function buildTargetUrl(role) {
-      const page = String(role || '').toLowerCase() === 'admin' ? 'admin' : 'maestro';
-      return WEB_APP_URL + '?page=' + encodeURIComponent(page);
+    function setStatus(message,type){status.textContent=message||'';status.className='status '+(type||'');}
+    function setLoading(on){processing=!!on;button.disabled=!!on;username.disabled=!!on;password.disabled=!!on;button.classList.toggle('loading',!!on);text.textContent=on?'Verificando credenciales…':'Ingresar al sistema';$('btnArrow').style.display=on?'none':'';}
+    function fail(message){setLoading(false);setStatus(message||'No fue posible acceder.','error');shell.classList.remove('shake');void shell.offsetWidth;shell.classList.add('shake');}
+    function targetPage(role){return role==='admin'?'admin':role==='maestro'?'maestro':'';}
+    function redirect(role){
+      const page=targetPage(role);
+      if(!page){fail('La cuenta no tiene un rol autorizado.');return;}
+      if(!WEB_APP_URL){fail('No se encontró la URL de la aplicación. Verifica la implementación.');return;}
+      window.location.replace(WEB_APP_URL+(WEB_APP_URL.includes('?')?'&':'?')+'page='+encodeURIComponent(page));
     }
-
-    function redirectByRole(role) {
-      window.location.replace(buildTargetUrl(role));
-    }
-
-    function login(event) {
-      event.preventDefault();
-
-      const usuario = document.getElementById('usuario').value.trim();
-      const password = document.getElementById('password').value;
-
-      if (!usuario || !password) {
-        setStatus('Debes ingresar usuario y contraseña.', 'error');
-        return;
+    function success(role){
+      setStatus('Acceso autorizado. Abriendo tu panel…','success');
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){redirect(role);return;}
+      // Animación decorativa, se ejecuta exclusivamente tras validar mdjLogin.
+      const canvas=$('particles'),ctx=canvas.getContext('2d');
+      if(!ctx){redirect(role);return;}
+      const pixelRatio=Math.min(window.devicePixelRatio||1,1.5);
+      canvas.width=Math.round(innerWidth*pixelRatio);canvas.height=Math.round(innerHeight*pixelRatio);
+      ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+      const rect=shell.getBoundingClientRect(),count=150,colors=['#1d5287','#5d9bd0','#f0c66d','#ffffff','#c5ddf2'];
+      const points=Array.from({length:count},()=>({x:rect.left+Math.random()*rect.width,y:rect.top+Math.random()*rect.height,vx:(Math.random()-.5)*7,vy:-1.5-Math.random()*4,size:2+Math.random()*5,color:colors[Math.floor(Math.random()*colors.length)],life:1}));
+      let start=0;shell.classList.add('dissolve');
+      function draw(now){
+        if(!start)start=now;const p=Math.min(1,(now-start)/610);
+        ctx.clearRect(0,0,innerWidth,innerHeight);
+        for(const point of points){ctx.globalAlpha=Math.max(0,(1-p)*.85);ctx.fillStyle=point.color;ctx.fillRect(point.x+point.vx*p*24,point.y+point.vy*p*28,point.size*(1-p*.7),point.size*(1-p*.7));}
+        ctx.globalAlpha=1;
+        if(p<1)requestAnimationFrame(draw);else redirect(role);
       }
-
-      setLoading(true);
-      setStatus('Validando acceso...', '');
-
-      google.script.run
-        .withSuccessHandler(function(response) {
-          setLoading(false);
-
-          if (!response || !response.ok) {
-            setStatus((response && response.message) || 'No fue posible iniciar sesión.', 'error');
-            return;
-          }
-
-          const user = getUserFromResponse(response);
-          const role = getRoleFromResponse(response);
-
-          if (response.token) {
-            localStorage.setItem('mdj_token', response.token);
-          }
-          if (user) {
-            localStorage.setItem('mdj_user', JSON.stringify(user));
-          }
-
-          if (!role) {
-            setStatus('El login fue correcto, pero no se pudo determinar el rol del usuario.', 'error');
-            return;
-          }
-
-          setStatus('Acceso correcto. Redirigiendo...', 'success');
-          setTimeout(function() {
-            redirectByRole(role);
-          }, 250);
-        })
-        .withFailureHandler(function(error) {
-          setLoading(false);
-          setStatus(error && error.message ? error.message : 'Error inesperado al iniciar sesión.', 'error');
-          console.error('Error login:', error);
-        })
-        .mdjLogin(usuario, password);
+      requestAnimationFrame(draw);
     }
-
-    document.getElementById('frmLogin').addEventListener('submit', login);
-
-    (function autoValidate() {
-      const token = localStorage.getItem('mdj_token');
-      if (!token) return;
-
-      google.script.run
-        .withSuccessHandler(function(response) {
-          if (!response || !response.ok) return;
-          const role = getRoleFromResponse(response);
-          if (role) redirectByRole(role);
-        })
-        .withFailureHandler(function() {})
-        .mdjGetSession(token);
-    })();
+    $('togglePass').addEventListener('click',()=>{
+      const show=password.type==='password';password.type=show?'text':'password';$('togglePass').textContent=show?'Ocultar':'Mostrar';$('togglePass').setAttribute('aria-pressed',String(show));$('togglePass').setAttribute('aria-label',show?'Ocultar contraseña':'Mostrar contraseña');password.focus();
+    });
+    password.addEventListener('keyup',e=>$('capsWarning').classList.toggle('show',!!(e.getModifierState&&e.getModifierState('CapsLock'))));
+    form.addEventListener('submit',e=>{
+      e.preventDefault();if(processing)return;
+      const user=username.value.trim(),pass=password.value;
+      if(!user||!pass){fail('Completa el usuario y la contraseña.');return;}
+      if(!window.google||!google.script||!google.script.run){fail('Abre este acceso desde el enlace del Web App de Google Apps Script.');return;}
+      setLoading(true);setStatus('Comprobando tu acceso…','');
+      google.script.run.withSuccessHandler(response=>{
+        if(!response||!response.ok){fail((response&&response.message)||'Credenciales no válidas.');return;}
+        const role=roleOf(response),account=getUser(response);
+        if(!role||!response.token||!account){fail('Respuesta de autenticación incompleta.');return;}
+        try{localStorage.setItem('mdj_token',response.token);localStorage.setItem('mdj_user',JSON.stringify(account));}
+        catch(err){fail('El navegador no permite guardar la sesión. Activa el almacenamiento local.');return;}
+        // La contraseña nunca se almacena ni participa en la animación.
+        password.value='';success(role);
+      }).withFailureHandler(err=>fail((err&&err.message)||'No fue posible conectar con el servidor.')).mdjLogin(user,pass);
+    });
+    // Validar el token anterior en el servidor; si expiró, ofrecer acceso normal.
+    let oldToken='';try{oldToken=localStorage.getItem('mdj_token')||'';}catch(e){}
+    if(oldToken&&window.google&&google.script&&google.script.run){
+      setStatus('Comprobando sesión anterior…','');
+      google.script.run.withSuccessHandler(response=>{
+        if(response&&response.ok&&roleOf(response)){redirect(roleOf(response));return;}
+        try{if(localStorage.getItem('mdj_token')===oldToken){localStorage.removeItem('mdj_token');localStorage.removeItem('mdj_user');}}catch(e){}
+        if(!processing)setStatus('','');
+      }).withFailureHandler(()=>setStatus('','')).mdjGetSession(oldToken);
+    }
+  })();
   </script>
 </body>
 </html>

@@ -546,7 +546,9 @@ function mdjAsisGuardarAsistencia(token, payload) {
 
 function mdjAsisGetReporteGrado(token, libroKey) {
   try {
-    mdjAsisRequireRole_(token, ['admin']);
+    // Conservar la sesión validada antes de consultar los permisos.
+    // La implementación anterior hacía referencia a `sess` sin definirlo.
+    const sess = mdjAsisRequireRole_(token, ['admin']);
 
     const grado = mdjAsisGetLibroConfig_(libroKey);
     mdjAsisAssertGradoAccess_(sess.user, libroKey);

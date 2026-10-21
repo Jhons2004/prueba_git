@@ -69,3 +69,16 @@ clasp push
 Después, **Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar**. Si se usa la URL `/dev` en sesión de editor, los cambios guardados pueden revisarse sin generar una nueva versión. Para datos de producción se recomienda restringir permisos y comprobar con una cuenta de cada rol.
 
 > Estas son modificaciones de interfaz verificadas con análisis estático y `node --check`. La prueba de navegación autenticada con Google Apps Script y las lecturas/escrituras reales requiere un despliegue de QA.
+
+
+## Ajuste — Asistencia de Estudiantes y nuevo login (21/oct/2026)
+
+- `Asistencia.js`: corrección de `mdjAsisGetReporteGrado`. Ahora captura el resultado de `mdjAsisRequireRole_(token, ['admin'])` antes de utilizar `sess.user`. No requiere ejecutar migraciones ni reemplazar los archivos de asistencia.
+- `Administrativo.html`: el menú y la vista de Dirección muestran **Asistencia de Estudiantes** (misma sesión, sin iframe/redirección). Mantiene el menú lateral plegable.
+- `Maestro.html`: opción **Asistencia de Estudiantes** dentro del panel docente, conserva el registro de notas y muestra el logo institucional.
+- `Login.html`: nuevo acceso responsivo con logotipo extraído de `MDJ_LOGO_DATA_URI`, fondo animado ligero, campo de contraseña visible/oculto, estados accesibles y partículas al confirmar **autenticación real** mediante `mdjLogin`. No utiliza los usuarios ni contraseñas de ejemplo de los HTML de referencia.
+- `AdminAsistenciaIntegrada.html`: nombre accesible actualizado. Los reportes/sincronización/gestión de usuarios siguen siendo facultades de Dirección; los docentes usan la toma de asistencia desde su panel.
+
+**Verificación:** análisis de sintaxis JavaScript y pruebas automatizadas con navegador y respuestas simuladas para los dos paneles y el login, además de prueba aislada de `mdjAsisGetReporteGrado` para rol de administración. No se ha hecho lectura ni escritura contra hojas reales de producción; validar acceso en la implementación QA antes de operaciones masivas.
+
+**Despliegue QA:** `git pull origin main`, `clasp status`, `clasp push`, luego *Implementar → Administrar implementaciones → Editar → Nueva versión*. Las propiedades de Apps Script permanecen intactas.
